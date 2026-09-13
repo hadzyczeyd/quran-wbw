@@ -144,6 +144,28 @@
   font-weight: 600;
 }
 
+.surah-search {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-block: 0.5rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.6rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  font-family: var(--font-latin);
+  font-size: 1rem;
+}
+
+.surah-search:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+
+.surah-search::placeholder {
+  color: var(--color-text-muted);
+}
+
 .surah-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
