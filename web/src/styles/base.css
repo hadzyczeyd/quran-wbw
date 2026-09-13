@@ -1,0 +1,67 @@
+/* Okvir aplikacije: reset, tijelo, zaglavlje, podnožje. */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-latin);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: 1.5rem clamp(1rem, 4vw, 3rem);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.page-shell {
+  max-width: 96rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+/*
+ * Isticanje (klik na riječ/token) — NIKAD ne mijenja `color` teksta
+ * (OPIS zamka 5.6). Dva varijanta jer nose različit sadržaj:
+ *
+ * .is-highlighted — za bosanski token, koji ima TAČNO jednu QAC boju.
+ * Pozadina izvedena iz currentColor daje svakoj boji njenu blagu
+ * podlogu (provjereno rješenje iz OPIS 5.6).
+ *
+ * .is-highlighted-word — za arapsku riječ, koja iznutra nosi VIŠE
+ * različitih boja segmenata odjednom, pa nema jedan currentColor za
+ * miješanje. Fiksna blijedožuta podloga (#FFF2A8) je vrijednost
+ * zabilježena u App_schema listu stvarnih Excel podataka.
+ */
+.is-highlighted {
+  background: color-mix(in srgb, currentColor var(--highlight-bg-mix), transparent);
+  border-radius: 0.2em;
+}
+
+.is-highlighted-word {
+  background: #fff2a8;
+  border-radius: 0.2em;
+}

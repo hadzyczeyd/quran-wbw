@@ -1,0 +1,103 @@
+.home-hero {
+  padding-block: 3rem 2rem;
+  text-align: center;
+}
+
+.home-bismillah {
+  font-family: var(--font-arabic);
+  font-size: clamp(2rem, 1.4rem + 2.5vw, 3.2rem);
+  line-height: 2;
+  direction: rtl;
+}
+
+.home-lede {
+  max-width: 42rem;
+  margin-inline: auto;
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.6rem;
+  padding-block: 1.5rem 2.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.4rem;
+  background: var(--color-bg-elevated);
+}
+
+.legend-swatch {
+  font-family: var(--font-arabic);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.legend-label {
+  color: var(--color-text-muted);
+}
+
+.demo-cta {
+  display: inline-block;
+  margin-block: 1rem 2.5rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--color-accent);
+  color: white;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.surah-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.6rem;
+  padding-block: 0.5rem 3rem;
+}
+
+.surah-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-bg-elevated);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.15s ease;
+}
+
+.surah-card:hover {
+  border-color: var(--color-accent);
+}
+
+.surah-card.is-unavailable {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.surah-card-number {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.surah-card-name {
+  font-weight: 600;
+}
+
+.surah-card-count {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}

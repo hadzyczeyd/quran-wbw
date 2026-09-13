@@ -1,0 +1,62 @@
+/*
+ * Jedino mjesto gdje žive hex boje.
+ * Kategorije boja odgovaraju stvarnim QAC (Quranic Arabic Corpus /
+ * corpus.quran.com) CSS klasama, pročitanim iz Legenda listova u
+ * APP_READY Excel fajlovima (NALOG-V13, poglavlje 5: "QAC boje se
+ * preslikavaju direktno") — koja QAC klasa dobija koju riječ ostaje
+ * potpuno vjerno izvoru. Konkretni tonovi su blago prilagođeni radi
+ * čitljivosti i estetike na svijetloj pozadini; raspodjela kategorija
+ * se ne mijenja.
+ */
+
+:root {
+  /* QAC segmentne boje — primjenjuju se preko [data-qac-class] */
+  --qac-seagreen: #2e7d46; /* V — glagol */
+  --qac-sky: #3b78b0; /* N, PRON — imenica / vezana zamjenica uz glagol */
+  --qac-blue: #1f7a8c; /* PN — vlastita imenica (uklj. Allah) */
+  --qac-purple: #7b4fa6; /* ADJ — pridjev */
+  --qac-gray: #8a7f6e; /* DET — određeni član */
+  --qac-metal: #56708a; /* PRON — lična/posvojna/objektna zamjenica */
+  --qac-rust: #b5502f; /* P — prijedlog */
+  --qac-navy: #3d4f9e; /* CIRC, CONJ, REM, RSLT — veznici i čestice */
+  --qac-red: #c33a2e; /* NEG, PRO — negacija, zabrana */
+  --qac-rose: #c85374; /* INTG — upitna čestica */
+  --qac-orange: #c97a1f; /* COND, LOC, PREV, T — uslovne, mjesne, vremenske */
+  --qac-gold: #9c8526; /* PRP, REL, SUB — namjera, odnosna zamjenica, podređeni veznik */
+  --qac-brown: #a67c3d; /* DEM — pokazna zamjenica */
+  --qac-green: #5b7f2e; /* VOC — dozivna čestica */
+  --qac-pink: #a64b85; /* sitne čestice: ACC, EMPH, SUP, FUT, CAUS... */
+  --qac-inserted: #000000; /* bosanska riječ bez arapskog površinskog segmenta */
+
+  /* Isticanje — nikad ne mijenja boju teksta, samo pozadinu/obrub. */
+  --highlight-bg-mix: 20%;
+
+  /* Osnovna paleta sučelja — light mode, topla bež pozadina. */
+  --color-bg: #f6f4ef;
+  --color-bg-elevated: #ffffff;
+  --color-text: #262420;
+  --color-text-muted: #6f6a5f;
+  --color-border: #e3ded2;
+  --color-accent: #1f7a8c;
+
+  --font-arabic: var(--font-amiri-quran), "Amiri Quran", serif;
+  --font-latin: var(--font-montserrat), "Montserrat", sans-serif;
+}
+
+/* Primjena QAC boje preko data-atributa na segmentu unutar riječi. */
+[data-qac-class="segSeagreen"] { color: var(--qac-seagreen); }
+[data-qac-class="segSky"] { color: var(--qac-sky); }
+[data-qac-class="segBlue"] { color: var(--qac-blue); }
+[data-qac-class="segPurple"] { color: var(--qac-purple); }
+[data-qac-class="segGray"] { color: var(--qac-gray); }
+[data-qac-class="segMetal"] { color: var(--qac-metal); }
+[data-qac-class="segRust"] { color: var(--qac-rust); }
+[data-qac-class="segNavy"] { color: var(--qac-navy); }
+[data-qac-class="segRed"] { color: var(--qac-red); }
+[data-qac-class="segRose"] { color: var(--qac-rose); }
+[data-qac-class="segOrange"] { color: var(--qac-orange); }
+[data-qac-class="segGold"] { color: var(--qac-gold); }
+[data-qac-class="segBrown"] { color: var(--qac-brown); }
+[data-qac-class="segGreen"] { color: var(--qac-green); }
+[data-qac-class="segPink"] { color: var(--qac-pink); }
+[data-qac-class="inserted_no_arabic_segment"] { color: var(--qac-inserted); }

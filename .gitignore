@@ -18,8 +18,13 @@ data-pipeline/__pycache__/
 # Raw sources and generated output — never committed, pipeline reproduces them
 data-pipeline/sources/
 data-pipeline/output/
+web/src/lib/fixtures/
 
 # OS / editor
 .DS_Store
 Thumbs.db
 *.log
+
+# Tajni ključevi — nikad u Git
+web/.env.local
+data-pipeline/.env
