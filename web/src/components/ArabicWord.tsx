@@ -20,7 +20,10 @@ export function ArabicWord({ word, isHighlighted, onWordClick }: ArabicWordProps
   return (
     <span
       className={`arabic-word${isHighlighted ? " is-highlighted-word" : ""}`}
-      onClick={() => onWordClick(word)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onWordClick(word);
+      }}
       role="button"
       tabIndex={0}
       title={word.gloss ?? undefined}

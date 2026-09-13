@@ -2,6 +2,7 @@
 
 import type { Ayah, BosnianToken, QacWord } from "@/lib/types";
 import { ArabicWord } from "./ArabicWord";
+import { AyahEndMark } from "./AyahEndMark";
 import { BosnianTokenSpan } from "./BosnianTokenSpan";
 
 interface AyahRowProps {
@@ -30,7 +31,10 @@ export function AyahRow({
         <button
           type="button"
           className="ayah-play-button"
-          onClick={() => onPlayAyah(ayah.ayah_number)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPlayAyah(ayah.ayah_number);
+          }}
           aria-label={`Preslušaj ajet ${ayah.ayah_number}`}
           aria-pressed={isAyahPlaying}
         >
@@ -60,6 +64,7 @@ export function AyahRow({
             />{" "}
           </span>
         ))}
+        <AyahEndMark number={ayah.ayah_number} />
       </div>
     </div>
   );

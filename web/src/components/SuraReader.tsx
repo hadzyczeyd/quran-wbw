@@ -60,7 +60,18 @@ export function SuraReader({ data }: SuraReaderProps) {
     setPlaying({ kind: "word", wordId: word.word_id });
   }
 
+  function clearHighlight() {
+    setActiveWordId(null);
+    setActiveTokenIds(new Set());
+  }
+
   function handleWordClick(word: QacWord, ayahNumber: number) {
+    if (activeWordId === word.word_id) {
+      // Ponovni klik na već istaknutu riječ gasi isticanje.
+      clearHighlight();
+      return;
+    }
+
     const tokenIds = new Set<string>();
     for (const seg of word.segments) {
       for (const tid of seg.linked_token_ids) tokenIds.add(tid);
@@ -71,6 +82,11 @@ export function SuraReader({ data }: SuraReaderProps) {
   }
 
   function handleTokenClick(token: BosnianToken) {
+    if (activeTokenIds.has(token.token_id) && activeTokenIds.size === 1) {
+      clearHighlight();
+      return;
+    }
+
     // Bosanska riječ nema svoju boju niti audio — vodi na svoj arapski
     // segment i odatle na cijelu riječ (i njen izgovor).
     let firstWordId: string | null = null;
@@ -107,7 +123,7 @@ export function SuraReader({ data }: SuraReaderProps) {
   }
 
   return (
-    <div className="sura-reader">
+    <div className="sura-reader" onClick={clearHighlight}>
       {data.ayat.map((ayah) => (
         <AyahRow
           key={ayah.ayah_number}

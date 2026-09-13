@@ -16,19 +16,16 @@ export default function Home() {
         </p>
       </section>
 
-      <section aria-labelledby="legend-heading">
-        <h2 id="legend-heading" style={{ fontSize: "1rem", color: "var(--color-text-muted)" }}>
-          Legenda boja (QAC — Quranic Arabic Corpus)
-        </h2>
+      <section className="legend-section">
+        <input type="checkbox" id="legend-toggle" className="legend-toggle-checkbox" />
+        <label htmlFor="legend-toggle" className="section-heading legend-toggle-label">
+          Legenda boja
+        </label>
         <div className="legend-grid">
           {QAC_LEGEND.map((entry) => (
             <div className="legend-item" key={entry.cssClass}>
-              <span className="legend-swatch" data-qac-class={entry.cssClass}>
-                ع
-              </span>
-              <span className="legend-label">
-                {entry.label} <em>({entry.tags.join(", ")})</em>
-              </span>
+              <span className="legend-dot" data-qac-class={entry.cssClass} />
+              <span className="legend-label">{entry.label}</span>
             </div>
           ))}
         </div>

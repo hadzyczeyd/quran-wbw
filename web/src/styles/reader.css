@@ -18,6 +18,7 @@
   align-items: center;
   gap: 0.6rem;
   color: var(--color-text-muted);
+  order: 0;
 }
 
 .ayah-number {
@@ -49,6 +50,7 @@
   font-size: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem);
   font-weight: 500;
   line-height: 1.9;
+  order: 2;
 }
 
 .bosnian-token {
@@ -58,9 +60,10 @@
 
 .ayah-arabic {
   font-family: var(--font-arabic);
-  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
+  font-size: clamp(1.9rem, 1.6rem + 1.4vw, 2.4rem);
   line-height: 2.4;
   text-align: right;
+  order: 1;
 }
 
 .arabic-word {
@@ -69,15 +72,43 @@
   white-space: nowrap;
 }
 
-/* Iznad 62rem: uzani žlijeb za broj/dugme, prijevod, pa arapski. */
+/*
+ * Ukrasni broj kraja ajeta — ornamentalne Unicode zagrade ﴿ ﴾
+ * (U+FD3E/FD3F) oko istočnoarapske cifre, isti pristup kao tanzil.net.
+ * Amiri Quran ih iscrtava kao medaljon oko broja.
+ */
+.ayah-end-mark {
+  font-family: var(--font-arabic);
+  color: var(--color-gold);
+  margin-inline-start: 0.15em;
+}
+
+/*
+ * Ispod 62rem (uređaji stacked): arapski ide IZNAD prijevoda, i nešto
+ * je veći (order su postavljeni gore: gutter 0, arapski 1, prijevod 2).
+ *
+ * Iznad 62rem: tri kolone — uzani žlijeb za broj/dugme, prijevod u
+ * sredini, arapski desno. Redoslijed se vraća na izvorni raspored
+ * kolona.
+ */
 @media (min-width: 62rem) {
   .ayah-row {
     grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 1.3fr);
-    align-items: start;
+    align-items: baseline;
   }
 
   .ayah-gutter {
     flex-direction: column;
+    align-self: start;
     padding-top: 0.3rem;
+    order: 0;
+  }
+
+  .ayah-translation {
+    order: 1;
+  }
+
+  .ayah-arabic {
+    order: 2;
   }
 }

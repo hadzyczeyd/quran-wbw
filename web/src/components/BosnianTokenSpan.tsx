@@ -15,7 +15,14 @@ export function BosnianTokenSpan({ token, isHighlighted, onTokenClick }: Bosnian
     <span
       className={`bosnian-token${isHighlighted ? " is-highlighted" : ""}`}
       data-qac-class={token.css_class}
-      onClick={clickable ? () => onTokenClick(token) : undefined}
+      onClick={
+        clickable
+          ? (e) => {
+              e.stopPropagation();
+              onTokenClick(token);
+            }
+          : undefined
+      }
       role={clickable ? "button" : undefined}
       tabIndex={clickable ? 0 : undefined}
       onKeyDown={

@@ -38,6 +38,8 @@
   --color-text-muted: #6f6a5f;
   --color-border: #e3ded2;
   --color-accent: #1f7a8c;
+  --color-gold: #b8912e;
+  --color-gold-soft: color-mix(in srgb, var(--color-gold) 14%, transparent);
 
   --font-arabic: var(--font-amiri-quran), "Amiri Quran", serif;
   --font-latin: var(--font-montserrat), "Montserrat", sans-serif;

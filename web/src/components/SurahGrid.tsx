@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AVAILABLE_SURAH_IDS, SURAHS } from "@/lib/surahs";
+import { RevelationIcon } from "./RevelationIcon";
 
 export function SurahGrid() {
   const availableCount = AVAILABLE_SURAH_IDS.size;
@@ -28,17 +29,17 @@ export function SurahGrid() {
           const card = (
             <>
               <span className="surah-card-number">{surah.id}</span>
+              <span className="surah-card-arabic">{surah.nameArabic}</span>
               <span className="surah-card-name">{surah.nameBs}</span>
-              <span className="surah-card-count">{surah.ayahCount} ajeta</span>
+              <span className="surah-card-meta">
+                <RevelationIcon type={surah.revelationType} />
+                {surah.ayahCount} ajeta
+              </span>
             </>
           );
 
           return available ? (
-            <Link
-              key={surah.id}
-              href={`/sura/${surah.id}`}
-              className="surah-card"
-            >
+            <Link key={surah.id} href={`/sura/${surah.id}`} className="surah-card">
               {card}
             </Link>
           ) : (
