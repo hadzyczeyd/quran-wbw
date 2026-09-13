@@ -32,10 +32,27 @@ export default function RootLayout({
     <html lang="bs" className={`${amiriQuran.variable} ${montserrat.variable}`}>
       <body>
         <header className="site-header">
-          <div className="page-shell" style={{ padding: "0.9rem 0" }}>
+          <div
+            className="page-shell"
+            style={{
+              padding: "0.9rem 0",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
             <Link href="/" style={{ fontWeight: 700, textDecoration: "none" }}>
               Kur&apos;an riječ po riječ
             </Link>
+            <nav style={{ display: "flex", gap: "1.2rem", fontSize: "0.9rem" }}>
+              <Link href="/about" style={{ textDecoration: "none" }}>
+                O projektu
+              </Link>
+              <Link href="/contact" style={{ textDecoration: "none" }}>
+                Kontakt
+              </Link>
+            </nav>
           </div>
         </header>
 
@@ -43,32 +60,9 @@ export default function RootLayout({
 
         <footer className="site-footer">
           <p>
-            Arapski tekst i morfologija:{" "}
-            <a href="https://corpus.quran.com" target="_blank" rel="noreferrer">
-              Quranic Arabic Corpus
-            </a>{" "}
-            (Kais Dukes) i{" "}
-            <a href="https://tanzil.net" target="_blank" rel="noreferrer">
-              Tanzil.info
-            </a>{" "}
-            (CC BY-ND 3.0). Bosanski prijevod: Muhamed Mehanović,{" "}
-            <a href="https://quranenc.com" target="_blank" rel="noreferrer">
-              QuranEnc
-            </a>
-            . Audio po riječi: Tafsir Center for Quranic Studies, uz ljubaznu
-            dozvolu preko{" "}
-            <a href="https://quran.foundation" target="_blank" rel="noreferrer">
-              Quran Foundation
-            </a>{" "}
-            (Quran.com) Content API-ja. Recitacija ajeta:{" "}
-            <a href="https://everyayah.com" target="_blank" rel="noreferrer">
-              everyayah.com
-            </a>
-            . Izvor arapskog teksta u bazi:{" "}
-            <a href="https://al-quran.fr" target="_blank" rel="noreferrer">
-              al-quran.fr
-            </a>{" "}
-            (CC0).
+            Kur&apos;anski tekst, prijevod i audio prikazani su iz izvora
+            navedenih na <Link href="/about">stranici O projektu</Link>, bez
+            izmjena.
           </p>
         </footer>
       </body>

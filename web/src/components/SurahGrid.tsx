@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { AVAILABLE_SURAH_IDS, SURAHS } from "@/lib/surahs";
+import { SURAHS } from "@/lib/surahs";
 import { RevelationIcon } from "./RevelationIcon";
 
 function normalize(text: string): string {
@@ -13,9 +13,13 @@ function normalize(text: string): string {
     .replace(/[̀-ͯ]/g, "");
 }
 
-export function SurahGrid() {
+interface SurahGridProps {
+  availableSurahIds: Set<number>;
+}
+
+export function SurahGrid({ availableSurahIds }: SurahGridProps) {
   const [query, setQuery] = useState("");
-  const availableCount = AVAILABLE_SURAH_IDS.size;
+  const availableCount = availableSurahIds.size;
 
   const filtered = useMemo(() => {
     const q = normalize(query.trim());
@@ -62,7 +66,7 @@ export function SurahGrid() {
       ) : (
         <div className="surah-grid">
           {filtered.map((surah) => {
-            const available = AVAILABLE_SURAH_IDS.has(surah.id);
+            const available = availableSurahIds.has(surah.id);
             const card = (
               <>
                 <span className="surah-card-number">{surah.id}</span>

@@ -155,11 +155,3 @@ export const SURAHS: SurahMeta[] = [
   meta(113, "El-Felek", "الفلق", 5),
   meta(114, "En-Nas", "الناس", 6),
 ];
-
-// Sure za koje trenutno postoji uvezen APP_READY fajl (privremeni JSON
-// fixture-i u src/lib/fixtures/). Ažurira se kako pipeline uvozi nove sure.
-export const AVAILABLE_SURAH_IDS = new Set<number>([
-  1, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-  96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
-  112, 113, 114,
-]);

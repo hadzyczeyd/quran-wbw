@@ -65,3 +65,32 @@ a {
   background: #fff2a8;
   border-radius: 0.2em;
 }
+
+/*
+ * Legenda boja — dijeli je početna (mreža, ColorLegend) i čitač
+ * (kompaktna bočna traka, ColorLegend compact).
+ */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0.4rem;
+  background: var(--color-bg-elevated);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  color: var(--color-text-muted);
+}

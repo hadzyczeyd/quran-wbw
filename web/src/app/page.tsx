@@ -1,9 +1,12 @@
 import "@/styles/home.css";
 import { Bismillah } from "@/components/Bismillah";
+import { ColorLegend } from "@/components/ColorLegend";
 import { SurahGrid } from "@/components/SurahGrid";
-import { QAC_LEGEND } from "@/lib/legend";
+import { getAvailableSurahIds } from "@/lib/availableSurahs";
 
-export default function Home() {
+export default async function Home() {
+  const availableSurahIds = await getAvailableSurahIds();
+
   return (
     <main className="page-shell">
       <section className="home-hero">
@@ -21,17 +24,10 @@ export default function Home() {
         <label htmlFor="legend-toggle" className="section-heading legend-toggle-label">
           Legenda boja
         </label>
-        <div className="legend-grid">
-          {QAC_LEGEND.map((entry) => (
-            <div className="legend-item" key={entry.cssClass}>
-              <span className="legend-dot" data-qac-class={entry.cssClass} />
-              <span className="legend-label">{entry.label}</span>
-            </div>
-          ))}
-        </div>
+        <ColorLegend />
       </section>
 
-      <SurahGrid />
+      <SurahGrid availableSurahIds={availableSurahIds} />
     </main>
   );
 }

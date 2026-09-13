@@ -3,6 +3,72 @@
   flex-direction: column;
   gap: 1.75rem;
   padding-block: 2rem;
+  min-width: 0;
+}
+
+/*
+ * Raspored čitača: glavni sadržaj + bočna traka s legendom. Na uskom
+ * ekranu traka ide ispod čitača (ne sticky, da ne pojede ekran); od
+ * 75rem postaje prava sticky bočna traka pored teksta.
+ */
+.reader-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.legend-sidebar {
+  border: 1px solid var(--color-border);
+  border-radius: 0.6rem;
+  background: var(--color-bg-elevated);
+  padding: 1rem 1.1rem;
+  height: fit-content;
+}
+
+.legend-sidebar-heading {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-sidebar-heading::before {
+  content: "";
+  display: inline-block;
+  width: 1.1rem;
+  height: 2px;
+  background: var(--color-gold);
+}
+
+.legend-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.legend-sidebar-list .legend-item {
+  font-size: 0.82rem;
+  padding: 0.3rem 0.5rem;
+}
+
+@media (min-width: 75rem) {
+  .reader-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .sura-reader {
+    flex: 1;
+  }
+
+  .legend-sidebar {
+    position: sticky;
+    top: 5rem;
+    width: 15rem;
+    flex-shrink: 0;
+  }
 }
 
 .ayah-row {

@@ -97,6 +97,26 @@ def normalize_word(row, schema):
     }
 
 
+def is_surface_segment(seg):
+    """
+    Da li je segment stvarno napisan u ajetu (za prikaz), ili je
+    implicitan (npr. "Ø" — implicitna zamjenica, ili prazan
+    arabic_segment). Implicitni segmenti postoje u OBA formata:
+    - V12 ih eksplicitno označava sa is_surface=False (kolona postoji).
+    - V13 nema tu kolonu, ali isti slučaj prepoznat je po praznom
+      arabic_segment i/ili qac_css_class == 'segSilver' (boja rezervisana
+      baš za ovu kategoriju — vidi suru 80, implicitna zamjenica bez
+      teksta).
+    """
+    if not seg.get("is_surface", True):
+        return False
+    if not seg.get("arabic_segment"):
+        return False
+    if seg.get("qac_css_class") == "segSilver":
+        return False
+    return True
+
+
 def normalize_segment(row, schema):
     if schema == "v13":
         return {
@@ -111,9 +131,6 @@ def normalize_segment(row, schema):
             "lemma": row.get("lemma"),
             "root": row.get("root"),
             "bosnian_expression_status": row["bosnian_expression_status"],
-            # V13 fajlovi ne sadrže implicitne (nenapisane) segmente —
-            # svaki red je površinski.
-            "is_surface": True,
         }
     # v12
     return {
@@ -128,9 +145,8 @@ def normalize_segment(row, schema):
         "lemma": row.get("lemma_arabic") or row.get("lemma_bw"),
         "root": row.get("root_arabic") or row.get("root_bw"),
         "bosnian_expression_status": row["bosnian_expression_status"],
-        # V12 označava implicitne (nenapisane, npr. "Ø" = implicitna
-        # zamjenica) segmente sa is_surface=False — ti se ne prikazuju,
-        # jer nisu stvarno napisani u ajetu.
+        # V12 dodatno eksplicitno označava is_surface — čuvamo ga da ga
+        # is_surface_segment() provjeri zajedno s ostalim pravilima.
         "is_surface": bool(row.get("is_surface", True)),
     }
 
@@ -175,8 +191,8 @@ def main():
     schema = detect_schema(wb)
     rijeci = [normalize_word(r, schema) for r in read_sheet(wb, "Rijeci")]
     all_segmenti = [normalize_segment(r, schema) for r in read_sheet(wb, "Segmenti")]
-    n_implicit = sum(1 for s in all_segmenti if not s["is_surface"])
-    segmenti = [s for s in all_segmenti if s["is_surface"]]
+    segmenti = [s for s in all_segmenti if is_surface_segment(s)]
+    n_implicit = len(all_segmenti) - len(segmenti)
     if n_implicit:
         print(f"Napomena: {n_implicit} implicitni(h) segment(a) (npr. 'Ø') preskočeno u prikazu.")
     tokeni = [normalize_token(r, schema) for r in read_sheet(wb, "Bosanski_tokeni")]

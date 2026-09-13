@@ -1,0 +1,111 @@
+.about-page {
+  max-width: 42rem;
+  padding-block: 2.5rem 4rem;
+  line-height: 1.7;
+}
+
+.about-page h1 {
+  font-size: 1.8rem;
+  margin-block-end: 0.75rem;
+}
+
+.about-page h2 {
+  font-size: 1.2rem;
+  margin-block: 2rem 0.75rem;
+  padding-block-start: 0.25rem;
+  border-top: 2px solid var(--color-gold);
+  padding-top: 1rem;
+}
+
+.about-lede {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.about-credits {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.about-credits dt {
+  font-weight: 600;
+  margin-block-end: 0.15rem;
+}
+
+.about-credits dd {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.about-credits a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.contact-form {
+  display: grid;
+  gap: 1rem;
+  max-width: 32rem;
+  margin-block-start: 1.5rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-family: var(--font-latin);
+  font-size: 1rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+
+.contact-submit {
+  justify-self: start;
+  padding: 0.7rem 1.5rem;
+  background: var(--color-gold);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contact-submit:hover {
+  opacity: 0.9;
+}
+
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.contact-status {
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.4rem;
+}
+
+.contact-status.success {
+  background: color-mix(in srgb, #2e7d46 12%, transparent);
+  color: #2e7d46;
+}
+
+.contact-status.error {
+  background: color-mix(in srgb, #c33a2e 12%, transparent);
+  color: #c33a2e;
+}
