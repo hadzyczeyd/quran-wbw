@@ -1,0 +1,25 @@
+# Node / Next.js
+web/node_modules/
+web/.next/
+web/out/
+web/.env*.local
+web/next-env.d.ts
+
+# Supabase local
+web/supabase/.branches/
+web/supabase/.temp/
+
+# Python / uv
+data-pipeline/.venv/
+data-pipeline/__pycache__/
+**/__pycache__/
+*.pyc
+
+# Raw sources and generated output — never committed, pipeline reproduces them
+data-pipeline/sources/
+data-pipeline/output/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
