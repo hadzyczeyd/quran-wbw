@@ -27,22 +27,28 @@
 }
 
 .ayah-play-button {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-gold);
   background: var(--color-bg-elevated);
-  color: var(--color-accent);
+  color: var(--color-gold);
   border-radius: 999px;
   width: 2rem;
   height: 2rem;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 0.85rem;
   line-height: 1;
 }
 
+/* Ikona play trougla ima optički centar blago desno od geometrijskog —
+   pomjeri je da vizuelno sjedne na sredinu kruga. */
+.ayah-play-button svg {
+  transform: translateX(1px);
+}
+
 .ayah-play-button:hover {
-  background: var(--color-border);
+  background: var(--color-gold-soft);
 }
 
 .ayah-translation {

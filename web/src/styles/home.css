@@ -41,12 +41,21 @@
 .legend-toggle-label {
   cursor: pointer;
   user-select: none;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 0.6rem;
+  background: var(--color-gold-soft);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .legend-toggle-label::after {
   content: "▾";
   display: inline-block;
-  margin-inline-start: 0.4rem;
+  margin-inline-start: auto;
+  font-size: 1.2rem;
   color: var(--color-gold);
   transition: transform 0.15s ease;
 }
@@ -66,6 +75,13 @@
 @media (min-width: 48rem) {
   .legend-toggle-label {
     pointer-events: none;
+    width: auto;
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
   }
 
   .legend-toggle-label::after {
