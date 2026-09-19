@@ -1,5 +1,6 @@
 import "@/styles/reader.css";
 import { ColorLegend } from "@/components/ColorLegend";
+import { MobileLegendButton } from "@/components/MobileLegendButton";
 import { SuraReader } from "@/components/SuraReader";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
 
@@ -30,6 +31,7 @@ export default async function SuraPage({
         <h2 className="legend-sidebar-heading">Legenda boja</h2>
         <ColorLegend compact />
       </aside>
+      <MobileLegendButton />
     </main>
   );
 }

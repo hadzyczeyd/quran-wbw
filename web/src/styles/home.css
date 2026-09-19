@@ -10,6 +10,12 @@
   direction: rtl;
 }
 
+.home-title {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem);
+  color: var(--color-gold);
+}
+
 .section-heading {
   display: inline-flex;
   align-items: center;
@@ -99,6 +105,139 @@
   color: var(--color-text-muted);
   font-size: 1.1rem;
   line-height: 1.7;
+}
+
+.dev-status-banner {
+  max-width: 34rem;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 0.5rem;
+  background: var(--color-gold-soft);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/*
+ * "O aplikaciji" — jedna kartica po naslovu, da dugi opisni tekst ne
+ * zauzme cijeli ekran. Na uskom ekranu je horizontalni carousel
+ * (scroll-snap, bez JS biblioteke); od 60rem prelazi u mrežu — sve
+ * kartice vidljive odjednom.
+ */
+.app-info {
+  padding-block: 2rem;
+}
+
+.app-info-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block-end: 0.5rem;
+  padding-inline: clamp(0px, 4vw, 1rem);
+  margin-inline: clamp(-1rem, -4vw, 0px);
+  scrollbar-width: thin;
+}
+
+/* Kartica je samo dugme koje otvara popup — nema svog sadržaja. */
+.app-info-card {
+  flex: 0 0 min(85%, 22rem);
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-bg-elevated);
+  font-family: var(--font-latin);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: start;
+}
+
+.app-info-card:hover {
+  border-color: var(--color-gold);
+}
+
+.app-info-card-chevron {
+  color: var(--color-gold);
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+/* Popup — native <dialog>, centriran preko browser default UA stila. */
+.app-info-dialog {
+  position: relative;
+  max-width: min(34rem, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1.75rem 1.75rem 2rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  line-height: 1.65;
+}
+
+.app-info-dialog::backdrop {
+  background: rgba(20, 18, 14, 0.5);
+}
+
+.app-info-dialog h2 {
+  font-size: 1.25rem;
+  margin: 0 1.5rem 1rem 0;
+  padding-block-end: 0.6rem;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.app-info-dialog p {
+  margin-block: 0 0.85rem;
+}
+
+.app-info-dialog ul {
+  margin: 0 0 0.5rem;
+  padding-inline-start: 1.2rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.app-info-dialog a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.app-info-full-link {
+  margin-block-start: 0.9rem;
+  text-align: center;
+}
+
+.app-info-full-link a {
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.app-info-full-link a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 60rem) {
+  .app-info-track {
+    overflow-x: visible;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .app-info-card {
+    flex: unset;
+  }
 }
 
 .legend-grid {

@@ -69,6 +69,51 @@
     width: 15rem;
     flex-shrink: 0;
   }
+
+  /* Sidebar preuzima ulogu legende od ovdje — floating dugme više ne treba. */
+  .legend-fab {
+    display: none;
+  }
+}
+
+/*
+ * Floating dugme za legendu — samo dok nema sticky bočne trake (ispod
+ * 75rem, vidi gore). Otvara popup sa istom kompaktnom legendom.
+ */
+.legend-fab {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  font-family: var(--font-latin);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.legend-fab-dialog {
+  position: relative;
+  max-width: min(24rem, 90vw);
+  max-height: 75vh;
+  overflow-y: auto;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+}
+
+.legend-fab-dialog::backdrop {
+  background: rgba(20, 18, 14, 0.5);
 }
 
 .ayah-row {

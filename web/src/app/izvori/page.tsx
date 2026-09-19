@@ -2,21 +2,16 @@ import type { Metadata } from "next";
 import "@/styles/about.css";
 
 export const metadata: Metadata = {
-  title: "O projektu — Kur'an riječ po riječ",
+  title: "Izvori — Kur'an riječ po riječ",
   description: "Izvori, licence i zahvale za Kur'an riječ po riječ.",
 };
 
-export default function AboutPage() {
+export default function IzvoriPage() {
   return (
     <main className="page-shell about-page">
-      <h1>O projektu</h1>
+      <h1>Izvori</h1>
       <p className="about-lede">
-        Kur&apos;an riječ po riječ je lični, pasioni projekat — web aplikacija
-        za učenje kur&apos;anskog arapskog kroz bosanski jezik. Svaka arapska
-        riječ je obojena prema svojoj gramatičkoj ulozi, direktno preslikano
-        iz Quranic Arabic Corpusa (corpus.quran.com), uz bosanski prijevod
-        koji prati isti redoslijed riječi. Cilj je da se gramatika usvaja
-        usput, kroz boju i zvuk, a ne napamet iz tabela.
+        Pregled izvora, licenci i zahvala za sadržaj korišten u aplikaciji.
       </p>
 
       <section>
@@ -82,9 +77,8 @@ export default function AboutPage() {
         <h2>Napomena</h2>
         <p>
           Sav kur&apos;anski sadržaj prikazan je u svom izvornom obliku, bez
-          izmjena. Ako primijetiš grešku u prijevodu, boji ili vezi između
-          arapske i bosanske riječi,{" "}
-          <a href="/contact">javi na Contact stranici</a>.
+          izmjena. Za pitanja, primjedbe ili uočene greške koristi{" "}
+          <a href="/contact">Kontakt stranicu</a>.
         </p>
       </section>
     </main>

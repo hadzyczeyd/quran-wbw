@@ -37,7 +37,7 @@
   --color-text: #262420;
   --color-text-muted: #6f6a5f;
   --color-border: #e3ded2;
-  --color-accent: #1f7a8c;
+  --color-accent: #0d9488; /* isti ton kao favicon, radi dosljednosti brenda */
   --color-gold: #b8912e;
   --color-gold-soft: color-mix(in srgb, var(--color-gold) 14%, transparent);
 

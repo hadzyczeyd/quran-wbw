@@ -17,6 +17,31 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Tanki zlatni scrollbar, u akcentnim bojama stranice. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-gold);
+  border-radius: 999px;
+  border: 2px solid var(--color-bg);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--color-gold) 80%, black);
+}
+
 a {
   color: inherit;
 }
@@ -29,12 +54,97 @@ a {
   border-bottom: 1px solid var(--color-border);
 }
 
+.site-header-inner {
+  padding-block: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.site-brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.site-brand-accent {
+  color: var(--color-gold);
+}
+
+/* Favicon je teal — filter ga preboji u zlatnu da prati akcent brenda. */
+.site-brand-logo {
+  filter: hue-rotate(228deg);
+}
+
+/*
+ * Hamburger meni na uskom ekranu (checkbox-hack — isti pouzdan pristup
+ * kao legend-toggle na početnoj). Od 48rem nav je uvijek vidljiv u
+ * jednom redu, hamburger dugme se sakriva.
+ */
+.nav-toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--color-text);
+  cursor: pointer;
+  order: 1;
+}
+
+.site-nav {
+  display: none;
+  flex-direction: column;
+  gap: 0.9rem;
+  width: 100%;
+  padding-block: 0.9rem 0.3rem;
+  font-size: 0.95rem;
+  order: 2;
+}
+
+.nav-toggle-checkbox:checked ~ .site-nav {
+  display: flex;
+}
+
+.site-nav a {
+  text-decoration: none;
+}
+
+@media (min-width: 48rem) {
+  .nav-toggle-button {
+    display: none;
+  }
+
+  .site-nav {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+    padding-block: 0;
+    gap: 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
 .site-footer {
   border-top: 1px solid var(--color-border);
   padding: 1.5rem clamp(1rem, 4vw, 3rem);
   color: var(--color-text-muted);
   font-size: 0.8rem;
   line-height: 1.6;
+  text-align: center;
 }
 
 .page-shell {
@@ -64,6 +174,26 @@ a {
 .is-highlighted-word {
   background: #fff2a8;
   border-radius: 0.2em;
+}
+
+/* Dijeljeno dugme za zatvaranje popup dijaloga (koristi ga i AppInfoSection i MobileLegendButton). */
+.app-info-dialog-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.9rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.app-info-dialog-close:hover {
+  background: var(--color-border);
 }
 
 /*

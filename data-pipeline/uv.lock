@@ -143,6 +143,9 @@ requires-dist = [
     { name = "requests", specifier = ">=2.34.2" },
 ]
 
+[package.metadata.requires-dev]
+dev = []
+
 [[package]]
 name = "et-xmlfile"
 version = "2.0.0"

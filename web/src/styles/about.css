@@ -1,5 +1,9 @@
+/*
+ * Stranica je puna page-shell širina (kao početna), ali sam tekst
+ * ostaje čitljive širine — max-width ide na tekstualne blokove, ne na
+ * cijelu stranicu.
+ */
 .about-page {
-  max-width: 42rem;
   padding-block: 2.5rem 4rem;
   line-height: 1.7;
 }
@@ -7,6 +11,10 @@
 .about-page h1 {
   font-size: 1.8rem;
   margin-block-end: 0.75rem;
+}
+
+.about-page section {
+  max-width: 46rem;
 }
 
 .about-page h2 {
@@ -18,8 +26,20 @@
 }
 
 .about-lede {
+  max-width: 46rem;
   color: var(--color-text-muted);
   font-size: 1.05rem;
+}
+
+.about-page p {
+  margin-block: 0 1rem;
+}
+
+.about-page ul {
+  margin: 0 0 1rem;
+  padding-inline-start: 1.3rem;
+  display: grid;
+  gap: 0.4rem;
 }
 
 .about-credits {
