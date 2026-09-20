@@ -115,7 +115,12 @@ def import_file(path, base_url, key):
     all_segmenti = [normalize_segment(r, schema) for r in read_sheet(wb, "Segmenti")]
     segmenti = [s for s in all_segmenti if is_surface_segment(s)]
     tokeni = [normalize_token(r, schema) for r in read_sheet(wb, "Bosanski_tokeni")]
-    veze = read_sheet(wb, "Veze")
+    surface_segment_ids = set(s["qac_segment_id"] for s in segmenti)
+    all_veze = read_sheet(wb, "Veze")
+    veze = [v for v in all_veze if v["qac_segment_id"] in surface_segment_ids]
+    n_skipped_veze = len(all_veze) - len(veze)
+    if n_skipped_veze:
+        print(f"  Napomena: {n_skipped_veze} veza(e) prema implicitnom segmentu preskočeno (nema prikaza).")
     prijevod = read_sheet(wb, "Prijevod_Mehanovic")
 
     if not rijeci:
