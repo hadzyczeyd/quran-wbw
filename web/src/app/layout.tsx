@@ -52,7 +52,7 @@ export default function RootLayout({
         {children}
 
         <footer className="site-footer">
-          <p>© {currentYear} Z Solutions. Sva prava zadržana.</p>
+          <p>© {currentYear} Zejd Hadžić. Sva prava zadržana.</p>
         </footer>
 
         <Analytics />
