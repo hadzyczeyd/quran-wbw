@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/next";
 import { Amiri_Quran, Montserrat } from "next/font/google";
+import { SiteNav } from "@/components/SiteNav";
 import "@/styles/tokens.css";
 import "@/styles/base.css";
 
@@ -43,20 +45,7 @@ export default function RootLayout({
               </span>
             </Link>
 
-            <input type="checkbox" id="nav-toggle" className="nav-toggle-checkbox" />
-            <label htmlFor="nav-toggle" className="nav-toggle-button" aria-label="Meni">
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </label>
-
-            <nav className="site-nav">
-              <Link href="/">Početna</Link>
-              <Link href="/sure">Sure</Link>
-              <Link href="/o-aplikaciji">O aplikaciji</Link>
-              <Link href="/izvori">Izvori</Link>
-              <Link href="/contact">Kontakt</Link>
-            </nav>
+            <SiteNav />
           </div>
         </header>
 
@@ -65,6 +54,8 @@ export default function RootLayout({
         <footer className="site-footer">
           <p>© {currentYear} Z Solutions. Sva prava zadržana.</p>
         </footer>
+
+        <Analytics />
       </body>
     </html>
   );

@@ -1,8 +1,11 @@
 import "@/styles/reader.css";
 import { ColorLegend } from "@/components/ColorLegend";
 import { MobileLegendButton } from "@/components/MobileLegendButton";
+import { SuraOpeningHeader } from "@/components/SuraOpeningHeader";
+import { SurahInfoSidebar } from "@/components/SurahInfoSidebar";
 import { SuraReader } from "@/components/SuraReader";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
+import { SURAHS } from "@/lib/surahs";
 
 export default async function SuraPage({
   params,
@@ -24,9 +27,15 @@ export default async function SuraPage({
     );
   }
 
+  const surahMeta = SURAHS.find((s) => s.id === surahId) ?? null;
+
   return (
     <main className="page-shell reader-layout">
-      <SuraReader data={data} />
+      {surahMeta && <SurahInfoSidebar surah={surahMeta} />}
+      <div className="sura-main-column">
+        {surahMeta && <SuraOpeningHeader surah={surahMeta} />}
+        <SuraReader data={data} />
+      </div>
       <aside className="legend-sidebar" aria-label="Legenda boja">
         <h2 className="legend-sidebar-heading">Legenda boja</h2>
         <ColorLegend compact />

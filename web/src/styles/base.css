@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   padding: 0;
@@ -77,31 +81,43 @@ a {
   color: var(--color-gold);
 }
 
-/* Favicon je teal — filter ga preboji u zlatnu da prati akcent brenda. */
-.site-brand-logo {
-  filter: hue-rotate(228deg);
-}
-
 /*
- * Hamburger meni na uskom ekranu (checkbox-hack — isti pouzdan pristup
- * kao legend-toggle na početnoj). Od 48rem nav je uvijek vidljiv u
- * jednom redu, hamburger dugme se sakriva.
+ * Hamburger meni na uskom ekranu — klijentska komponenta (SiteNav.tsx),
+ * ne checkbox-hack, jer treba JS da se zatvori na klik van menija, na
+ * klik na link i da ikona animira u X. Od 48rem nav je uvijek vidljiv
+ * u jednom redu, hamburger dugme se sakriva.
  */
-.nav-toggle-checkbox {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
 .nav-toggle-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2.2rem;
   height: 2.2rem;
+  border: none;
+  background: none;
+  padding: 0;
   color: var(--color-text);
   cursor: pointer;
   order: 1;
+}
+
+/* Tri linije hamburgera animiraju se u X kad je meni otvoren. */
+.nav-toggle-line {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle-button.is-open .nav-toggle-line-top {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle-button.is-open .nav-toggle-line-middle {
+  opacity: 0;
+}
+
+.nav-toggle-button.is-open .nav-toggle-line-bottom {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .site-nav {
@@ -114,7 +130,7 @@ a {
   order: 2;
 }
 
-.nav-toggle-checkbox:checked ~ .site-nav {
+.site-nav.is-open {
   display: flex;
 }
 
@@ -223,4 +239,59 @@ a {
 
 .legend-label {
   color: var(--color-text-muted);
+}
+
+/* Bismilla — dijele je hero sekcija početne i otvarajući blok u čitaču. */
+.home-bismillah {
+  font-family: var(--font-arabic);
+  font-size: clamp(2rem, 1.4rem + 2.5vw, 3.2rem);
+  line-height: 2;
+  direction: rtl;
+}
+
+/*
+ * Sitni elementi kartice sure — dijele ih mreža sura na početnoj
+ * (SurahGrid, surah-card) i fiksna info-kartica u čitaču
+ * (SurahInfoSidebar), zato su ovdje, ne u home.css.
+ */
+.surah-card-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--color-gold-soft);
+  color: var(--color-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.surah-card-arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.9rem;
+  line-height: 1.4;
+  text-align: right;
+  direction: rtl;
+  color: var(--color-gold);
+}
+
+.surah-card-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.surah-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.surah-card-meta svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
 }

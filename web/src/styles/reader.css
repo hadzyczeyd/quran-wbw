@@ -25,6 +25,70 @@
   height: fit-content;
 }
 
+/*
+ * Info-kartica o suri — samo na širem ekranu (isti prag kao sticky
+ * legenda desno), otud "display: none" prije 75rem umjesto stacked
+ * prikaza: kraća verzija istih podataka već stoji iznad sure u
+ * .sura-opening, pa se ne ponavlja na uskom ekranu.
+ */
+.surah-info-sidebar {
+  display: none;
+}
+
+.sura-main-column {
+  min-width: 0;
+}
+
+/*
+ * Otvarajući blok prije prvog ajeta — bismilla (bez prijevoda) i
+ * kratka meta-linija. Nije fiksiran, dio je normalnog toka teksta.
+ */
+.sura-opening {
+  text-align: center;
+  padding-block-end: 1.25rem;
+  margin-block-end: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sura-opening .home-bismillah {
+  font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.3rem);
+  line-height: 1.8;
+}
+
+/*
+ * Ovdje (za razliku od hero bismille na početnoj, koja ostaje šarena
+ * da pokazuje koncept boja aplikacije) bismilla je jednobojna zlatna —
+ * dio je ponavljajućeg otvarajućeg bloka, ne primarna demonstracija
+ * QAC boja.
+ */
+.sura-opening .home-bismillah [data-qac-class] {
+  color: var(--color-gold);
+}
+
+.sura-opening-name-arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  color: var(--color-gold);
+  font-size: clamp(1.7rem, 1.4rem + 1.2vw, 2.2rem);
+  line-height: 1.4;
+  margin: 0.5rem 0 0;
+}
+
+.sura-opening-name {
+  color: var(--color-gold);
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  margin: 0.2rem 0 0;
+}
+
+.sura-opening-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-block-start: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
 .legend-sidebar-heading {
   font-size: 0.95rem;
   color: var(--color-text-muted);
@@ -53,32 +117,12 @@
   padding: 0.3rem 0.5rem;
 }
 
-@media (min-width: 75rem) {
-  .reader-layout {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .sura-reader {
-    flex: 1;
-  }
-
-  .legend-sidebar {
-    position: sticky;
-    top: 5rem;
-    width: 15rem;
-    flex-shrink: 0;
-  }
-
-  /* Sidebar preuzima ulogu legende od ovdje — floating dugme više ne treba. */
-  .legend-fab {
-    display: none;
-  }
-}
-
 /*
  * Floating dugme za legendu — samo dok nema sticky bočne trake (ispod
- * 75rem, vidi gore). Otvara popup sa istom kompaktnom legendom.
+ * 75rem, vidi media query ispod). Otvara popup sa istom kompaktnom
+ * legendom. Definicija MORA biti prije @media bloka koji je isključuje
+ * na širem ekranu — kasnije pravilo iste specifičnosti pobjeđuje u
+ * cascade-u, bez obzira je li unutar media queryja ili ne.
  */
 .legend-fab {
   position: fixed;
@@ -100,8 +144,53 @@
   cursor: pointer;
 }
 
+@media (min-width: 75rem) {
+  .reader-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .sura-main-column {
+    flex: 1;
+  }
+
+  .legend-sidebar {
+    position: sticky;
+    top: 5rem;
+    width: 15rem;
+    flex-shrink: 0;
+  }
+
+  .surah-info-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    position: sticky;
+    top: 5rem;
+    width: 12rem;
+    flex-shrink: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    background: var(--color-bg-elevated);
+    padding: 1.1rem 1.2rem;
+  }
+
+  .surah-info-sidebar .surah-card-arabic {
+    font-size: 2.1rem;
+  }
+
+  /* Sidebar preuzima ulogu legende od ovdje — floating dugme više ne treba. */
+  .legend-fab {
+    display: none;
+  }
+}
+
+/* position: fixed (ne default absolute) — vidi napomenu uz .app-info-dialog u home.css. */
 .legend-fab-dialog {
-  position: relative;
+  position: fixed;
+  inset: 0;
+  margin: auto;
   max-width: min(24rem, 90vw);
   max-height: 75vh;
   overflow-y: auto;
