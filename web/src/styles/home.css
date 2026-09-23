@@ -375,18 +375,25 @@
   color: var(--color-text-muted);
 }
 
+/*
+ * Kartice sure su horizontalne trake (ne visoke/kvadratne) — broj,
+ * arapski naziv, bosanski naziv u jednom redu, meta (ikona + broj
+ * ajeta) potisnuta na kraj. Na uskoj kartici (malo mjesta u koloni)
+ * sadržaj slobodno prelama u 2 reda umjesto da se sabija.
+ */
 .surah-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
-  gap: 0.7rem;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0.6rem;
   padding-block: 0.5rem 3rem;
 }
 
 .surah-card {
   display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.85rem 0.9rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.7rem;
+  padding: 0.55rem 1rem;
   border: 1px solid var(--color-border);
   border-radius: 0.6rem;
   background: var(--color-bg-elevated);
@@ -404,5 +411,19 @@
   opacity: 0.4;
   cursor: default;
   pointer-events: none;
+}
+
+.surah-card .surah-card-arabic {
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.surah-card .surah-card-name {
+  white-space: nowrap;
+}
+
+.surah-card .surah-card-meta {
+  margin-inline-start: auto;
+  white-space: nowrap;
 }
 
