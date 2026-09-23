@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ShareMenu } from "./ShareMenu";
 
 const NAV_LINKS = [
   { href: "/", label: "Početna" },
@@ -83,6 +84,7 @@ export function SiteNav() {
             {link.label}
           </Link>
         ))}
+        <ShareMenu />
       </nav>
     </>
   );
