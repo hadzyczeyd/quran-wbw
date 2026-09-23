@@ -69,13 +69,17 @@ export function SurahGrid({ availableSurahIds }: SurahGridProps) {
             const available = availableSurahIds.has(surah.id);
             const card = (
               <>
-                <span className="surah-card-number">{surah.id}</span>
-                <span className="surah-card-arabic">{surah.nameArabic}</span>
-                <span className="surah-card-name">{surah.nameBs}</span>
-                <span className="surah-card-meta">
-                  <RevelationIcon type={surah.revelationType} />
-                  {surah.ayahCount} ajeta
-                </span>
+                <div className="surah-card-row">
+                  <span className="surah-card-number">{surah.id}</span>
+                  <span className="surah-card-meta">
+                    <RevelationIcon type={surah.revelationType} />
+                    {surah.ayahCount} ajeta
+                  </span>
+                </div>
+                <div className="surah-card-row">
+                  <span className="surah-card-name">{surah.nameBs}</span>
+                  <span className="surah-card-arabic">{surah.nameArabic}</span>
+                </div>
               </>
             );
 

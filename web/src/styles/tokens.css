@@ -42,6 +42,7 @@
   --color-gold-soft: color-mix(in srgb, var(--color-gold) 14%, transparent);
 
   --font-arabic: var(--font-amiri-quran), "Amiri Quran", serif;
+  --font-arabic-title: var(--font-reem-kufi), "Reem Kufi", sans-serif;
   --font-latin: var(--font-montserrat), "Montserrat", sans-serif;
 }
 

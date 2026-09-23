@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
-import { Amiri_Quran, Montserrat } from "next/font/google";
+import { Amiri_Quran, Montserrat, Reem_Kufi } from "next/font/google";
 import { SiteNav } from "@/components/SiteNav";
 import "@/styles/tokens.css";
 import "@/styles/base.css";
@@ -19,6 +19,16 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+// Dekorativni kufski font samo za arapske naslove sura na karticama
+// (SurahGrid) — tekst pojedinačnih ajeta ostaje u Amiri Quran, mushafskom
+// fontu.
+const reemKufi = Reem_Kufi({
+  subsets: ["arabic"],
+  weight: "700",
+  variable: "--font-reem-kufi",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Kur'an riječ po riječ",
   description:
@@ -33,7 +43,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="bs" className={`${amiriQuran.variable} ${montserrat.variable}`}>
+    <html
+      lang="bs"
+      className={`${amiriQuran.variable} ${reemKufi.variable} ${montserrat.variable}`}
+    >
       <body>
         <header className="site-header">
           <div className="page-shell site-header-inner">

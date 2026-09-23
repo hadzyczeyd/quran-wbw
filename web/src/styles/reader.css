@@ -290,31 +290,7 @@
 }
 
 /*
- * Ispod 62rem (uređaji stacked): arapski ide IZNAD prijevoda, i nešto
- * je veći (order su postavljeni gore: gutter 0, arapski 1, prijevod 2).
- *
- * Iznad 62rem: tri kolone — uzani žlijeb za broj/dugme, prijevod u
- * sredini, arapski desno. Redoslijed se vraća na izvorni raspored
- * kolona.
+ * Isti stacked raspored na svim širinama: arapski ide IZNAD prijevoda
+ * (order su postavljeni gore: gutter 0, arapski 1, prijevod 2) — bez
+ * posebnog tro-kolonskog rasporeda za desktop.
  */
-@media (min-width: 62rem) {
-  .ayah-row {
-    grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 1.3fr);
-    align-items: baseline;
-  }
-
-  .ayah-gutter {
-    flex-direction: column;
-    align-self: start;
-    padding-top: 0.3rem;
-    order: 0;
-  }
-
-  .ayah-translation {
-    order: 1;
-  }
-
-  .ayah-arabic {
-    order: 2;
-  }
-}
