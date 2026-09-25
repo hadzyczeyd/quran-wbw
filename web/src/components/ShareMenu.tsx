@@ -71,6 +71,16 @@ export function ShareMenu() {
     }
   }
 
+  // Instagram nema URL za dijeljenje linka (za razliku od ostalih), pa se
+  // link kopira u clipboard i otvara se Instagram poruke — korisnik ga samo
+  // zalijepi. window.open ide prvi, sinhrono, da ga popup blocker ne odsiječe.
+  function handleInstagram() {
+    const { url } = getShareData();
+    window.open("https://www.instagram.com/direct/inbox/", "_blank", "noopener,noreferrer");
+    navigator.clipboard?.writeText(url).catch(() => {});
+    setOpen(false);
+  }
+
   return (
     <div className="share-wrapper" ref={wrapperRef}>
       <button
@@ -175,6 +185,23 @@ export function ShareMenu() {
               </svg>
             </span>
             Facebook
+          </button>
+
+          <button type="button" className="share-option" role="menuitem" onClick={handleInstagram}>
+            <span
+              className="share-option-icon"
+              style={{
+                background:
+                  "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
+              }}
+            >
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                <rect x="5" y="5" width="14" height="14" rx="4" fill="none" stroke="white" strokeWidth="1.6" />
+                <circle cx="12" cy="12" r="3.2" fill="none" stroke="white" strokeWidth="1.6" />
+                <circle cx="16.2" cy="7.8" r="0.9" fill="white" />
+              </svg>
+            </span>
+            Instagram
           </button>
 
           <button type="button" className="share-option" role="menuitem" onClick={handleCopy}>
