@@ -8,6 +8,7 @@ import { ShareMenu } from "./ShareMenu";
 const NAV_LINKS = [
   { href: "/", label: "Početna" },
   { href: "/sure", label: "Sure" },
+  { href: "/blog", label: "Blog" },
   { href: "/o-aplikaciji", label: "O aplikaciji" },
   { href: "/izvori", label: "Izvori" },
   { href: "/contact", label: "Kontakt" },

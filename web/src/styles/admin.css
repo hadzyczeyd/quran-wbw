@@ -1,0 +1,388 @@
+/* Prijava (/login) i uređivanje bloga (/admin). Vidljivo samo adminu. */
+
+.admin-shell {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-block: 2rem 4rem;
+}
+
+.admin-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-block-end: 1rem;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.admin-bar-title {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--color-gold);
+}
+
+.admin-bar-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+.admin-bar-links a,
+.admin-link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.admin-bar-links a:hover,
+.admin-link-btn:hover {
+  color: var(--color-gold);
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 0.5rem;
+  background: var(--color-gold);
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.admin-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.admin-btn-secondary {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.admin-btn-secondary:hover:not(:disabled) {
+  background: var(--color-gold-soft);
+}
+
+.admin-btn-danger {
+  border-color: #c33a2e;
+  background: transparent;
+  color: #c33a2e;
+}
+
+.admin-btn-danger:hover:not(:disabled) {
+  background: rgba(195, 58, 46, 0.08);
+}
+
+.admin-note {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.admin-error {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #c33a2e;
+  border-radius: 0.5rem;
+  background: rgba(195, 58, 46, 0.07);
+  color: #a52d23;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Lista članaka */
+
+.admin-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-list-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.admin-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.6rem;
+  background: var(--color-bg-elevated);
+}
+
+.admin-list-title {
+  display: block;
+  font-weight: 600;
+}
+
+.admin-list-meta {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.admin-badge {
+  display: inline-block;
+  margin-inline-start: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-gold-soft);
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.admin-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.admin-list-actions .admin-btn {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+}
+
+/* Prijava */
+
+.login-shell {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+  padding-block: 3rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 24rem;
+  padding: 2rem 1.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: var(--color-bg-elevated);
+}
+
+.login-card h1 {
+  margin: 0 0 1.25rem;
+  font-size: 1.4rem;
+  color: var(--color-gold);
+  text-align: center;
+}
+
+.admin-field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.admin-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.admin-input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+
+.login-card .admin-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Editor */
+
+.editor-card h2 {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+}
+
+.editor-title-input {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: var(--color-bg-elevated);
+}
+
+.editor-toolbar-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-inline-end: 0.5rem;
+  margin-inline-end: 0.15rem;
+  border-inline-end: 1px solid var(--color-border);
+}
+
+.editor-toolbar-group:last-child {
+  border-inline-end: none;
+  margin-inline-end: 0;
+  padding-inline-end: 0;
+}
+
+.editor-btn {
+  min-width: 2.1rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.editor-btn:hover:not(:disabled) {
+  background: var(--color-gold-soft);
+}
+
+.editor-btn.is-active {
+  border-color: var(--color-gold);
+  background: var(--color-gold-soft);
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.editor-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.editor-btn-danger {
+  color: #c33a2e;
+}
+
+.editor-table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  background: var(--color-gold-soft);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.editor-table-tools span {
+  margin-inline-end: 0.4rem;
+  font-weight: 600;
+}
+
+.editor-surface {
+  min-height: 22rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: var(--color-bg-elevated);
+}
+
+.editor-surface .ProseMirror {
+  min-height: 20rem;
+}
+
+.editor-surface .ProseMirror:focus {
+  outline: none;
+}
+
+.editor-surface .ProseMirror p.is-editor-empty:first-child::before {
+  float: left;
+  height: 0;
+  color: var(--color-text-muted);
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.editor-surface .ProseMirror .selectedCell {
+  background: var(--color-gold-soft);
+}
+
+.editor-surface .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid var(--color-gold);
+}
+
+.editor-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.editor-publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.editor-publish input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--color-gold);
+}
+
+.editor-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+  .editor-surface {
+    padding: 0.85rem 0.9rem;
+  }
+}

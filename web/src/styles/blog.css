@@ -1,0 +1,232 @@
+/* Blog — lista, članak i tipografija sadržaja (dijeli je i editor u adminu). */
+
+.blog-hero {
+  padding-block: 3rem 1.5rem;
+  text-align: center;
+}
+
+.blog-hero h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
+  color: var(--color-gold);
+}
+
+.blog-hero p {
+  max-width: 34rem;
+  margin: 0.6rem auto 0;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 1rem;
+  padding-block: 1rem 3rem;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.3rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.blog-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+.blog-card-date {
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+.blog-card-title {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.35;
+}
+
+.blog-card-excerpt {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.blog-card-more {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+.blog-empty {
+  padding-block: 3rem 5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* Pojedinačni članak */
+
+.blog-post {
+  max-width: 46rem;
+  margin-inline: auto;
+  padding-block: 2rem 4rem;
+}
+
+.blog-back {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.blog-back:hover {
+  color: var(--color-gold);
+}
+
+.blog-post-title {
+  margin: 0;
+  font-size: clamp(1.7rem, 1.35rem + 1.6vw, 2.4rem);
+  line-height: 1.25;
+}
+
+.blog-post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-block: 0.9rem 1.75rem;
+  padding-block-end: 1rem;
+  border-bottom: 2px solid var(--color-gold);
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+/* Dugme "Podijeli" na članku — isti ShareMenu kao u navigaciji, kao pilula. */
+.blog-share .share-toggle {
+  padding: 0.4rem 0.95rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 999px;
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.blog-share .share-toggle:hover {
+  background: var(--color-gold-soft);
+}
+
+/* Tipografija sadržaja članka (i editora). */
+
+/* Amiri Quran iza Montserrata: arapske riječi u tekstu dobiju pravi kur'anski font. */
+.blog-content {
+  font-family: var(--font-montserrat), "Montserrat", var(--font-amiri-quran), "Amiri Quran", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.blog-content > :first-child {
+  margin-top: 0;
+}
+
+.blog-content p {
+  margin: 0 0 1rem;
+}
+
+.blog-content h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.45rem;
+  line-height: 1.3;
+  color: var(--color-gold);
+}
+
+.blog-content h3 {
+  margin: 1.5rem 0 0.6rem;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin: 0 0 1rem;
+  padding-inline-start: 1.4rem;
+}
+
+.blog-content li p {
+  margin: 0;
+}
+
+.blog-content li + li {
+  margin-top: 0.3rem;
+}
+
+.blog-content blockquote {
+  margin: 1.25rem 0;
+  padding: 0.4rem 0 0.4rem 1.1rem;
+  border-inline-start: 3px solid var(--color-gold);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.blog-content a {
+  color: var(--color-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.blog-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto;
+  border-radius: 0.5rem;
+}
+
+.blog-content table {
+  display: block;
+  max-width: 100%;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.blog-content th,
+.blog-content td {
+  min-width: 6rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+  text-align: start;
+}
+
+.blog-content th {
+  background: var(--color-gold-soft);
+  font-weight: 700;
+}
+
+.blog-content td p,
+.blog-content th p {
+  margin: 0;
+}
+
+@media (max-width: 30rem) {
+  .blog-content {
+    font-size: 1rem;
+  }
+}

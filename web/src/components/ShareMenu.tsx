@@ -49,10 +49,6 @@ export function ShareMenu() {
     return () => document.removeEventListener("click", onDocumentClick);
   }, [open]);
 
-  useEffect(() => {
-    if (!open) setCopied(false);
-  }, [open]);
-
   function openShareLink(target: ShareTarget) {
     const { url, title } = getShareData();
     window.open(shareUrlFor(target, url, title), "_blank", "noopener,noreferrer");
@@ -88,7 +84,10 @@ export function ShareMenu() {
         className="share-toggle"
         aria-label="Podijeli"
         aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setCopied(false);
+          setOpen((v) => !v);
+        }}
       >
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
           <path d="M12 15.5V4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
