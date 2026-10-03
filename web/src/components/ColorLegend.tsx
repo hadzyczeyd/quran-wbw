@@ -14,6 +14,13 @@ export function ColorLegend({ compact = false }: ColorLegendProps) {
           <span className="legend-label">{entry.label}</span>
         </div>
       ))}
+      <div className="legend-item">
+        <span className="legend-fused-sample" aria-hidden="true">
+          <span className="fused-marker" data-qac-class="segRed" />
+          <span className="fused-marker" data-qac-class="segSeagreen" />
+        </span>
+        <span className="legend-label">riječ nosi više dijelova (tačkice = njihove boje)</span>
+      </div>
     </div>
   );
 }

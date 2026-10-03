@@ -32,6 +32,8 @@ export interface BosnianToken {
   hex_color: string;
   mapping_status: string;
   linked_segment_ids: string[];
+  /** Za fused token: QAC klasa svakog povezanog segmenta, redom (V13.1 pravilo 8.4). */
+  fused_markers: { segment_id: string; css_class: string; tag: string }[];
 }
 
 export interface Ayah {

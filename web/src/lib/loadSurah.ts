@@ -61,7 +61,9 @@ export async function loadSurahFromSupabase(surahId: number): Promise<SurahData 
   }
 
   const segmentsByWord = new Map<string, QacSegment[]>();
+  const segmentById = new Map<string, { css_class: string; tag: string }>();
   for (const s of segmentRows ?? []) {
+    segmentById.set(s.segment_id, { css_class: s.qac_css_class, tag: s.qac_tag });
     const seg: QacSegment = {
       segment_id: s.segment_id,
       order: s.segment_order,
@@ -95,6 +97,7 @@ export async function loadSurahFromSupabase(surahId: number): Promise<SurahData 
 
   const tokensByAyah = new Map<number, BosnianToken[]>();
   for (const t of tokenRows ?? []) {
+    const linked = tokenToSegs.get(t.token_id) ?? [];
     const token: BosnianToken = {
       token_id: t.token_id,
       position: t.position,
@@ -102,7 +105,14 @@ export async function loadSurahFromSupabase(surahId: number): Promise<SurahData 
       css_class: t.qac_css_class,
       hex_color: t.qac_hex_color,
       mapping_status: t.mapping_status,
-      linked_segment_ids: tokenToSegs.get(t.token_id) ?? [],
+      linked_segment_ids: linked,
+      fused_markers:
+        t.mapping_status === "MAPPED_FUSED_MULTI_SEGMENT"
+          ? [...linked].sort().flatMap((id) => {
+              const seg = segmentById.get(id);
+              return seg ? [{ segment_id: id, ...seg }] : [];
+            })
+          : [],
     };
     if (!tokensByAyah.has(t.ayah_number)) tokensByAyah.set(t.ayah_number, []);
     tokensByAyah.get(t.ayah_number)!.push(token);

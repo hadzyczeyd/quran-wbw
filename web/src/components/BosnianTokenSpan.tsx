@@ -10,10 +10,11 @@ interface BosnianTokenSpanProps {
 
 export function BosnianTokenSpan({ token, isHighlighted, onTokenClick }: BosnianTokenSpanProps) {
   const clickable = token.linked_segment_ids.length > 0;
+  const fused = token.fused_markers.length > 0;
 
   return (
     <span
-      className={`bosnian-token${isHighlighted ? " is-highlighted" : ""}`}
+      className={`bosnian-token${fused ? " is-fused" : ""}${isHighlighted ? " is-highlighted" : ""}`}
       data-qac-class={token.css_class}
       onClick={
         clickable
@@ -34,6 +35,13 @@ export function BosnianTokenSpan({ token, isHighlighted, onTokenClick }: Bosnian
       }
     >
       {token.text}
+      {fused && (
+        <span className="fused-markers" aria-hidden="true">
+          {token.fused_markers.map((m) => (
+            <span key={m.segment_id} className="fused-marker" data-qac-class={m.css_class} title={m.tag} />
+          ))}
+        </span>
+      )}
     </span>
   );
 }

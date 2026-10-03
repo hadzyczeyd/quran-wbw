@@ -8,7 +8,10 @@ ispravnom redoslijedu radi stranih ključeva), pa je upisuje nanovo.
 
 Upotreba:
     uv run scripts/import_to_supabase.py <putanja_do_APP_READY.xlsx>
-    uv run scripts/import_to_supabase.py --all "D:/zejd APP"
+    uv run scripts/import_to_supabase.py --all "D:/zejd APP" [od_sure] [--arabic <backup_folder>]
+
+--arabic: osmanski tekst riječi/segmenata uzima iz JSON backupa baze
+(REVIDIRANA fajlovi imaju nepotpunu Buckwalter konverziju arapskog teksta).
 """
 import sys
 import os
@@ -31,6 +34,7 @@ from export_sura_json import (  # noqa: E402
     normalize_token,
     is_surface_segment,
 )
+from revidirana import is_revidirana, load_arabic_backup, load_morphology, parse  # noqa: E402
 
 ENV_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "web", ".env.local")
 
@@ -107,8 +111,76 @@ def delete_surah(base_url, key, surah_id):
     del_where("ayahs", f"surah_id=eq.{surah_id}")
 
 
-def import_file(path, base_url, key):
+def existing_word_glosses(base_url, key, surah_id):
+    """Glose/transliteracija iz baze — REVIDIRANA fajlovi ih uglavnom nemaju, a riječi (ID-ovi) su iste."""
+    resp = requests.get(
+        f"{base_url}/rest/v1/words?surah_id=eq.{surah_id}&select=word_id,transliteration,gloss",
+        headers=rest_headers(key),
+        timeout=30,
+    )
+    return {w["word_id"]: w for w in resp.json()}
+
+
+def import_revidirana(wb, base_url, key, morph, arabic=None):
+    data, problems = parse(wb, morph, arabic)
+    if problems:
+        print(f"GREŠKA: sura {data['surah_id']} ne prolazi provjeru, ništa nije upisano:")
+        for p in problems[:20]:
+            print("  -", p)
+        sys.exit(1)
+
+    surah_id = data["surah_id"]
+    old = existing_word_glosses(base_url, key, surah_id)
+    print(f"Sura {surah_id} (REVIDIRANA): brišem postojeće podatke...")
+    delete_surah(base_url, key, surah_id)
+
+    words = data["words"]
+    ayah_numbers = sorted({w["ayah"] for w in words})
+    ayah_rows = [
+        {
+            "surah_id": surah_id,
+            "ayah_number": a,
+            "text_uthmani": " ".join(
+                w["text"] for w in sorted((w for w in words if w["ayah"] == a), key=lambda w: w["position"])
+            ),
+            "mehanovic_text": data["prijevod"].get(a),
+        }
+        for a in ayah_numbers
+    ]
+    word_rows = [
+        {
+            "word_id": w["word_id"],
+            "surah_id": surah_id,
+            "ayah_number": w["ayah"],
+            "position": w["position"],
+            "text_uthmani": w["text"],
+            "transliteration": w["transliteration"] or old.get(w["word_id"], {}).get("transliteration"),
+            "gloss": w["gloss"] or old.get(w["word_id"], {}).get("gloss"),
+        }
+        for w in words
+    ]
+    link_rows = [{"segment_id": s, "token_id": t} for s, t in data["links"]]
+
+    upsert(base_url, key, "ayahs", ayah_rows, on_conflict="surah_id,ayah_number")
+    upsert(base_url, key, "words", word_rows, on_conflict="word_id")
+    upsert(base_url, key, "bosnian_tokens", data["tokens"], on_conflict="token_id")
+    upsert(base_url, key, "word_segments", data["segments"], on_conflict="segment_id")
+    upsert(base_url, key, "token_segment_links", link_rows, on_conflict="segment_id,token_id")
+    print(
+        f"OK: sura {surah_id} — {len(ayah_rows)} ajeta, {len(word_rows)} riječi, "
+        f"{len(data['segments'])} segmenata, {len(data['tokens'])} tokena "
+        f"({data['stats']['fused']} fused), {len(link_rows)} veza"
+    )
+
+
+def import_file(path, base_url, key, morph=None, arabic=None):
     wb = openpyxl.load_workbook(path, data_only=True)
+    if is_revidirana(wb):
+        if morph is None:
+            morph_path = os.path.join(os.path.dirname(path), "quranic-corpus-morphology-0.4.txt")
+            morph = load_morphology(morph_path)
+        import_revidirana(wb, base_url, key, morph, arabic)
+        return
     schema = detect_schema(wb)
 
     rijeci = [normalize_word(r, schema) for r in read_sheet(wb, "Rijeci")]
@@ -216,15 +288,25 @@ def main():
 
     base_url, key = get_supabase_config()
 
+    arabic = None
+    if "--arabic" in sys.argv:
+        i = sys.argv.index("--arabic")
+        arabic = load_arabic_backup(sys.argv[i + 1])
+        del sys.argv[i:i + 2]
+
     if sys.argv[1] == "--all":
         folder = sys.argv[2]
         files = sorted(glob.glob(os.path.join(folder, "*_APP_READY*.xlsx")))
         files = [f for f in files if "(1)" not in os.path.basename(f)]
+        min_surah = int(sys.argv[3]) if len(sys.argv) > 3 else 1
+        files = [f for f in files if int(os.path.basename(f).split("_")[0]) >= min_surah]
         print(f"Pronađeno {len(files)} APP_READY fajlova.")
+        morph_path = os.path.join(folder, "quranic-corpus-morphology-0.4.txt")
+        morph = load_morphology(morph_path) if os.path.exists(morph_path) else None
         for f in files:
-            import_file(f, base_url, key)
+            import_file(f, base_url, key, morph, arabic)
     else:
-        import_file(sys.argv[1], base_url, key)
+        import_file(sys.argv[1], base_url, key, arabic=arabic)
 
 
 if __name__ == "__main__":

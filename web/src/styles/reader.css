@@ -264,6 +264,22 @@
   padding: 0.05em 0.1em;
 }
 
+/* Token koji nosi više QAC segmenata različitih boja: neutralan tekst +
+   po jedan obojeni marker za svaki segment (nema dominantne boje). */
+.bosnian-token.is-fused {
+  position: relative;
+}
+
+.fused-markers {
+  position: absolute;
+  left: 50%;
+  bottom: -0.3em;
+  display: flex;
+  gap: 0.18em;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 .ayah-arabic {
   font-family: var(--font-arabic);
   font-size: clamp(1.9rem, 1.6rem + 1.4vw, 2.4rem);

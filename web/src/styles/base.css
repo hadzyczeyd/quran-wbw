@@ -299,6 +299,23 @@ a {
   flex-shrink: 0;
 }
 
+/* Marker segmenta ispod fused bosanskog tokena (i uzorak u legendi). */
+.fused-marker {
+  width: 0.32em;
+  height: 0.32em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.legend-fused-sample {
+  display: inline-flex;
+  justify-content: center;
+  gap: 0.15rem;
+  width: 0.85rem;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
 .legend-label {
   color: var(--color-text-muted);
 }
