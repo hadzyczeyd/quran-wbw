@@ -46,14 +46,14 @@ def load_morphology(path):
         for line in f:
             if not line.startswith("("):
                 continue
-            loc, _form, _tag, feats = line.rstrip("\n").split("\t")
+            loc, form, _tag, feats = line.rstrip("\n").split("\t")
             root = lemma = None
             for part in feats.split("|"):
                 if part.startswith("ROOT:"):
                     root = " ".join(bw_to_arabic(part[5:]))
                 elif part.startswith("LEM:"):
                     lemma = bw_to_arabic(part[4:])
-            out[loc.strip("()")] = {"root": root, "lemma": lemma}
+            out[loc.strip("()")] = {"root": root, "lemma": lemma, "text": bw_to_arabic(form)}
     return out
 
 
@@ -141,8 +141,7 @@ def apply_arabic(data, arabic):
     for w in data["words"]:
         text = arabic["words"].get(w["word_id"])
         if not text:
-            problems.append(f"riječ {w['word_id']}: nema provjerenog arapskog teksta")
-            continue
+            continue  # nova sura: ostaje tekst iz QAC morfologije
         w["text"] = text
         segs = sorted(segs_by_word.get(w["word_id"], []), key=lambda s: s["segment_order"])
         old = arabic["segments"].get(w["word_id"], {})
@@ -194,7 +193,7 @@ def parse(wb, morph, arabic=None):
         m = morph.get(loc)
         if m is None:
             problems.append(f"segment {s['qac_segment_id']}: lokacija {loc!r} nije u QAC morfologiji")
-            m = {"root": None, "lemma": None}
+            m = {"root": None, "lemma": None, "text": None}
         css = normalize_class(s.get("qac_css_class"))
         if css not in KNOWN_CLASSES:
             problems.append(f"segment {s['qac_segment_id']}: nepoznata klasa {s.get('qac_css_class')!r}")
@@ -204,7 +203,9 @@ def parse(wb, morph, arabic=None):
             "segment_id": s["qac_segment_id"],
             "word_id": s["qac_word_id"],
             "segment_order": int(s["segment_order"]),
-            "segment_text": text,
+            # QAC morfologija: tekst u istom zapisu kao objavljene sure (fajlovi
+            # imaju nepotpunu Buckwalter konverziju).
+            "segment_text": m["text"] or text,
             "qac_tag": pick(s, "qac_tag", "tag"),
             "qac_full_description": pick(s, "qac_full_description", "features"),
             "qac_css_class": css,
@@ -213,6 +214,10 @@ def parse(wb, morph, arabic=None):
             "root": m["root"],
         })
     seg_by_id = {s["segment_id"]: s for s in segments}
+    for w in words:
+        parts = sorted((s for s in segments if s["word_id"] == w["word_id"]), key=lambda s: s["segment_order"])
+        if parts:
+            w["text"] = "".join(s["segment_text"] for s in parts)
 
     tokens = sorted(
         (

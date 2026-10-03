@@ -1,6 +1,21 @@
 import { supabase } from "./supabase";
 import type { Ayah, BosnianToken, QacSegment, QacWord, SurahData } from "./types";
 
+const PAGE = 1000;
+
+/** PostgREST vraća najviše 1000 redova po upitu — duže sure se čitaju u dijelovima. */
+async function fetchAll<T>(
+  query: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: unknown }>
+): Promise<T[]> {
+  const rows: T[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await query(from, from + PAGE - 1);
+    if (error) throw error;
+    rows.push(...(data ?? []));
+    if (!data || data.length < PAGE) return rows;
+  }
+}
+
 /**
  * Učitava kompletnu suru iz Supabase baze i slaže je u isti oblik
  * (SurahData) koji su komponente ranije dobijale iz JSON fixture-a.
@@ -18,37 +33,48 @@ export async function loadSurahFromSupabase(surahId: number): Promise<SurahData 
     return null;
   }
 
-  const [{ data: wordRows }, { data: tokenRows }] = await Promise.all([
-    supabase
-      .from("words")
-      .select("word_id, ayah_number, position, text_uthmani, transliteration, gloss")
-      .eq("surah_id", surahId)
-      .order("ayah_number")
-      .order("position"),
-    supabase
-      .from("bosnian_tokens")
-      .select("token_id, ayah_number, position, display_text, qac_css_class, qac_hex_color, mapping_status")
-      .eq("surah_id", surahId)
-      .order("ayah_number")
-      .order("position"),
-  ]);
+  // ID-ovi svih redova sure počinju s "S057-" — filter po prefiksu umjesto
+  // dugačke .in() liste.
+  const idPrefix = `S${String(surahId).padStart(3, "0")}-%`;
 
-  const wordIds = (wordRows ?? []).map((w) => w.word_id);
-  const tokenIds = (tokenRows ?? []).map((t) => t.token_id);
-
-  const [{ data: segmentRows }, { data: linkRows }] = await Promise.all([
-    wordIds.length > 0
-      ? supabase
-          .from("word_segments")
-          .select(
-            "segment_id, word_id, segment_order, segment_text, qac_tag, qac_full_description, qac_css_class, qac_hex_color, lemma, root, expression_status"
-          )
-          .in("word_id", wordIds)
-          .order("segment_order")
-      : Promise.resolve({ data: [] as never[] }),
-    tokenIds.length > 0
-      ? supabase.from("token_segment_links").select("segment_id, token_id").in("token_id", tokenIds)
-      : Promise.resolve({ data: [] as never[] }),
+  const [wordRows, tokenRows, segmentRows, linkRows] = await Promise.all([
+    fetchAll((from, to) =>
+      supabase
+        .from("words")
+        .select("word_id, ayah_number, position, text_uthmani, transliteration, gloss")
+        .eq("surah_id", surahId)
+        .order("ayah_number")
+        .order("position")
+        .range(from, to)
+    ),
+    fetchAll((from, to) =>
+      supabase
+        .from("bosnian_tokens")
+        .select("token_id, ayah_number, position, display_text, qac_css_class, qac_hex_color, mapping_status")
+        .eq("surah_id", surahId)
+        .order("ayah_number")
+        .order("position")
+        .range(from, to)
+    ),
+    fetchAll((from, to) =>
+      supabase
+        .from("word_segments")
+        .select(
+          "segment_id, word_id, segment_order, segment_text, qac_tag, qac_full_description, qac_css_class, qac_hex_color, lemma, root, expression_status"
+        )
+        .like("segment_id", idPrefix)
+        .order("segment_id")
+        .range(from, to)
+    ),
+    fetchAll((from, to) =>
+      supabase
+        .from("token_segment_links")
+        .select("segment_id, token_id")
+        .like("token_id", idPrefix)
+        .order("segment_id")
+        .order("token_id")
+        .range(from, to)
+    ),
   ]);
 
   const segToTokens = new Map<string, string[]>();
