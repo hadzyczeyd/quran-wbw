@@ -59,13 +59,8 @@ export const APP_INFO_SECTIONS: AppInfoSection[] = [
           bosanskom prijevodu.
         </li>
         <li>
-          Klikom na pojedinačni dio arapske riječi označava se samo
-          njegov bosanski ekvivalent.
-        </li>
-        <li>
           Na ovaj način korisnik može jasnije uočiti vezu između arapskog
-          teksta, njegovih gramatičkih dijelova i prijevoda značenja na
-          bosanskom jeziku.
+          teksta, vrstu riječi i prijevoda značenja na bosanskom jeziku.
         </li>
         <li>Klikom na arapsku riječ pušta se audio snimak izgovora te riječi.</li>
         <li>
