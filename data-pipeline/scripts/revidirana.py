@@ -341,15 +341,25 @@ def parse(wb, morph, arabic=None):
     return data, problems
 
 
+# Tanzil/KFGQPC zapis otvorenog tanvina koristi zamjenske znakove koje
+# Amiri Quran crta doslovno (npr. ٞ kao fethu s dvije tačke). Unicode ima
+# prave znakove za otvoreni tanvin.
+OPEN_TANWEEN = str.maketrans({"ٞ": "ࣱ", "ٗ": "ࣰ", "ٖ": "ࣲ"})
+
+
+def fix_open_tanween(text):
+    return text.translate(OPEN_TANWEEN) if text else text
+
+
 def load_arabic_backup(folder):
     """Provjereni osmanski tekst iz JSON backupa baze (words.json + word_segments.json)."""
     import json
     import os
 
     with open(os.path.join(folder, "words.json"), encoding="utf-8") as f:
-        words = {w["word_id"]: w["text_uthmani"] for w in json.load(f)}
+        words = {w["word_id"]: fix_open_tanween(w["text_uthmani"]) for w in json.load(f)}
     segments = {}
     with open(os.path.join(folder, "word_segments.json"), encoding="utf-8") as f:
         for s in json.load(f):
-            segments.setdefault(s["word_id"], {})[s["segment_id"]] = s["segment_text"]
+            segments.setdefault(s["word_id"], {})[s["segment_id"]] = fix_open_tanween(s["segment_text"])
     return {"words": words, "segments": segments}
