@@ -91,21 +91,12 @@ def delete_surah(base_url, key, surah_id):
             print(f"GREŠKA pri brisanju iz {table}: {resp.status_code} {resp.text[:500]}")
             sys.exit(1)
 
-    # token_segment_links referenciraju i segmente i tokene ove sure
-    word_ids_resp = requests.get(
-        f"{base_url}/rest/v1/words?surah_id=eq.{surah_id}&select=word_id", headers=headers, timeout=30
-    ).json()
-    word_ids = [w["word_id"] for w in word_ids_resp]
-    token_ids_resp = requests.get(
-        f"{base_url}/rest/v1/bosnian_tokens?surah_id=eq.{surah_id}&select=token_id", headers=headers, timeout=30
-    ).json()
-    token_ids = [t["token_id"] for t in token_ids_resp]
-
-    if token_ids:
-        ids_str = ",".join(token_ids)
-        del_where("token_segment_links", f"token_id=in.({ids_str})")
-    if word_ids:
-        del_where("word_segments", f"word_id=in.({','.join(word_ids)})")
+    # Svi ID-ovi sure počinju s "S037-" — brisanje po prefiksu ne zavisi od
+    # PostgREST limita od 1000 redova po GET upitu (duge sure ga prelaze).
+    prefix = f"S{surah_id:03d}-*"
+    del_where("token_segment_links", f"token_id=like.{prefix}")
+    del_where("token_segment_links", f"segment_id=like.{prefix}")
+    del_where("word_segments", f"segment_id=like.{prefix}")
     del_where("words", f"surah_id=eq.{surah_id}")
     del_where("bosnian_tokens", f"surah_id=eq.{surah_id}")
     del_where("ayahs", f"surah_id=eq.{surah_id}")
