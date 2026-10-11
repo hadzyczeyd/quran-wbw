@@ -173,12 +173,27 @@ def import_revidirana(wb, base_url, key, morph, arabic=None):
     )
 
 
+MORPHOLOGY_FILE = "quranic-corpus-morphology-0.4.txt"
+
+
+def find_morphology(folder):
+    """QAC morfologija u folderu sa surama ili u nadređenom folderu (nove serije stižu u podfolderima)."""
+    for candidate in (folder, os.path.dirname(os.path.abspath(folder))):
+        path = os.path.join(candidate, MORPHOLOGY_FILE)
+        if os.path.exists(path):
+            return path
+    return None
+
+
 def import_file(path, base_url, key, morph=None, arabic=None):
-    wb = openpyxl.load_workbook(path, data_only=True)
-    if is_revidirana(wb):
+    # read_only: neki REVIDIRANA fajlovi imaju oštećene Excel stilove na kojima
+    # obično učitavanje pada; vrijednosti ćelija su ispravne.
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    if not is_revidirana(wb):
+        wb = openpyxl.load_workbook(path, data_only=True)
+    else:
         if morph is None:
-            morph_path = os.path.join(os.path.dirname(path), "quranic-corpus-morphology-0.4.txt")
-            morph = load_morphology(morph_path)
+            morph = load_morphology(find_morphology(os.path.dirname(path)))
         import_revidirana(wb, base_url, key, morph, arabic)
         return
     schema = detect_schema(wb)
@@ -301,8 +316,8 @@ def main():
         min_surah = int(sys.argv[3]) if len(sys.argv) > 3 else 1
         files = [f for f in files if int(os.path.basename(f).split("_")[0]) >= min_surah]
         print(f"Pronađeno {len(files)} APP_READY fajlova.")
-        morph_path = os.path.join(folder, "quranic-corpus-morphology-0.4.txt")
-        morph = load_morphology(morph_path) if os.path.exists(morph_path) else None
+        morph_path = find_morphology(folder)
+        morph = load_morphology(morph_path) if morph_path else None
         for f in files:
             import_file(f, base_url, key, morph, arabic)
     else:
