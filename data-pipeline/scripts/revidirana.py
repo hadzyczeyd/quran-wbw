@@ -20,6 +20,13 @@ KNOWN_CLASSES = {
     "segSeagreen", "segSky", "segBlue", "segPurple", "segGray", "segMetal", "segRust", "segNavy",
     "segRed", "segRose", "segOrange", "segGold", "segBrown", "segGreen", "segPink",
 }
+# QAC paleta (styles.scss) — 1:1 klasa <-> HEX, kao u svim objavljenim surama.
+CLASS_BY_HEX = {
+    "#257E9C": "segBlue", "#BF9F3E": "segBrown", "#817418": "segGold", "#575757": "segGray",
+    "#1D6914": "segGreen", "#5C7085": "segMetal", "#1301B8": "segNavy", "#E37010": "segOrange",
+    "#A8017B": "segPink", "#8126C0": "segPurple", "#F4400B": "segRed", "#FD5162": "segRose",
+    "#AD2323": "segRust", "#32BD2F": "segSeagreen", "#548DD4": "segSky",
+}
 FUSED_CLASS = "fused"
 FUSED_STATUS = "MAPPED_FUSED_MULTI_SEGMENT"
 INSERTED = "inserted_no_arabic_segment"
@@ -195,6 +202,10 @@ def parse(wb, morph, arabic=None):
             problems.append(f"segment {s['qac_segment_id']}: lokacija {loc!r} nije u QAC morfologiji")
             m = {"root": None, "lemma": None, "text": None}
         css = normalize_class(s.get("qac_css_class"))
+        if css not in KNOWN_CLASSES:
+            # Npr. sura 36: kod PRON u klasi stoji tip zamjenice ("subj"/"obj"),
+            # a HEX je ispravan — klasa se čita iz HEX-a.
+            css = CLASS_BY_HEX.get(str(s.get("qac_hex_color") or "").upper(), css)
         if css not in KNOWN_CLASSES:
             problems.append(f"segment {s['qac_segment_id']}: nepoznata klasa {s.get('qac_css_class')!r}")
         if s["qac_word_id"] not in word_ids:
