@@ -169,7 +169,8 @@ MORPHOLOGY_FILE = "quranic-corpus-morphology-0.4.txt"
 
 def find_morphology(folder):
     """QAC morfologija u folderu sa surama ili u nadređenom folderu (nove serije stižu u podfolderima)."""
-    for candidate in (folder, os.path.dirname(os.path.abspath(folder))):
+    project_sources = os.path.join(os.path.dirname(__file__), "..", "sources")
+    for candidate in (folder, os.path.dirname(os.path.abspath(folder)), project_sources):
         path = os.path.join(candidate, MORPHOLOGY_FILE)
         if os.path.exists(path):
             return path

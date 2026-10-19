@@ -28,3 +28,6 @@ Thumbs.db
 # Tajni ključevi — nikad u Git
 web/.env.local
 data-pipeline/.env
+
+# V13.1 radni artefakti (checkpointi, snapshotovi, izlazi)
+data-pipeline/runs/

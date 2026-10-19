@@ -7,6 +7,12 @@
       "runtimeArgs": ["run", "dev", "--prefix", "web"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "v131-render",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--bind", "127.0.0.1", "--directory", "data-pipeline/runs"],
+      "port": 8765
     }
   ]
 }
