@@ -3,10 +3,11 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { RootFamily } from "@/lib/rootFamilies";
 
-const GROUPS: { key: "imenice" | "glagoli" | "pridjevi"; label: string }[] = [
-  { key: "imenice", label: "Imenice" },
-  { key: "glagoli", label: "Glagoli" },
-  { key: "pridjevi", label: "Pridjevi" },
+// Boje oznaka grupa prate legendu (QAC): imenica sky, glagol seagreen, pridjev purple.
+const GROUPS: { key: "imenice" | "glagoli" | "pridjevi"; label: string; qacClass: string }[] = [
+  { key: "imenice", label: "Imenice", qacClass: "segSky" },
+  { key: "glagoli", label: "Glagoli", qacClass: "segSeagreen" },
+  { key: "pridjevi", label: "Pridjevi", qacClass: "segPurple" },
 ];
 
 /** Oblačić iznad arapske riječi: korijen i riječi istog korijena. */
@@ -29,26 +30,45 @@ export function RootTooltip({ family }: { family: RootFamily }) {
     setPos({ shift, below: r.top < header + margin });
   }, []);
 
+  const groups = GROUPS.filter((g) => family[g.key].length > 0);
+
   return (
     <span
       ref={ref}
       className={`root-tooltip${pos.below ? " is-below" : ""}`}
       role="tooltip"
+      dir="ltr"
       style={{ transform: `translateX(calc(-50% + ${pos.shift}px))`, ["--arrow-shift" as string]: `${-pos.shift}px` }}
       onClick={(e) => e.stopPropagation()}
     >
-      <span className="root-tooltip-label">Korijen</span>
-      <span className="root-tooltip-root" dir="rtl" lang="ar">
-        {[...family.root].join(" ")}
-      </span>
-      {GROUPS.filter((g) => family[g.key].length > 0).map((g) => (
-        <span key={g.key} className="root-tooltip-group">
-          <span className="root-tooltip-group-label">{g.label}</span>
-          <span className="root-tooltip-words" dir="rtl" lang="ar">
-            {family[g.key].join("  ·  ")}
-          </span>
+      <span className="rt-head">
+        <span className="rt-label">Korijen</span>
+        <span className="rt-root" dir="rtl" lang="ar">
+          {[...family.root].map((ch, i) => (
+            <span key={i} className="rt-letter">
+              {ch}
+            </span>
+          ))}
         </span>
-      ))}
+      </span>
+      {groups.length > 0 && (
+        <span className="rt-body">
+          {groups.map((g) => (
+            <span key={g.key} className="rt-row">
+              <span className="rt-tag" data-qac-class={g.qacClass}>
+                {g.label}
+              </span>
+              <span className="rt-chips" dir="rtl" lang="ar">
+                {family[g.key].map((w) => (
+                  <span key={w} className="rt-chip">
+                    {w}
+                  </span>
+                ))}
+              </span>
+            </span>
+          ))}
+        </span>
+      )}
     </span>
   );
 }
