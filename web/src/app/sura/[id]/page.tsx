@@ -5,6 +5,7 @@ import { SuraOpeningHeader } from "@/components/SuraOpeningHeader";
 import { SurahInfoSidebar } from "@/components/SurahInfoSidebar";
 import { SuraReader } from "@/components/SuraReader";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
+import { getRootFamilies } from "@/lib/rootFamilies";
 import { SURAHS } from "@/lib/surahs";
 
 export default async function SuraPage({
@@ -34,7 +35,7 @@ export default async function SuraPage({
       {surahMeta && <SurahInfoSidebar surah={surahMeta} />}
       <div className="sura-main-column">
         {surahMeta && <SuraOpeningHeader surah={surahMeta} />}
-        <SuraReader data={data} />
+        <SuraReader data={data} rootFamilies={getRootFamilies(surahId)} />
       </div>
       <aside className="legend-sidebar" aria-label="Legenda boja">
         <h2 className="legend-sidebar-heading">Legenda boja</h2>

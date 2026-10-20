@@ -3,10 +3,12 @@
 import { useMemo, useRef, useState } from "react";
 import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
+import type { RootFamilies } from "@/lib/rootFamilies";
 import { AyahRow } from "./AyahRow";
 
 interface SuraReaderProps {
   data: SurahData;
+  rootFamilies?: RootFamilies | null;
 }
 
 type PlayingState = { kind: "ayah"; ayahNumber: number } | { kind: "word"; wordId: string } | null;
@@ -17,7 +19,7 @@ type PlayingState = { kind: "ayah"; ayahNumber: number } | { kind: "word"; wordI
  * odjednom. Isto važi za zvuk: jedan zajednički <audio> element, klik
  * na bilo šta prekida prethodnu reprodukciju prije nove.
  */
-export function SuraReader({ data }: SuraReaderProps) {
+export function SuraReader({ data, rootFamilies }: SuraReaderProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [activeWordId, setActiveWordId] = useState<string | null>(null);
   const [activeTokenIds, setActiveTokenIds] = useState<Set<string>>(new Set());
@@ -134,6 +136,7 @@ export function SuraReader({ data }: SuraReaderProps) {
           onTokenClick={handleTokenClick}
           onPlayAyah={handlePlayAyah}
           isAyahPlaying={playing?.kind === "ayah" && playing.ayahNumber === ayah.ayah_number}
+          rootFamilies={rootFamilies}
         />
       ))}
     </div>
