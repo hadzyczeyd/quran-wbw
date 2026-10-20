@@ -7,6 +7,8 @@ import os
 import sys
 
 import openpyxl
+from openpyxl.cell.rich_text import CellRichText, TextBlock
+from openpyxl.cell.text import InlineFont
 from openpyxl.styles import Alignment, Font, PatternFill
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -33,12 +35,19 @@ def review_cols(results_by_phase, kind, rid, row_h, risky, changed):
             label = {"FIRST": "FIRST", "SECOND": "SECOND", "THIRD": "THIRD"}[ph]
             basis = r["basis"] if ph == "FIRST" else ("SEMANTIC_RECHECK" if ph == "SECOND" else "SEMANTIC_EXCEPTION_RECHECK")
             later = [results_by_phase.get(p, {}).get(kind, {}).get(rid, {}).get("status") for p in ("SECOND", "THIRD")]
+            recheck = results_by_phase.get("THIRD_RECHECK", {}).get(kind, {}).get(rid)
+            if ph == "THIRD" and r["status"] == "FAIL" and rid in changed and recheck and recheck["status"] == "PASS":
+                out += ["THIRD_REVIEW_PASS", f"THIRD_REVIEW_FAIL → korigovano ({','.join(CHANGE_IDS.get(rid, []))}); {recheck['note']} Prvobitni nalaz: {r['note']}"]
+                continue
             if ph == "FIRST" and r["status"] == "FAIL" and rid in changed and later and all(x == "PASS" for x in later):
                 ci = ",".join(c for c in CHANGE_IDS.get(rid, [])) or "change-impact"
                 out += ["FIRST_REVIEW_PASS", f"FIRST_REVIEW_FAIL → korigovano u CONSENSUS_MASTER ({ci}); ponovna ciljana provjera "
                                              f"nakon korekcije PASS u SECOND i THIRD. Prvobitni nalaz: {r['note']}"]
             else:
                 out += [f"{label}_REVIEW_{r['status']}", f"{basis} — {r['note']}"]
+        elif results_by_phase.get("THIRD_RECHECK", {}).get(kind, {}).get(rid):
+            rr = results_by_phase["THIRD_RECHECK"][kind][rid]
+            out += [f"{ph}_REVIEW_{rr['status']}", f"Red nastao korekcijom u THIRD (prije nije postojao); {rr['note']}"]
         elif ph != "FIRST" and rid not in risky and rid not in changed:
             label = ph
             basis = "DETERMINISTIC_UNCHANGED_VALIDATION" if ph == "SECOND" else "FINAL_DETERMINISTIC_VALIDATION"
@@ -70,6 +79,9 @@ def main():
         c = os.path.join(run_dir, d, "CHANGE_IMPACT.json")
         if os.path.exists(c):
             changes += load_json(c)["changes"]
+    rc = os.path.join(run_dir, "cp7_third", "RECHECK_RESULTS.json")
+    if os.path.exists(rc):
+        results["THIRD_RECHECK"] = load_json(rc)
     changed = {x for c in changes for x in c["affected_records"]}
     for c in changes:
         for x in c["affected_records"]:
@@ -269,8 +281,9 @@ def main():
             return False
         if rid not in current_ids[k]:
             return False  # red uklonjen korekcijom (npr. pogrešna veza obrisana)
-        order = [p for p, _ in PHASES]
+        order = [p for p, _ in PHASES] + ["THIRD_RECHECK"]
         later = [results.get(p, {}).get(k, {}).get(rid, {}).get("status") for p in order[order.index(ph) + 1:]]
+        later = [x for x in later if x is not None] if ph != "FIRST" else later
         return not (rid in changed and later and all(x == "PASS" for x in later))
     fails = {ph: sum(1 for k in ("segments", "tokens", "links") for rid, v in results.get(ph, {}).get(k, {}).items()
                      if unresolved_fail(ph, k, rid, v)) for ph, _ in PHASES}
@@ -336,7 +349,15 @@ def main():
     q("fused_multi_segment_count", "puni skup veza i markera", counts["fused"], len(der["fused_markers"]) >= 2 * counts["fused"], "FUSED_markeri")
     q("fused_dominant_color_error_count", 0, fused_dom, fused_dom == 0, "Bosanski_tokeni")
     q("false_review_required_fused_count", 0, 0, True, "fused nije REVIEW_REQUIRED")
-    q("token_part_reconstruction_error_count", 0, 0, True, "poddijelovi validirani u entry_checkpoint")
+    tp_err = 0
+    for t in der["tokens"]:
+        if t["token_parts"]:
+            pos = 0
+            for a, b, _ in sorted(t["token_parts"]):
+                tp_err += a != pos
+                pos = b
+            tp_err += pos != len(t["bosnian_original_token"])
+    q("token_part_reconstruction_error_count", 0, tp_err, tp_err == 0, "poddijelovi svakog MAPPED_BY_TOKEN_PART tokena pokrivaju token bez praznina/preklapanja")
     q("unknown_qac_tags", 0, manifest["unknown_qac_tag_count"], manifest["unknown_qac_tag_count"] == 0, "KNOWN TAG COVERAGE TEST")
     q("missing_color_mappings", 0, manifest["missing_color_mapping_count"], manifest["missing_color_mapping_count"] == 0, "QAC_COLOR_MASTER")
     q("canonical_tokenizer_lock", PROFILES["bosnian_tokenizer_profile"], manifest["bosnian_tokenizer_profile"], True, "RUN_MANIFEST")
@@ -481,7 +502,12 @@ def main():
         V["VIZUELNA"].append([s["ayah"], s["qac_location"], s["arabic_word"], s["arabic_segment"], s["tag"], s["qac_css_class"], s["qac_hex_color"],
                               " ".join(toks), s["mapping_status"], uth[a]["ayah_text"], meh[a]["text"], s["qac_segment_id"]])
     for t in der["tokens"]:
-        V["Bosanski_vizuelno"].append([t["ayah_id"], t["bosnian_token_order"], t["bosnian_token_id"], t["bosnian_original_token"], t["mapping_status"],
+        shown = t["bosnian_original_token"]
+        if t["token_parts"]:
+            # MAPPED_BY_TOKEN_PART: svaki poddio u boji svog QAC segmenta, tekst identičan originalu.
+            shown = CellRichText(*[TextBlock(InlineFont(color="FF" + seg_by_id[sid]["qac_hex_color"][1:], b=True), shown[a:b])
+                                   for a, b, sid in sorted(t["token_parts"])])
+        V["Bosanski_vizuelno"].append([t["ayah_id"], t["bosnian_token_order"], t["bosnian_token_id"], shown, t["mapping_status"],
                                        t["linked_qac_segment_ids"], t["qac_hex_color"], t["display_rule"], t["highlight_group_id"]])
     for f in der["fused_markers"]:
         V["FUSED_markeri"].append([f["ayah_id"], f["bosnian_token_id"], f["token"], f"● {f['tag']}", f["hex"], f["css"], f["arabic_segment"], f["highlight_group_id"]])

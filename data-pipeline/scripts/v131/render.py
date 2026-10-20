@@ -35,7 +35,7 @@ def main():
     run_dir = os.path.join(RUNS, run)
     out_dir = os.path.join(run_dir, "cp9", "render", label)
     os.makedirs(out_dir, exist_ok=True)
-    wb = openpyxl.load_workbook(xlsx)
+    wb = openpyxl.load_workbook(xlsx, rich_text=True)
     entries = []
     sheets = [ws for ws in wb.worksheets if only is None or ws.title in only]
     for ws in sheets:
@@ -54,6 +54,14 @@ def main():
             for row in part:
                 out.append(f"<tr data-row='{row[0].row}'>")
                 for c in row:
+                    if type(c.value).__name__ == "CellRichText":
+                        spans = []
+                        for blk in c.value:
+                            txt = blk.text if hasattr(blk, "text") else str(blk)
+                            col = blk.font.color.rgb if hasattr(blk, "font") and blk.font is not None and blk.font.color is not None else None
+                            spans.append(f"<span style='color:#{col[2:]}' data-part-color='#{col[2:]}'>{html.escape(txt)}</span>" if col else html.escape(txt))
+                        out.append(f"<td data-color='' data-token-part='1'>{''.join(spans)}</td>")
+                        continue
                     v = "" if c.value is None else str(c.value)
                     fg, bg = color_of(c)
                     style = (f"color:{fg};" if fg else "") + (f"background:{bg};" if bg else "")
