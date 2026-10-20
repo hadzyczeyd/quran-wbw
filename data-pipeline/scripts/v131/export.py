@@ -353,7 +353,7 @@ def main():
     for t in der["tokens"]:
         if t["token_parts"]:
             pos = 0
-            for a, b, _ in sorted(t["token_parts"]):
+            for a, b in sorted({(a, b) for a, b, _ in t["token_parts"]}):
                 tp_err += a != pos
                 pos = b
             tp_err += pos != len(t["bosnian_original_token"])
@@ -505,8 +505,12 @@ def main():
         shown = t["bosnian_original_token"]
         if t["token_parts"]:
             # MAPPED_BY_TOKEN_PART: svaki poddio u boji svog QAC segmenta, tekst identičan originalu.
-            shown = CellRichText(*[TextBlock(InlineFont(color="FF" + seg_by_id[sid]["qac_hex_color"][1:], b=True), shown[a:b])
-                                   for a, b, sid in sorted(t["token_parts"])])
+            ranges = {}
+            for a, b, sid in sorted(t["token_parts"]):
+                ranges.setdefault((a, b), []).append(seg_by_id[sid]["qac_hex_color"])
+            # poddio koji nosi više segmenata različitih boja je fused poddio: neutralan + markeri (FUSED_markeri)
+            shown = CellRichText(*[TextBlock(InlineFont(color="FF" + (hx[0][1:] if len(set(hx)) == 1 else "000000"), b=True), shown[a:b])
+                                   for (a, b), hx in sorted(ranges.items())])
         V["Bosanski_vizuelno"].append([t["ayah_id"], t["bosnian_token_order"], t["bosnian_token_id"], shown, t["mapping_status"],
                                        t["linked_qac_segment_ids"], t["qac_hex_color"], t["display_rule"], t["highlight_group_id"]])
     for f in der["fused_markers"]:

@@ -98,6 +98,18 @@ def derive(snap, master):
                                       "highlight_group_id": hg_for_word(word_of(sid))})
         elif st == "MAPPED_BY_TOKEN_PART":
             css, hexv, rule = "token-part", FUSED_HEX, "svaki poddio u boji svog QAC segmenta"
+            by_range = {}
+            for p_, sid in parts[tid]:
+                by_range.setdefault(p_, []).append(sid)
+            for p_, sids in by_range.items():
+                if len({segs[x]["qac_hex_color"] for x in sids}) > 1:
+                    rule = "poddijelovi u boji svog segmenta; poddio s više segmenata neutralan + markeri"
+                    for sid in sids:
+                        fused_markers.append({"ayah_id": t["ayah_id"], "bosnian_token_id": tid,
+                                              "token": t["bosnian_original_token"][p_[0]:p_[1]] + f" (poddio {p_[0]}–{p_[1]})",
+                                              "qac_segment_id": sid, "tag": segs[sid]["tag"], "css": segs[sid]["qac_css_class"],
+                                              "hex": segs[sid]["qac_hex_color"], "arabic_segment": segs[sid]["arabic_segment"],
+                                              "highlight_group_id": hg_for_word(word_of(sid))})
         else:
             s0 = segs[ss[0]]
             css, hexv, rule = s0["qac_css_class"], s0["qac_hex_color"], f"boja QAC segmenta {s0['tag']}"
