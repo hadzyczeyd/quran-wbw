@@ -45,6 +45,10 @@ def review_cols(results_by_phase, kind, rid, row_h, risky, changed):
                                              f"nakon korekcije PASS u SECOND i THIRD. Prvobitni nalaz: {r['note']}"]
             else:
                 out += [f"{label}_REVIEW_{r['status']}", f"{basis} — {r['note']}"]
+        elif (ph == "FIRST" and kind == "links" and any(x in changed for x in rid.split(">"))
+              and all(results_by_phase.get(p, {}).get(kind, {}).get(rid, {}).get("status") == "PASS" for p in ("SECOND", "THIRD"))):
+            ci = ",".join(sorted({c for x in rid.split(">") for c in CHANGE_IDS.get(x, [])}))
+            out += ["FIRST_REVIEW_PASS", f"Red nastao korekcijom u FIRST ({ci}); ponovna ciljana provjera nakon korekcije PASS u SECOND i THIRD."]
         elif results_by_phase.get("THIRD_RECHECK", {}).get(kind, {}).get(rid):
             rr = results_by_phase["THIRD_RECHECK"][kind][rid]
             out += [f"{ph}_REVIEW_{rr['status']}", f"Red nastao korekcijom u THIRD (prije nije postojao); {rr['note']}"]
@@ -283,6 +287,8 @@ def main():
             return False  # red uklonjen korekcijom (npr. pogrešna veza obrisana)
         order = [p for p, _ in PHASES] + ["THIRD_RECHECK"]
         later = [results.get(p, {}).get(k, {}).get(rid, {}).get("status") for p in order[order.index(ph) + 1:]]
+        if ph == "FIRST" and "THIRD_RECHECK" not in results:
+            later = later[:-1]  # THIRD_RECHECK postoji samo kad THIRD ima korekcije
         later = [x for x in later if x is not None] if ph != "FIRST" else later
         return not (rid in changed and later and all(x == "PASS" for x in later))
     fails = {ph: sum(1 for k in ("segments", "tokens", "links") for rid, v in results.get(ph, {}).get(k, {}).items()
