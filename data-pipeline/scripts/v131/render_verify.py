@@ -14,7 +14,10 @@ run, label, res_path = sys.argv[1], sys.argv[2], sys.argv[3]
 run_dir = os.path.join(RUNS, run)
 mpath = os.path.join(run_dir, "cp9", "render", label, "RENDER_COVERAGE_MANIFEST.json")
 man = load_json(mpath)
-measured = {r["file"]: r for r in load_json(res_path)}
+if res_path.endswith(".json"):
+    measured = {r["file"]: r for r in load_json(res_path)}
+else:  # sažeti zapis iz browsera: "fajl,redova,obojenih;..."
+    measured = {f: {"file": f, "rows": int(r), "colored": int(c)} for f, r, c in (x.split(",") for x in res_path.split(";"))}
 ok_chunks = 0
 rows = 0
 for c in man["chunks"]:
