@@ -45,10 +45,13 @@ def review_cols(results_by_phase, kind, rid, row_h, risky, changed):
                                              f"nakon korekcije PASS u SECOND i THIRD. Prvobitni nalaz: {r['note']}"]
             else:
                 out += [f"{label}_REVIEW_{r['status']}", f"{basis} — {r['note']}"]
-        elif (ph == "FIRST" and kind == "links" and any(x in changed for x in rid.split(">"))
-              and all(results_by_phase.get(p, {}).get(kind, {}).get(rid, {}).get("status") == "PASS" for p in ("SECOND", "THIRD"))):
+        elif kind == "links" and ph != "THIRD" and any(x in changed for x in rid.split(">")) and (
+                lambda st: st and all(x == "PASS" for x in st))(
+                [results_by_phase[p][kind][rid]["status"] for p, _ in PHASES[[q for q, _ in PHASES].index(ph) + 1:]
+                 if rid in results_by_phase.get(p, {}).get(kind, {})]):
+            # Veza nastala korekcijom nakon ove faze: potvrđena ciljanom provjerom u kasnijoj fazi.
             ci = ",".join(sorted({c for x in rid.split(">") for c in CHANGE_IDS.get(x, [])}))
-            out += ["FIRST_REVIEW_PASS", f"Red nastao korekcijom u FIRST ({ci}); ponovna ciljana provjera nakon korekcije PASS u SECOND i THIRD."]
+            out += [f"{ph}_REVIEW_PASS", f"Red nastao korekcijom nakon {ph} ({ci}); ponovna ciljana provjera nakon korekcije PASS u kasnijoj fazi."]
         elif results_by_phase.get("THIRD_RECHECK", {}).get(kind, {}).get(rid):
             rr = results_by_phase["THIRD_RECHECK"][kind][rid]
             out += [f"{ph}_REVIEW_{rr['status']}", f"Red nastao korekcijom u THIRD (prije nije postojao); {rr['note']}"]
