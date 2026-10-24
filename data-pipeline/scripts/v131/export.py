@@ -87,6 +87,8 @@ def main():
     if os.path.exists(rc):
         results["THIRD_RECHECK"] = load_json(rc)
     changed = {x for c in changes for x in c["affected_records"]}
+    # Veza čiji je segment ili token zahvaćen korekcijom također je promijenjena.
+    changed |= {rid for r in results.values() for rid in r.get("links", {}) if any(x in changed for x in rid.split(">"))}
     for c in changes:
         for x in c["affected_records"]:
             CHANGE_IDS.setdefault(x, []).append(c["change_id"])
