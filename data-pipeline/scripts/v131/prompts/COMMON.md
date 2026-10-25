@@ -27,6 +27,10 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
   veže se na taj token; ako je lice samo u glagolskoj fleksiji, dozvoljeno je i vezati ga na glagolski token (fused) i dokumentovati
   da nije zasebno izražen — ali dosljedno unutar sure; nikad na semantički nepovezan token;
 - restriktivno مَا/لَا … إِلَّا ("samo", "baš"): presudi iz konteksta nosi li restriktivni token i NEG; ne izmišljaj vezu;
+- korelativno "i … i" / "i … a i" kojim Mehanović prevodi jedan arapski wa: svi tokeni korelacije nose taj wa
+  (npr. 43:64 "i moj i vaš", 43:84 "i na nebu … a i na Zemlji"); ne ostavljaj prvo "i" inserted;
+- negativna korelacija "ni … ni" za lā/mā … wa-lā/wa-mā: prvo "ni" ide na PRVI NEG segment (zajedno s "ne"/"ni-" ako ga ima),
+  a drugo "ni" na wa + drugi NEG (dosljedno 93:3 "nije te ni napustio ni omrznuo");
 - nema cross-word kontaminacije; jedan token smije nositi više segmenata (navedi ga za svaki);
 - rizične veze (REL/funkcijske/one-to-many) trebaju konkretnu napomenu; engleski gloss je samo pomoć.
 
