@@ -432,3 +432,95 @@
   white-space: nowrap;
 }
 
+
+/* Prekidač Sure / Džuzevi na stranici sura. */
+.surah-view-toggle {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+}
+
+.surah-view-toggle button {
+  padding: 0.35rem 1rem;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.surah-view-toggle button[aria-selected="true"] {
+  background: var(--color-gold-soft);
+  color: var(--color-text);
+}
+
+.juz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 0.75rem;
+}
+
+.juz-card {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.6rem;
+  background: var(--color-bg-elevated);
+}
+
+.juz-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.juz-card-title {
+  margin: 0;
+  color: var(--color-gold);
+  font-size: 1rem;
+}
+
+.juz-card-start {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+a.juz-card-start:hover {
+  color: var(--color-text);
+}
+
+.juz-card-surahs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+}
+
+.juz-card-surahs a,
+.juz-card-surahs span {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.juz-card-surahs a:hover {
+  border-color: var(--color-gold);
+}
+
+.juz-card .is-unavailable {
+  opacity: 0.45;
+}

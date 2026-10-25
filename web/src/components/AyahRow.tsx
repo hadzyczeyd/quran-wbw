@@ -16,6 +16,8 @@ interface AyahRowProps {
   onPlayAyah: (ayahNumber: number) => void;
   isAyahPlaying: boolean;
   rootFamilies?: RootFamilies | null;
+  /** Broj džuza koji počinje ovim ajetom. */
+  juzStart?: number;
 }
 
 function familyOf(word: QacWord, families: RootFamilies | null | undefined) {
@@ -38,11 +40,13 @@ export function AyahRow({
   onPlayAyah,
   isAyahPlaying,
   rootFamilies,
+  juzStart,
 }: AyahRowProps) {
   return (
-    <div className="ayah-row">
+    <div className="ayah-row" id={`ajet-${ayah.ayah_number}`}>
       <div className="ayah-gutter">
         <span className="ayah-number">{ayah.ayah_number}</span>
+        {juzStart && <span className="ayah-juz-badge">Džuz {juzStart}</span>}
         <button
           type="button"
           className="ayah-play-button"

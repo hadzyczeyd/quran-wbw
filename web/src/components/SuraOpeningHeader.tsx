@@ -1,3 +1,4 @@
+import { getSurahExtraMeta } from "@/lib/quranMeta";
 import type { SurahMeta } from "@/lib/surahs";
 import { Bismillah } from "./Bismillah";
 import { RevelationIcon } from "./RevelationIcon";
@@ -16,6 +17,7 @@ interface SuraOpeningHeaderProps {
  */
 export function SuraOpeningHeader({ surah }: SuraOpeningHeaderProps) {
   const showBismillah = surah.id !== 1 && surah.id !== 9;
+  const juz = getSurahExtraMeta(surah.id)?.juz ?? [];
 
   return (
     <div className="sura-opening">
@@ -24,7 +26,12 @@ export function SuraOpeningHeader({ surah }: SuraOpeningHeaderProps) {
       <h2 className="sura-opening-name">{surah.nameBs}</h2>
       <p className="sura-opening-meta">
         <RevelationIcon type={surah.revelationType} />
-        {surah.revelationType === "meccan" ? "Mekkanska sura" : "Medinska sura"} · {surah.ayahCount} ajeta
+        {surah.revelationType === "meccan"
+          ? "Mekkanska sura"
+          : "Medinska sura"}{" "}
+        · {surah.ayahCount} ajeta
+        {juz.length > 0 &&
+          ` · Džuz ${juz.length === 1 ? juz[0] : `${juz[0]}–${juz[juz.length - 1]}`}`}
       </p>
     </div>
   );

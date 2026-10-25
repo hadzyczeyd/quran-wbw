@@ -23,6 +23,7 @@ export function ArabicWord({ word, isHighlighted, onWordClick, rootFamily }: Ara
   return (
     <span
       className={`arabic-word${isHighlighted ? " is-highlighted-word" : ""}`}
+      data-word-id={word.word_id}
       onClick={(e) => {
         e.stopPropagation();
         onWordClick(word);

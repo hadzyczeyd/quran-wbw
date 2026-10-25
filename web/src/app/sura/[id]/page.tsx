@@ -6,6 +6,8 @@ import { SurahInfoSidebar } from "@/components/SurahInfoSidebar";
 import { SuraReader } from "@/components/SuraReader";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
 import { getRootFamilies } from "@/lib/rootFamilies";
+import { juzStartsInSurah } from "@/lib/quranMeta";
+import { getRootPanel } from "@/lib/rootPanel";
 import { SURAHS } from "@/lib/surahs";
 
 export default async function SuraPage({
@@ -15,14 +17,16 @@ export default async function SuraPage({
 }) {
   const { id } = await params;
   const surahId = Number(id);
-  const data = Number.isInteger(surahId) ? await loadSurahFromSupabase(surahId) : null;
+  const data = Number.isInteger(surahId)
+    ? await loadSurahFromSupabase(surahId)
+    : null;
 
   if (data === null) {
     return (
       <main className="page-shell" style={{ paddingBlock: "3rem" }}>
         <p>
-          Sura {id} još nema uvezene podatke u bazi. Pogledaj početnu
-          stranicu za spisak sura koje su trenutno dostupne.
+          Sura {id} još nema uvezene podatke u bazi. Pogledaj početnu stranicu
+          za spisak sura koje su trenutno dostupne.
         </p>
       </main>
     );
@@ -32,15 +36,20 @@ export default async function SuraPage({
 
   return (
     <main className="page-shell reader-layout">
-      {surahMeta && <SurahInfoSidebar surah={surahMeta} />}
-      <div className="sura-main-column">
-        {surahMeta && <SuraOpeningHeader surah={surahMeta} />}
-        <SuraReader data={data} rootFamilies={getRootFamilies(surahId)} />
+      <div className="reader-left-column">
+        {surahMeta && <SurahInfoSidebar surah={surahMeta} />}
+        <aside className="legend-sidebar" aria-label="Legenda boja">
+          <h2 className="legend-sidebar-heading">Legenda boja</h2>
+          <ColorLegend compact />
+        </aside>
       </div>
-      <aside className="legend-sidebar" aria-label="Legenda boja">
-        <h2 className="legend-sidebar-heading">Legenda boja</h2>
-        <ColorLegend compact />
-      </aside>
+      <SuraReader
+        data={data}
+        rootFamilies={getRootFamilies(surahId)}
+        rootPanel={getRootPanel(surahId)}
+        juzStarts={juzStartsInSurah(surahId)}
+        header={surahMeta && <SuraOpeningHeader surah={surahMeta} />}
+      />
       <MobileLegendButton />
     </main>
   );

@@ -1,17 +1,28 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
 import type { RootFamilies } from "@/lib/rootFamilies";
+import type { RootPanelData } from "@/lib/rootPanel";
 import { AyahRow } from "./AyahRow";
+import { RootPanel } from "./RootPanel";
 
 interface SuraReaderProps {
   data: SurahData;
   rootFamilies?: RootFamilies | null;
+  /** Panel korijena (desna kolona na širem ekranu); postoji samo za sure s ROOT_PANEL podacima. */
+  rootPanel?: RootPanelData | null;
+  /** Otvarajući blok sure iznad prvog ajeta (server komponenta). */
+  header?: ReactNode;
+  /** Ajeti ove sure na kojima počinje džuz: ajet → broj džuza. */
+  juzStarts?: Record<number, number>;
 }
 
-type PlayingState = { kind: "ayah"; ayahNumber: number } | { kind: "word"; wordId: string } | null;
+type PlayingState =
+  | { kind: "ayah"; ayahNumber: number }
+  | { kind: "word"; wordId: string }
+  | null;
 
 /**
  * Isticanje je GLOBALNO za cijelu suru — u svakom trenutku može biti
@@ -19,7 +30,13 @@ type PlayingState = { kind: "ayah"; ayahNumber: number } | { kind: "word"; wordI
  * odjednom. Isto važi za zvuk: jedan zajednički <audio> element, klik
  * na bilo šta prekida prethodnu reprodukciju prije nove.
  */
-export function SuraReader({ data, rootFamilies }: SuraReaderProps) {
+export function SuraReader({
+  data,
+  rootFamilies,
+  rootPanel,
+  header,
+  juzStarts,
+}: SuraReaderProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [activeWordId, setActiveWordId] = useState<string | null>(null);
   const [activeTokenIds, setActiveTokenIds] = useState<Set<string>>(new Set());
@@ -45,6 +62,12 @@ export function SuraReader({ data, rootFamilies }: SuraReaderProps) {
     }
     return map;
   }, [data.ayat]);
+
+  // Link na ajet (#ajet-N, npr. iz navigacije po džuzevima): skrol nakon što je čitač iscrtan.
+  useEffect(() => {
+    const m = /^#ajet-(\d+)$/.exec(window.location.hash);
+    if (m) document.getElementById(`ajet-${m[1]}`)?.scrollIntoView({ block: "start" });
+  }, []);
 
   function getAudio(): HTMLAudioElement {
     if (audioRef.current === null) {
@@ -81,6 +104,24 @@ export function SuraReader({ data, rootFamilies }: SuraReaderProps) {
     setActiveTokenIds(tokenIds);
     setActiveWordId(word.word_id);
     playWord(word, ayahNumber);
+    revealAboveSheet(word, ayahNumber);
+  }
+
+  // Na uskom ekranu ploča korijena prekriva donju polovinu — kliknuta
+  // riječ se pomjeri u gornju četvrtinu ekrana da ostane vidljiva.
+  function revealAboveSheet(word: QacWord, ayahNumber: number) {
+    if (!rootPanel || !rootPanel.words[`${ayahNumber}:${word.position}`])
+      return;
+    if (!window.matchMedia("(max-width: 74.99rem)").matches) return;
+    const el = document.querySelector(`[data-word-id="${word.word_id}"]`);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top;
+    if (top > window.innerHeight * 0.4 || top < 70) {
+      window.scrollBy({
+        top: top - window.innerHeight * 0.22,
+        behavior: "smooth",
+      });
+    }
   }
 
   function handleTokenClick(token: BosnianToken) {
@@ -124,21 +165,45 @@ export function SuraReader({ data, rootFamilies }: SuraReaderProps) {
     setPlaying({ kind: "ayah", ayahNumber });
   }
 
+  const activeEntry = activeWordId ? wordIndex.get(activeWordId) : undefined;
+  const rootSelection = activeEntry
+    ? {
+        ayahNumber: activeEntry.ayahNumber,
+        position: activeEntry.word.position,
+      }
+    : null;
+
   return (
-    <div className="sura-reader" onClick={clearHighlight}>
-      {data.ayat.map((ayah) => (
-        <AyahRow
-          key={ayah.ayah_number}
-          ayah={ayah}
-          activeWordId={activeWordId}
-          activeTokenIds={activeTokenIds}
-          onWordClick={(word) => handleWordClick(word, ayah.ayah_number)}
-          onTokenClick={handleTokenClick}
-          onPlayAyah={handlePlayAyah}
-          isAyahPlaying={playing?.kind === "ayah" && playing.ayahNumber === ayah.ayah_number}
-          rootFamilies={rootFamilies}
+    <>
+      <div className={`sura-main-column${rootPanel ? " has-root-panel" : ""}`}>
+        {header}
+        <div className="sura-reader" onClick={clearHighlight}>
+          {data.ayat.map((ayah) => (
+            <AyahRow
+              key={ayah.ayah_number}
+              ayah={ayah}
+              activeWordId={activeWordId}
+              activeTokenIds={activeTokenIds}
+              onWordClick={(word) => handleWordClick(word, ayah.ayah_number)}
+              onTokenClick={handleTokenClick}
+              onPlayAyah={handlePlayAyah}
+              isAyahPlaying={
+                playing?.kind === "ayah" &&
+                playing.ayahNumber === ayah.ayah_number
+              }
+              rootFamilies={rootPanel ? null : rootFamilies}
+              juzStart={juzStarts?.[ayah.ayah_number]}
+            />
+          ))}
+        </div>
+      </div>
+      {rootPanel && (
+        <RootPanel
+          panel={rootPanel}
+          selection={rootSelection}
+          onClose={clearHighlight}
         />
-      ))}
-    </div>
+      )}
+    </>
   );
 }
