@@ -39,10 +39,6 @@ export function SurahInfoSidebar({ surah }: SurahInfoSidebarProps) {
             <dd>{juzLabel(extra.juz)}</dd>
           </div>
           <div>
-            <dt>Rukua</dt>
-            <dd>{extra.rukus}</dd>
-          </div>
-          <div>
             <dt>Riječi</dt>
             <dd>{extra.words.toLocaleString("bs-BA")}</dd>
           </div>
