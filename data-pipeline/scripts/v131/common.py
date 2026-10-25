@@ -279,6 +279,13 @@ def load_uthmani_surah(surah):
             # Tanzil export uključuje basmalu kao prefiks 1. ajeta; ona nije dio ajeta u Mushafu.
             text = t[len(BASMALA_PREFIX):]
             rule = "TANZIL_BASMALA_PREFIX_EXCLUDED"
+        elif a == 1 and surah not in (1, 9) and basmala:
+            # Npr. 97:1 "بِّسْمِ": Tanzil bilježi šaddu asimilacije s prethodnim ajetom; poređenje bez U+0651.
+            n = len(basmala.split())
+            head = t.split(" ")[:n]
+            if [w.replace("ّ", "") for w in head] == [w.replace("ّ", "") for w in basmala.split()]:
+                text = t.split(" ", n)[n]
+                rule = "TANZIL_BASMALA_PREFIX_EXCLUDED_SHADDA_VARIANT"
         out[a] = {"raw_line_text": t, "ayah_text": text, "rule": rule}
     return out
 
