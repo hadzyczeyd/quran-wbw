@@ -64,9 +64,9 @@ def packets(run_dir, phase):
     inv = load_json(os.path.join(run_dir, "cp1", "INVENTORY_BATCH_PLAN.json"))
     master, _ = current_master(run_dir)
     der = derive(snap, master)
-    rs, rt = (None, None)
+    rs, rt, ch = (None, None, set())
     if phase != "FIRST":
-        rs, rt, _, _ = risk_set(run_dir, snap, master, der)
+        rs, rt, _, ch = risk_set(run_dir, snap, master, der)
     total = {"segments": 0, "tokens": 0, "links": 0}
     for b in inv["batches"]:
         inp = load_json(os.path.join(run_dir, "cp1", "batch_inputs", f"{b['batch_id']}.json"))
@@ -75,7 +75,9 @@ def packets(run_dir, phase):
             aid = a["ayah_id"]
             seg = [s for s in der["segments"] if s["ayah"] == aid and (rs is None or s["qac_segment_id"] in rs)]
             tok = [t for t in der["tokens"] if t["ayah_id"] == aid and (rt is None or t["bosnian_token_id"] in rt)]
-            lnk = [l for l in der["links"] if l["ayah_id"] == aid and (rs is None or l["qac_segment_id"] in rs)]
+            # Veza ide u recheck i kad je korekcija zahvatila samo njen bosanski token.
+            lnk = [l for l in der["links"] if l["ayah_id"] == aid
+                   and (rs is None or l["qac_segment_id"] in rs or l["bosnian_token_id"] in ch)]
             out["ayahs"].append({
                 "ayah_id": aid, "arabic_ayah_uthmani": a["arabic_ayah_uthmani"], "mehanovic_text": a["mehanovic_text"],
                 "all_words": a["words"], "all_bosnian_tokens": a["bosnian_tokens"],
