@@ -5,7 +5,6 @@ import { SuraOpeningHeader } from "@/components/SuraOpeningHeader";
 import { SurahInfoSidebar } from "@/components/SurahInfoSidebar";
 import { SuraReader } from "@/components/SuraReader";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
-import { getRootFamilies } from "@/lib/rootFamilies";
 import { juzStartsInSurah } from "@/lib/quranMeta";
 import { getRootPanel } from "@/lib/rootPanel";
 import { SURAHS } from "@/lib/surahs";
@@ -45,8 +44,7 @@ export default async function SuraPage({
       </div>
       <SuraReader
         data={data}
-        rootFamilies={getRootFamilies(surahId)}
-        rootPanel={getRootPanel(surahId)}
+        rootPanel={await getRootPanel(surahId)}
         juzStarts={juzStartsInSurah(surahId)}
         header={surahMeta && <SuraOpeningHeader surah={surahMeta} />}
       />

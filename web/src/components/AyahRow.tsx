@@ -1,6 +1,5 @@
 "use client";
 
-import { normRoot, type RootFamilies } from "@/lib/rootFamilies";
 import type { Ayah, BosnianToken, QacWord } from "@/lib/types";
 import { ArabicWord } from "./ArabicWord";
 import { AyahEndMark } from "./AyahEndMark";
@@ -15,20 +14,8 @@ interface AyahRowProps {
   onTokenClick: (token: BosnianToken) => void;
   onPlayAyah: (ayahNumber: number) => void;
   isAyahPlaying: boolean;
-  rootFamilies?: RootFamilies | null;
   /** Broj džuza koji počinje ovim ajetom. */
   juzStart?: number;
-}
-
-function familyOf(word: QacWord, families: RootFamilies | null | undefined) {
-  if (!families) return null;
-  for (const s of word.segments) {
-    if (s.root && s.root !== "QAC_NO_DATA") {
-      const f = families[normRoot(s.root)];
-      if (f) return f;
-    }
-  }
-  return null;
 }
 
 export function AyahRow({
@@ -39,7 +26,6 @@ export function AyahRow({
   onTokenClick,
   onPlayAyah,
   isAyahPlaying,
-  rootFamilies,
   juzStart,
 }: AyahRowProps) {
   return (
@@ -80,7 +66,6 @@ export function AyahRow({
               word={w}
               isHighlighted={activeWordId === w.word_id}
               onWordClick={onWordClick}
-              rootFamily={familyOf(w, rootFamilies)}
             />{" "}
           </span>
         ))}

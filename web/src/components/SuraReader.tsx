@@ -3,14 +3,12 @@
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
-import type { RootFamilies } from "@/lib/rootFamilies";
 import type { RootPanelData } from "@/lib/rootPanel";
 import { AyahRow } from "./AyahRow";
 import { RootPanel } from "./RootPanel";
 
 interface SuraReaderProps {
   data: SurahData;
-  rootFamilies?: RootFamilies | null;
   /** Panel korijena (desna kolona na širem ekranu); postoji samo za sure s ROOT_PANEL podacima. */
   rootPanel?: RootPanelData | null;
   /** Otvarajući blok sure iznad prvog ajeta (server komponenta). */
@@ -32,7 +30,6 @@ type PlayingState =
  */
 export function SuraReader({
   data,
-  rootFamilies,
   rootPanel,
   header,
   juzStarts,
@@ -191,7 +188,6 @@ export function SuraReader({
                 playing?.kind === "ayah" &&
                 playing.ayahNumber === ayah.ayah_number
               }
-              rootFamilies={rootPanel ? null : rootFamilies}
               juzStart={juzStarts?.[ayah.ayah_number]}
             />
           ))}

@@ -1,6 +1,3 @@
-import s001 from "@/data/rootPanel/S001.json";
-import s114 from "@/data/rootPanel/S114.json";
-
 /** Kartica jednog oblika (nalog ROOT_PANEL V7): oblik, kratko značenje i jedan provjeren primjer. */
 export interface RootPanelCard {
   id: string;
@@ -33,11 +30,13 @@ export interface RootPanelData {
   words: Record<string, string>;
 }
 
-const BY_SURAH: Record<number, RootPanelData> = {
-  1: s001 as RootPanelData,
-  114: s114 as RootPanelData,
-};
-
-export function getRootPanel(surahId: number): RootPanelData | null {
-  return BY_SURAH[surahId] ?? null;
+/** Podaci panela za suru, ako postoje (web/src/data/rootPanel/S<NNN>.json, scripts/roots/build_app_root_panel.py). */
+export async function getRootPanel(surahId: number): Promise<RootPanelData | null> {
+  if (!Number.isInteger(surahId) || surahId < 1 || surahId > 114) return null;
+  try {
+    const mod = await import(`@/data/rootPanel/S${String(surahId).padStart(3, "0")}.json`);
+    return mod.default as RootPanelData;
+  } catch {
+    return null;
+  }
 }

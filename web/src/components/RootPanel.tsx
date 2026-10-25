@@ -98,7 +98,9 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
 
   // Nova riječ: ploča se vraća na pola ekrana, sadržaj na vrh.
-  const selKey = selection ? `${selection.ayahNumber}:${selection.position}` : "";
+  const selKey = selection
+    ? `${selection.ayahNumber}:${selection.position}`
+    : "";
   const [prevKey, setPrevKey] = useState(selKey);
   if (prevKey !== selKey) {
     setPrevKey(selKey);
@@ -187,8 +189,18 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
                 {plural(verbs.length, "glagol", "glagola", "glagola")}
               </span>
             </h2>
-            <Section title="Imenice" cards={nouns} />
-            <Section title="Glagoli" cards={verbs} />
+            {nouns.length + verbs.length === 0 ? (
+              // Jedini primjer korijena je upravo kliknuta riječ (izostavljena po nalogu V7, 6).
+              <p className="rp-hint">
+                Imenice i glagoli ovog korijena javljaju se u Kur'anu samo na
+                ovom mjestu.
+              </p>
+            ) : (
+              <>
+                <Section title="Imenice" cards={nouns} />
+                <Section title="Glagoli" cards={verbs} />
+              </>
+            )}
           </>
         )}
       </div>

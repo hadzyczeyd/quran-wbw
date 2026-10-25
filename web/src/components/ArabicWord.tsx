@@ -1,15 +1,12 @@
 "use client";
 
-import type { RootFamily } from "@/lib/rootFamilies";
 import { mergeSegmentsForDisplay } from "@/lib/segments";
 import type { QacWord } from "@/lib/types";
-import { RootTooltip } from "./RootTooltip";
 
 interface ArabicWordProps {
   word: QacWord;
   isHighlighted: boolean;
   onWordClick: (word: QacWord) => void;
-  rootFamily?: RootFamily | null;
 }
 
 /**
@@ -17,7 +14,7 @@ interface ArabicWordProps {
  * samo obojeni rasponi unutar nje, bez razmaka i bez reza, da se
  * slova normalno spajaju u fontu.
  */
-export function ArabicWord({ word, isHighlighted, onWordClick, rootFamily }: ArabicWordProps) {
+export function ArabicWord({ word, isHighlighted, onWordClick }: ArabicWordProps) {
   const displaySegments = mergeSegmentsForDisplay(word.segments);
 
   return (
@@ -40,7 +37,6 @@ export function ArabicWord({ word, isHighlighted, onWordClick, rootFamily }: Ara
           {seg.text}
         </span>
       ))}
-      {isHighlighted && rootFamily && <RootTooltip family={rootFamily} />}
     </span>
   );
 }
