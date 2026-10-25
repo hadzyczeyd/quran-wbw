@@ -84,6 +84,8 @@ def packets(run_dir, phase):
                 "review_segments": [{"id": s["qac_segment_id"], "arabic_segment": s["arabic_segment"], "tag": s["tag"],
                                      "features": s["features"], "pronoun_type": s["pronoun_type"],
                                      "mapping_status": s["mapping_status"], "linked_bosnian_token_ids": s["linked_bosnian_token_ids"],
+                                     # tačni ciljevi s poddijelovima tokena [token_id, [start,end] ili null]
+                                     "targets": (master["links"].get(s["qac_segment_id"]) or {}).get("targets", []),
                                      "mapping_note": s["mapping_note"]} for s in seg],
                 "review_tokens": [{"id": t["bosnian_token_id"], "token": t["bosnian_original_token"], "mapping_status": t["mapping_status"],
                                    "linked_qac_segment_ids": t["linked_qac_segment_ids"], "mapping_note": t["mapping_note"]} for t in tok],

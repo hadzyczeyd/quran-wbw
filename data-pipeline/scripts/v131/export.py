@@ -292,8 +292,8 @@ def main():
             return False  # red uklonjen korekcijom (npr. pogrešna veza obrisana)
         order = [p for p, _ in PHASES] + ["THIRD_RECHECK"]
         later = [results.get(p, {}).get(k, {}).get(rid, {}).get("status") for p in order[order.index(ph) + 1:]]
-        if ph == "FIRST" and "THIRD_RECHECK" not in results:
-            later = later[:-1]  # THIRD_RECHECK postoji samo kad THIRD ima korekcije
+        if ph == "FIRST" and later and later[-1] is None:
+            later = later[:-1]  # THIRD_RECHECK postoji samo za redove pogođene THIRD korekcijom
         later = [x for x in later if x is not None] if ph != "FIRST" else later
         return not (rid in changed and later and all(x == "PASS" for x in later))
     fails = {ph: sum(1 for k in ("segments", "tokens", "links") for rid, v in results.get(ph, {}).get(k, {}).items()

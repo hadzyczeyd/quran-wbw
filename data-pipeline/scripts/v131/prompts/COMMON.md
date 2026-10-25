@@ -16,7 +16,12 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - NEG token dobija NEG segment, glagol svoj uski token; negirani oblici ("nije/neće/nisu") se dijele ni-/ne- vs. ostatak
   `part` rasponima samo na stvarnoj unutrašnjoj granici koja pokriva cijeli token; ekspletivno "ne" (uz "dok", glagole straha) nije NEG;
 - pomoćni glagol pripada glagolskom obliku koji gradi; REL → stvarni bosanski relativni izraz (ponovljeni "koji" istog REL-a u istom ajetu
-  nose taj REL; "koji/koje" bez REL segmenta ostaju inserted); povratne (resumptivne) zamjenice smiju biti unexpressed;
+  nose taj REL); povratne (resumptivne) zamjenice smiju biti unexpressed;
+- relativna preoblika BEZ REL segmenta (jedinstveno pravilo za sve sure):
+  * imenica/particip/pridjev (N/ADJ) preveden kao "onaj koji …", "oni koji su …", "onih koje …", "Onaj Koji …" → cijeli izraz,
+    uključujući "onaj/oni/onih" i "koji/ko/koje", pripada tom N/ADJ segmentu (particip znači "onaj koji radi X");
+  * glagol (V) u opisnoj rečenici kojoj Mehanović dodaje "koji/koja/koje" → glagol ide na svoj glagolski izraz, a "koji/koja/koje"
+    ostaje inserted (glagol sam ne znači "koji");
 - emfatičko la- uz inna, zakletveno la- u la-qad: unexpressed ako ga ne nosi zaseban token;
 - subjektni PRON sufiks (55.9): ako ga nosi zaseban površinski token (eksplicitna zamjenica "oni"/"vi", pomoćni glagol "smo"/"ćete"),
   veže se na taj token; ako je lice samo u glagolskoj fleksiji, dozvoljeno je i vezati ga na glagolski token (fused) i dokumentovati
