@@ -43,6 +43,9 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - min u min qabli/min baʿdi → unexpressed ("prije/poslije/nakon" nosi qabl/baʿd); složeni prijedlozi min taḥti/min ʿindi →
   "kroz"/"od" nosi i imenicu (taḥt/ʿind) fused s min;
 - korelativno immā … wa-immā / aw ("ili … ili"): drugo "ili" nosi wa- zajedno s drugim immā (kao "ni … ni", 47:4);
+- negativna konkordancija ("ništa", "nikakvu", "niko", "nikada", "nijedan" …): ako je nosi vlastiti segment (min/aḥad/šayʾ/
+  imenica) → samo taj segment, NEG ostaje na "ne/nije/neće" (36:30, 36:46, 42:20, 112:4); ako vlastitog segmenta nema → NEG
+  (36:21, 37:15, 38:7); negativne zamjenice se ne dijele;
 - pojačivači bez arapskog segmenta ("mnogo", "još", "toliki", "isti", "posebni", "ikakva") ostaju inserted;
 - ekspletivno "ne" u "(sve) dok … ne" pripada ḥattā (nije NEG, nije glagol);
 - wa- u wa-lākinna bez zasebnog tokena → unexpressed; "ali" nosi lākinna (41:22, 42:8, 43:76, 44:39);

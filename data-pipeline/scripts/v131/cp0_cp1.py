@@ -121,6 +121,7 @@ def main():
 
     ayahs = sorted(uth)
     problems = list(pron_problems)
+    problems_fixed = []
     words, segments, tokens, alignment = [], [], [], []
     by_word = {}
     for s in segs:
@@ -137,6 +138,17 @@ def main():
     for a in ayahs:
         uthmani_words = [t for t in uth[a]["ayah_text"].split(" ") if is_word_token(t)]
         qac_words = sorted({w for (aa, w) in by_word if aa == a})
+        if len(uthmani_words) == len(qac_words) + 1:
+            # Tanzil piše neke QAC riječi kao dvije (npr. 37:130 إِلْ يَاسِينَ): spoji par čiji se kostur slova poklapa s QAC riječju.
+            def skel(t):
+                return "".join(ch for ch in t if "ء" <= ch <= "ي")
+            for i in range(len(uthmani_words) - 1):
+                w = i + 1
+                q = skel("".join(x["form_ar"] for x in by_word.get((a, w), [])))
+                if q and skel(uthmani_words[i] + uthmani_words[i + 1]) == q and skel(uthmani_words[i]) != q:
+                    uthmani_words[i:i + 2] = [uthmani_words[i] + " " + uthmani_words[i + 1]]
+                    problems_fixed.append(f"ajet {a}: Uthmani '{uthmani_words[i]}' spojeno u jednu QAC riječ {w}")
+                    break
         if len(uthmani_words) != len(qac_words):
             problems.append(f"ajet {a}: Uthmani riječi {len(uthmani_words)} != QAC {len(qac_words)}")
         for w in qac_words:
@@ -206,7 +218,7 @@ def main():
         "bosnian_token_count": len(tokens), "batches": [{"batch_id": f"B{i + 1:03d}", "ayahs": b} for i, b in enumerate(plan)],
         "tags_in_surah": sorted({s["tag"] for s in segments}),
         "pron_variants": sorted({str(s["pronoun_type"]) for s in segments if s["tag"] == "PRON"}),
-        "unknown_qac_tag_count": len(unknown_tags), "problems": problems,
+        "unknown_qac_tag_count": len(unknown_tags), "problems": problems, "word_alignment_fixes": problems_fixed,
     }
     inv_hash = atomic_write_json(os.path.join(run_dir, "cp1", "INVENTORY_BATCH_PLAN.json"), inventory)
 

@@ -299,7 +299,9 @@ def main():
         if ph == "FIRST" and later and later[-1] is None:
             later = later[:-1]  # THIRD_RECHECK postoji samo za redove pogođene THIRD korekcijom
         later = [x for x in later if x is not None] if ph != "FIRST" else later
-        return not (rid in changed and later and all(x == "PASS" for x in later))
+        # kasniji FAIL (npr. THIRD vraća korekciju SECOND) je razriješen ako je konačno stanje potvrđeno THIRD_RECHECK-om
+        recheck = results.get("THIRD_RECHECK", {}).get(k, {}).get(rid, {}).get("status")
+        return not (rid in changed and later and (all(x == "PASS" for x in later) or recheck == "PASS"))
     fails = {ph: sum(1 for k in ("segments", "tokens", "links") for rid, v in results.get(ph, {}).get(k, {}).items()
                      if unresolved_fail(ph, k, rid, v)) for ph, _ in PHASES}
     review_missing = sum(1 for r in S["Audit_tokena"] + S["Audit_segmenata"] + S["Audit_veza"] for c in r if isinstance(c, str) and c.endswith("_REVIEW_MISSING"))

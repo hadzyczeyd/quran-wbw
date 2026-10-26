@@ -28,12 +28,16 @@ def run(RUN, D):
     res = {}
     for sid, (choice, basis) in D.items():
         r = rows[sid]
-        if isinstance(choice, dict):
+        if choice == "UNEXP":  # nijedan entry nije dao pravilno rješenje: segment nije zasebno izražen
+            res[sid] = {"kind": "UNEXPRESSED", "targets": [], "semantic_role": None, "evidence_type": None,
+                        "bosnian_target_phrase": None, "note": basis, "basis": basis}
+        elif isinstance(choice, dict):
             e = r["entry_1" if choice["targets_from"] == "E1" else "entry_2"]
             targets = [t for t in e["targets"] if tok_text[t[0]] not in choice.get("drop", [])]
             ayah_toks = [t["bosnian_token_id"] for t in snap["tokens"] if t["bosnian_token_id"][:9] == sid[:9]]
             for word in choice.get("add", []):
-                targets.append([next(x for x in ayah_toks if tok_text[x] == word), None])
+                tid = word if word in tok_text else next(x for x in ayah_toks if tok_text[x] == word)  # ID kad se riječ ponavlja
+                targets.append([tid, None])
             res[sid] = {"kind": "LINK", "targets": targets, "semantic_role": e.get("semantic_role"),
                         "evidence_type": e.get("evidence_type"),
                         "bosnian_target_phrase": " ".join(tok_text[t[0]] for t in targets),
