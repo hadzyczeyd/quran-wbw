@@ -8,7 +8,8 @@ svakog pokreni `uv run scripts/v131/entry_checkpoint.py <RUN> entry_<N> Bxxx`; n
 Metoda: Entry 1 = SEGMENT_CENTRIC; Entry 2 = TOKEN_CENTRIC (prvo prođi bosanske tokene, zatim provjeri svaki segment).
 
 Izolacija (kritično): Entry 1 nikad ne otvara `runs/<RUN>/entry_2/`; Entry 2 nikad ne otvara, ne lista i ne pretražuje
-`runs/<RUN>/entry_1/` i koristi svjež scratch folder.
+`runs/<RUN>/entry_1/`. Oba entry-ja rade isključivo u vlastitom scratch podfolderu `<scratchpad>/<RUN>_e<N>/` i ne otvaraju
+nijedan drugi fajl u scratchpadu (dijele ga i drugi agenti).
 
 Na kraju napiši `runs/<RUN>/entry_<N>/PROVENANCE.json` (metoda, ulazi, izjava da drugi entry nije otvaran, vremena, hashevi batch-eva).
 Odgovori u manje od 40 riječi: broj batch-eva PASS i brojevi segmenata/inserted.

@@ -31,10 +31,15 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
   (npr. 43:64 "i moj i vaš", 43:84 "i na nebu … a i na Zemlji"); ne ostavljaj prvo "i" inserted;
 - negativna korelacija "ni … ni" za lā/mā … wa-lā/wa-mā: prvo "ni" ide na PRVI NEG segment (zajedno s "ne"/"ni-" ako ga ima),
   a drugo "ni" na wa + drugi NEG (dosljedno 93:3 "nije te ni napustio ni omrznuo");
+- لَيْتَ (nerealna želja) → "Kamo sreće da" (i "da", jer layta sama podređuje rečenicu, dosljedno 89:24); uzvično يَا ispred
+  layta bez dozivnog tokena → unexpressed;
+- apsolutni objekat (maṣdar istog korijena): na zaseban Mehanovićev izraz ako postoji ("u komadiće", "u okove"), inače
+  dijeli glagolski token (89:19–21, 25–26); pridjev uz njega nosi svoj prilog ("pohlepno", "pretjerano");
 - nema cross-word kontaminacije; jedan token smije nositi više segmenata (navedi ga za svaki);
 - rizične veze (REL/funkcijske/one-to-many) trebaju konkretnu napomenu; engleski gloss je samo pomoć.
 
 Izolacija: koristi samo navedene ulaze, protokol, `scripts/v131/MAPPING_SPEC.md`, `scripts/v131/review.py` i validatore.
 Nikad ne otvaraj druge runove, Excel fajlove, web aplikaciju/bazu ni internet. Ne mijenjaj nijedan drugi fajl.
+Pomoćne skripte piši samo u vlastiti podfolder `<scratchpad>/<RUN>_<faza>/`; nikad ne otvaraj ni ne pokreći tuđe fajlove iz scratchpada.
 Batch-eve radi i provjeravaj JEDAN PO JEDAN (napiši batch → pokreni provjeru → tek nakon PASS sljedeći).
 Ako si prekinut, nastavi od prvog batch-a koji nema PASS u manifestu.
