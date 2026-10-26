@@ -19,6 +19,7 @@ from derive import CONTENT_TAGS, derive  # noqa: E402
 
 PHASES = [("FIRST", "cp5_first"), ("SECOND", "cp6_second"), ("THIRD", "cp7_third")]
 CHANGE_IDS = {}
+TOUCHED = set()  # segmenti/tokeni zahvaćeni korekcijom (direktno ili preko veze sa zahvaćenim zapisom)
 ERROR_MARKERS = ("#REF!", "#VALUE!", "#NAME?", "#DIV/0!", "#N/A", "#NUM!", "#NULL!", "#SPILL!", "#CALC!")
 
 
@@ -45,11 +46,11 @@ def review_cols(results_by_phase, kind, rid, row_h, risky, changed):
                                              f"nakon korekcije PASS u SECOND i THIRD. Prvobitni nalaz: {r['note']}"]
             else:
                 out += [f"{label}_REVIEW_{r['status']}", f"{basis} — {r['note']}"]
-        elif kind == "links" and ph != "THIRD" and any(x in changed for x in rid.split(">")) and (
+        elif ph != "THIRD" and (any(x in changed for x in rid.split(">")) if kind == "links" else rid in TOUCHED) and (
                 lambda st: st and all(x == "PASS" for x in st))(
                 [results_by_phase[p][kind][rid]["status"] for p, _ in PHASES[[q for q, _ in PHASES].index(ph) + 1:]
                  if rid in results_by_phase.get(p, {}).get(kind, {})]):
-            # Veza nastala korekcijom nakon ove faze: potvrđena ciljanom provjerom u kasnijoj fazi.
+            # Red nastao/zahvaćen korekcijom nakon ove faze: potvrđen ciljanom provjerom u kasnijoj fazi.
             ci = ",".join(sorted({c for x in rid.split(">") for c in CHANGE_IDS.get(x, [])}))
             out += [f"{ph}_REVIEW_PASS", f"Red nastao korekcijom nakon {ph} ({ci}); ponovna ciljana provjera nakon korekcije PASS u kasnijoj fazi."]
         elif results_by_phase.get("THIRD_RECHECK", {}).get(kind, {}).get(rid):
@@ -92,6 +93,9 @@ def main():
     changed = {x for c in changes for x in c["affected_records"]}
     # Veza čiji je segment ili token zahvaćen korekcijom također je promijenjena.
     changed |= {rid for r in results.values() for rid in r.get("links", {}) if any(x in changed for x in rid.split(">"))}
+    TOUCHED.clear()
+    TOUCHED.update(x for c in changes for x in c["affected_records"])
+    TOUCHED.update(x for lid in changed if ">" in lid for x in lid.split(">"))
     for c in changes:
         for x in c["affected_records"]:
             CHANGE_IDS.setdefault(x, []).append(c["change_id"])
