@@ -17,6 +17,10 @@ Zadatak: pregledaj CIJELU suru isključivo za ova dva pravila dosljednosti i za 
    "Onome", "čemu", "zulumćarima" …) — tj. oblik koji kodira upravo odnos te zamjenice s njenim prijedlogom — veže se na taj
    token (dosljedno 89:8, 85:9, 85:11). Ako bosanski relativ samo stoji u nominativu/akuzativu kao vlastiti argument, a arapska
    zamjenica je čisto ponavljanje, smije ostati UNEXPRESSED — ne mijenjaj.
+3. Eksplicitna bosanska zamjenica ("On", "on", "ti", "Ti", "Mi", "mi", "oni" …) koja je trenutno INSERTED, a izražava lice
+   sadržano u glagolskom (V) segmentu iste rečenice koji nema zaseban PRON segment za to lice (prefiks imperfekta y-/t-/n-/ʾ-,
+   ili 3. l. jd. m. perfekta) → dodaj je u targets tog V segmenta (zadrži postojeće ciljeve), dosljedno 80:18, 81:23, 48:10.
+   Ako zamjenica pripada imenskoj rečenici bez glagola, vokativu, ili je već izražena PRON segmentom drugdje → ne mijenjaj.
 - Ništa drugo ne mijenjaj; postojeći ciljevi drugih segmenata ostaju; tokene ne dijeli osim ako je podjela već postojala.
 
 IZLAZ: `runs/<RUN>/cp7_third/CONSISTENCY_FIXES.json`:

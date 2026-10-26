@@ -27,6 +27,9 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - subjektni PRON sufiks (55.9): ako ga nosi zaseban površinski token (eksplicitna zamjenica "oni"/"vi", pomoćni glagol "smo"/"ćete"),
   veže se na taj token; ako je lice samo u glagolskoj fleksiji, dozvoljeno je i vezati ga na glagolski token (fused) i dokumentovati
   da nije zasebno izražen — ali dosljedno unutar sure; nikad na semantički nepovezan token;
+  eksplicitna bosanska zamjenica ("On", "on", "ti", "Mi" …) koja izražava lice sadržano u samom glagolskom segmentu (prefiks
+  imperfekta / 3. l. jd. perfekta, bez zasebnog PRON segmenta) pripada tom glagolskom segmentu (80:18, 81:23, 87:6, 48:10);
+  ako u rečenici nema glagola (imenski predikat, npr. 85:16 "On radi" za faʿʿāl) ostaje inserted;
   samostalna zamjenica imenske rečenice (huwa između subjekta i predikata, ime inna/anna) ide na inserted kopulu koja nosi
   njeno lice ("je", "su", "će"); u budućoj kopuli samo "će", ne "biti" (40:6, 42:22, 43:64, 107:5);
 - restriktivno مَا/لَا … إِلَّا ("samo", "baš"): presudi iz konteksta nosi li restriktivni token i NEG; ne izmišljaj vezu;

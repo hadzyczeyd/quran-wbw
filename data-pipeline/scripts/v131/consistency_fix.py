@@ -63,7 +63,8 @@ def main():
         for c in ci["changes"]:
             if c["after"] is master["links"][sid] or c["after"] == master["links"][sid]:
                 for tid in c["affected_records"]:
-                    if tid != sid and tid not in linked and tid not in master["inserted"]:
+                    # samo bosanski tokeni mogu biti inserted (ne segmenti drugih korekcija s istim tijelom)
+                    if "-B" in tid and tid not in linked and tid not in master["inserted"]:
                         master["inserted"][tid] = f"nakon korekcije dosljednosti token ne prenosi QAC segment: {fx['note']}"
     master["master_hash"] = sha256_bytes(canonical_json({"links": master["links"], "inserted": master["inserted"]}).encode("utf-8"))
     atomic_write_json(os.path.join(rd, "cp4", "CONSENSUS_MASTER.json"), master)
