@@ -34,6 +34,10 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
   (npr. 43:64 "i moj i vaš", 43:84 "i na nebu … a i na Zemlji"); ne ostavljaj prvo "i" inserted;
 - negativna korelacija "ni … ni" za lā/mā … wa-lā/wa-mā: prvo "ni" ide na PRVI NEG segment (zajedno s "ne"/"ni-" ako ga ima),
   a drugo "ni" na wa + drugi NEG (dosljedno 93:3 "nije te ni napustio ni omrznuo");
+- dublet kojim Mehanović prevodi JEDNU arapsku riječ ("ajeti i znakovi", "Slavi i uzvisuj", "nagrađeni ili kažnjeni",
+  "palubama i leđima"): cijeli izraz, uključujući unutrašnje "i"/"ili", pripada tom segmentu (nema arapskog wa);
+  "i" sa značenjem "također/čak" ("ćemo i povećati") ostaje inserted;
+- wa- u wa-lākinna bez zasebnog tokena → unexpressed; "ali" nosi lākinna (41:22, 42:8, 43:76, 44:39);
 - vokativ يَا + أَيُّهَا/أَيَّتُهَا: أَيُّهَا ide na eksplicitno "ti"/"vi" ako postoji (43:49, 89:27, 109:1), inače zajedno s يَا
   na "O" (84:6, 82:6);
 - لَيْتَ (nerealna želja) → "Kamo sreće da" (i "da", jer layta sama podređuje rečenicu, dosljedno 89:24); uzvično يَا ispred
