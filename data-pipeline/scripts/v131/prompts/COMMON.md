@@ -16,7 +16,8 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - NEG token dobija NEG segment, glagol svoj uski token; negirani oblici ("nije/neće/nisu") se dijele ni-/ne- vs. ostatak
   `part` rasponima samo na stvarnoj unutrašnjoj granici koja pokriva cijeli token; ekspletivno "ne" (uz "dok", glagole straha) nije NEG;
 - pomoćni glagol pripada glagolskom obliku koji gradi; REL → stvarni bosanski relativni izraz (ponovljeni "koji" istog REL-a u istom ajetu
-  nose taj REL); povratne (resumptivne) zamjenice smiju biti unexpressed;
+  nose taj REL); povratne (resumptivne) zamjenice smiju biti unexpressed, ali ako njihovu ulogu nosi padežni/posvojni
+  oblik relativnog izraza ("kojima" 89:8, "Čija" 85:9, "onima" 85:11), vežu se na taj token;
 - relativna preoblika BEZ REL segmenta (jedinstveno pravilo za sve sure):
   * imenica/particip/pridjev (N/ADJ) preveden kao "onaj koji …", "oni koji su …", "onih koje …", "Onaj Koji …" → cijeli izraz,
     uključujući "onaj/oni/onih" i "koji/ko/koje", pripada tom N/ADJ segmentu (particip znači "onaj koji radi X");
@@ -26,6 +27,8 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - subjektni PRON sufiks (55.9): ako ga nosi zaseban površinski token (eksplicitna zamjenica "oni"/"vi", pomoćni glagol "smo"/"ćete"),
   veže se na taj token; ako je lice samo u glagolskoj fleksiji, dozvoljeno je i vezati ga na glagolski token (fused) i dokumentovati
   da nije zasebno izražen — ali dosljedno unutar sure; nikad na semantički nepovezan token;
+  samostalna zamjenica imenske rečenice (huwa između subjekta i predikata, ime inna/anna) ide na inserted kopulu koja nosi
+  njeno lice ("je", "su", "će"); u budućoj kopuli samo "će", ne "biti" (40:6, 42:22, 43:64, 107:5);
 - restriktivno مَا/لَا … إِلَّا ("samo", "baš"): presudi iz konteksta nosi li restriktivni token i NEG; ne izmišljaj vezu;
 - korelativno "i … i" / "i … a i" kojim Mehanović prevodi jedan arapski wa: svi tokeni korelacije nose taj wa
   (npr. 43:64 "i moj i vaš", 43:84 "i na nebu … a i na Zemlji"); ne ostavljaj prvo "i" inserted;

@@ -39,7 +39,7 @@ def main():
         new_t = {t[0] for t in new["targets"]}
         cid = f"CI-THIRD-{len(ci['changes']) + 1:03d}"
         ci["changes"].append({"change_id": cid, "phase": "THIRD",
-                              "description": f"{sid}: dosljednost relativne preoblike bez REL segmenta (COMMON.md)",
+                              "description": f"{sid}: {fx.get('rule', 'dosljednost relativne preoblike bez REL segmenta')} (COMMON.md)",
                               "affected_records": sorted({sid} | old_t | new_t), "before": old, "after": new,
                               "invalidated_statuses": "THIRD za pogođene redove", "status": "APPLIED"})
         note = f"THIRD_TARGETED_RECHECK nakon korekcije {cid}: {fx['note']}"
@@ -48,6 +48,12 @@ def main():
             rc["tokens"][t] = {"status": "PASS", "note": note, "basis": "THIRD_TARGETED_RECHECK"}
         for t in new_t:
             rc["links"][f"{sid}>{t}"] = {"status": "PASS", "note": note, "basis": "THIRD_TARGETED_RECHECK"}
+        # postojeće veze drugih segmenata na zahvaćenim tokenima ostaju, ali se ponovo potvrđuju
+        for other, ol in master["links"].items():
+            if other != sid and ol["kind"] == "LINK":
+                for t in {x[0] for x in ol["targets"]} & (old_t | new_t):
+                    rc["links"][f"{other}>{t}"] = {"status": "PASS", "basis": "THIRD_TARGETED_RECHECK",
+                                                   "note": f"THIRD_TARGETED_RECHECK nakon korekcije {cid}: veza na zahvaćenom tokenu ostaje ispravna"}
     # inserted tokeni prate konačne veze
     linked = {t[0] for l in master["links"].values() if l["kind"] == "LINK" for t in l["targets"]}
     for tid in list(master["inserted"].keys()):
