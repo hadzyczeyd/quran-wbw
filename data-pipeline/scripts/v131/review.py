@@ -65,8 +65,17 @@ def packets(run_dir, phase):
     master, _ = current_master(run_dir)
     der = derive(snap, master)
     rs, rt, ch = (None, None, set())
+    prev_links = set()
     if phase != "FIRST":
         rs, rt, _, ch = risk_set(run_dir, snap, master, der)
+    if phase == "THIRD":
+        # THIRD pokriva sve što je SECOND semantički provjerio (i kad korekcija SECOND promijeni skup rizičnih redova)
+        p = os.path.join(run_dir, PHASE_DIR["SECOND"], "RESULTS.json")
+        if os.path.exists(p):
+            prev = load_json(p)
+            rs |= set(prev["segments"]) & {s["qac_segment_id"] for s in der["segments"]}
+            rt |= set(prev["tokens"]) & {t["bosnian_token_id"] for t in der["tokens"]}
+            prev_links = set(prev["links"])
     total = {"segments": 0, "tokens": 0, "links": 0}
     for b in inv["batches"]:
         inp = load_json(os.path.join(run_dir, "cp1", "batch_inputs", f"{b['batch_id']}.json"))
@@ -77,7 +86,8 @@ def packets(run_dir, phase):
             tok = [t for t in der["tokens"] if t["ayah_id"] == aid and (rt is None or t["bosnian_token_id"] in rt)]
             # Veza ide u recheck i kad je korekcija zahvatila samo njen bosanski token.
             lnk = [l for l in der["links"] if l["ayah_id"] == aid
-                   and (rs is None or l["qac_segment_id"] in rs or l["bosnian_token_id"] in ch)]
+                   and (rs is None or l["qac_segment_id"] in rs or l["bosnian_token_id"] in ch
+                        or f"{l['qac_segment_id']}>{l['bosnian_token_id']}" in prev_links)]
             out["ayahs"].append({
                 "ayah_id": aid, "arabic_ayah_uthmani": a["arabic_ayah_uthmani"], "mehanovic_text": a["mehanovic_text"],
                 "all_words": a["words"], "all_bosnian_tokens": a["bosnian_tokens"],
