@@ -92,7 +92,7 @@ def build(run_dir):
     for s in snap["segments"]:
         sid = s["qac_segment_id"]
         r = seg_rows[sid]
-        if r["compare_status"] == "MATCH":
+        if r["compare_status"] == "MATCH" and r["entry_1"].get("kind") != "REVIEW":
             e = r["entry_1"]
             links[sid] = {"kind": e["kind"], "targets": [[t[0], t[1]] for t in e.get("targets") or []],
                           "semantic_role": e.get("semantic_role"), "evidence_type": e.get("evidence_type"),

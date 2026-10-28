@@ -19,7 +19,9 @@ def run(RUN, D):
     snap = load_json(os.path.join(run_dir, "cp1", "CP1_SOURCE_SNAPSHOT.json"))
     tok_text = {t["bosnian_token_id"]: t["bosnian_original_token"] for t in snap["tokens"]}
     rows = {r["stable_id"]: r for r in cmp_["rows"]}
-    seg_mism = [r["stable_id"] for r in cmp_["rows"] if r["entity_type"] == "SEGMENT" and r["compare_status"] != "MATCH"]
+    # Segment koji su OBA entryja ostavila u review_required također traži odluku.
+    seg_mism = [r["stable_id"] for r in cmp_["rows"] if r["entity_type"] == "SEGMENT"
+                and (r["compare_status"] != "MATCH" or r["entry_1"].get("kind") == "REVIEW")]
     missing = [s for s in seg_mism if s not in D]
     extra = [s for s in D if s not in seg_mism]
     if missing or extra:
@@ -52,7 +54,7 @@ def run(RUN, D):
     for r in cmp_["rows"]:
         if r["entity_type"] != "SEGMENT":
             continue
-        e = res.get(r["stable_id"]) if r["compare_status"] != "MATCH" else r["entry_1"]
+        e = res.get(r["stable_id"]) if r["stable_id"] in res else r["entry_1"]
         if e and e["kind"] == "LINK":
             final_linked.update(t[0] for t in e["targets"])
     for r in cmp_["rows"]:

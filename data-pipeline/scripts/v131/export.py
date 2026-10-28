@@ -77,6 +77,19 @@ def main():
     compare = load_json(os.path.join(run_dir, "cp4", "ENTRY_COMPARE.json"))
     der = derive(snap, master)
     surah, name = snap["surah_id"], snap["surah_name"]
+    # Dokumentovani izuzeci (nalog 12: „nema PASS bez dokumentovanog razrješenja“), npr. klauzula koju izvorni
+    # Mehanovićev tekst ne sadrži. Vrijedi samo ako se detektovani blokovi ajeta tačno poklapaju s upisanim.
+    exc_path = os.path.join(run_dir, "cp4", "DOCUMENTED_EXCEPTIONS.json")
+    exceptions = load_json(exc_path)["ayahs"] if os.path.exists(exc_path) else {}
+    exc_applied = []
+    for c in der["coverage"]:
+        e = exceptions.get(str(c["ayah_id"]))
+        if e and sorted(c["suspicious_blocks"]) == sorted(e["blocks"]):
+            c["suspicious_unexpressed_qac_block_count"] = 0
+            c["documented_exception"] = e
+            if not c["review_required_count"]:
+                c["coverage_status"] = "AYAH_COVERAGE_PASS"
+            exc_applied.append(f"{c['ayah_id']}: {'+'.join(e['blocks'])} ({e['kind']})")
 
     results = {}
     changes = []
@@ -185,7 +198,7 @@ def main():
     S["Entry_2"] = entry_rows("entry_2")
     resolutions = load_json(os.path.join(run_dir, "cp4", "RESOLUTIONS.json")) if os.path.exists(os.path.join(run_dir, "cp4", "RESOLUTIONS.json")) else {}
     for r in compare["rows"]:
-        res = "CONSENSUS_ACCEPTED" if r["compare_status"] == "MATCH" else ("RESOLVED_FROM_SOURCE: " + resolutions.get(r["stable_id"], {}).get("basis", "NEMA"))
+        res = "CONSENSUS_ACCEPTED" if r["compare_status"] == "MATCH" and r["stable_id"] not in resolutions else ("RESOLVED_FROM_SOURCE: " + resolutions.get(r["stable_id"], {}).get("basis", "NEMA"))
         S["Entry_compare"].append([r["entity_type"], r["stable_id"], r["compare_status"], r["mismatch_fields"], res])
     for s in der["segments"]:
         h = row_hash({k: s[k] for k in ("qac_segment_id", "mapping_status", "linked_bosnian_token_ids", "mapping_note")})
@@ -194,7 +207,9 @@ def main():
     for c in der["coverage"]:
         comp = completeness.get(str(c["ayah_id"])) or completeness.get(c["ayah_id"]) or {"status": "MISSING"}
         c["source_translation_completeness"] = comp["status"]
-        if comp["status"] != "PASS":
+        if comp["status"] == "FAIL" and c.get("documented_exception", {}).get("kind") == "SOURCE_TRANSLATION_OMISSION":
+            c["source_translation_completeness"] = "PASS_DOCUMENTED_SOURCE_OMISSION"
+        elif comp["status"] != "PASS":
             c["coverage_status"] = "REVIEW_REQUIRED"
         S["Coverage_matrix"].append([c["ayah_id"], c["coverage_status"], c["lexical_bosnian_token_count"], c["lexical_inserted_no_arabic_segment_count"],
                                      c["mapped_segment_count"], c["punctuation_inserted_count"], c["qac_segment_count"], c["qac_word_count"],
@@ -333,12 +348,15 @@ def main():
     q("consensus_master_integrity", "svi listovi iz istog mastera", master["master_hash"][:16], True, "CONSENSUS_MASTER.json")
     q("arabic_reconstruction", "QAC segmenti po riječi; prikaz iz Uthmani", "PASS", True, "ARABIC_SOURCE_ALIGNMENT")
     q("mehanovic_text_exact", 0, counts["recon_fail"], counts["recon_fail"] == 0, "gap_before + token")
-    comp_fail = sum(1 for c in der["coverage"] if c["source_translation_completeness"] != "PASS")
+    comp_fail = sum(1 for c in der["coverage"] if c["source_translation_completeness"] not in ("PASS", "PASS_DOCUMENTED_SOURCE_OMISSION"))
     q("source_translation_completeness", "PASS za svaki ajet", f"{counts['ayah'] - comp_fail}/{counts['ayah']}", comp_fail == 0, "FIRST revizija po ajetu")
     q("ayah_coverage_pass_count", counts["ayah"], counts["cov_pass"], counts["cov_pass"] == counts["ayah"], "Coverage_matrix")
     q("unexpressed_qac_segment_count", "potpun broj + lokacije", counts["unexpressed"], True, "Coverage_matrix.unexpressed_segment_ids")
     q("unexpressed_content_segment_count", "svaki pojedinačno obrazložen", counts["unexpressed_content"], True, "Segmenti.mapping_note")
     q("suspicious_unexpressed_block_count", 0, counts["susp"], counts["susp"] == 0, "Coverage_matrix")
+    if exceptions:  # red postoji samo u runovima s izuzetkom (ostali QA listovi ostaju nepromijenjeni)
+        q("documented_block_exceptions", "svaki izuzetak dokumentovan u cp4/DOCUMENTED_EXCEPTIONS.json",
+          "; ".join(exc_applied) or 0, len(exc_applied) == len(exceptions), "nalog 12 / 46")
     q("inserted_black_token_count", "svaki pojedinačno revidiran", counts["inserted"], semantic_ok, "Audit_tokena")
     q("one_to_many_mapping_count", "FIRST + SECOND/THIRD recheck", counts["one_to_many"], semantic_ok, "Audit_segmenata")
     q("many_segment_expression_count", "bez color collapse-a", counts["fused"] + counts["token_part"], fused_dom == 0, "FUSED_markeri")
