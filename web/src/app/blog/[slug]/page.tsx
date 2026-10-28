@@ -5,6 +5,7 @@ import "@/styles/blog.css";
 import { ShareMenu } from "@/components/ShareMenu";
 import { firstImageUrl, formatBlogDate } from "@/lib/blog";
 import { getPublishedPost } from "@/lib/blogQueries";
+import { sanitizeBlogHtml } from "@/lib/sanitizeHtml";
 
 export const dynamic = "force-dynamic";
 
@@ -52,8 +53,8 @@ export default async function BlogPostPage({
             <ShareMenu />
           </div>
         </div>
-        {/* Sadržaj piše isključivo admin (RLS), i TipTap ga generiše iz svoje sheme. */}
-        <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+        {/* Sadržaj piše isključivo admin (RLS); ipak se čisti prije prikaza (sanitizeBlogHtml). */}
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.content) }} />
       </article>
     </main>
   );

@@ -1,6 +1,14 @@
 "use client";
 
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import {
+  type ReactNode,
+  startTransition,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
 import type { RootPanelData } from "@/lib/rootPanel";
@@ -16,6 +24,12 @@ interface SuraReaderProps {
   /** Ajeti ove sure na kojima počinje džuz: ajet → broj džuza. */
   juzStarts?: Record<number, number>;
 }
+
+/** Koliko ajeta se iscrta odmah pri prelasku na suru; ostatak dolazi u dijelovima. */
+const FIRST_CHUNK = 12;
+const CHUNK = 24;
+
+const noopSubscribe = () => () => {};
 
 type PlayingState =
   | { kind: "ayah"; ayahNumber: number }
@@ -39,6 +53,23 @@ export function SuraReader({
   const [activeTokenIds, setActiveTokenIds] = useState<Set<string>>(new Set());
   const [playing, setPlaying] = useState<PlayingState>(null);
 
+  // Pri direktnom otvaranju (hidratacija) server je već iscrtao sve ajete.
+  // Pri kliku na suru unutar aplikacije prvo se odmah prikažu prvi ajeti,
+  // a ostatak se dodaje u pozadini — klik je trenutan i kod dugih sura.
+  const isClientNavigation = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const total = data.ayat.length;
+  const [renderCount, setRenderCount] = useState(() =>
+    isClientNavigation ? Math.min(FIRST_CHUNK, total) : total,
+  );
+
+  useEffect(() => {
+    if (renderCount >= total) return;
+    const id = setTimeout(() => {
+      startTransition(() => setRenderCount((c) => Math.min(total, c + CHUNK)));
+    }, 0);
+    return () => clearTimeout(id);
+  }, [renderCount, total]);
+
   // word_id -> { ayahNumber, word } — za povratnu vezu token -> riječ i audio.
   const wordIndex = useMemo(() => {
     const map = new Map<string, { ayahNumber: number; word: QacWord }>();
@@ -60,11 +91,21 @@ export function SuraReader({
     return map;
   }, [data.ayat]);
 
-  // Link na ajet (#ajet-N, npr. iz navigacije po džuzevima): skrol nakon što je čitač iscrtan.
+  // Link na ajet (#ajet-N, npr. iz navigacije po džuzevima): skrol čim je taj ajet iscrtan.
+  const hashScrolled = useRef(false);
   useEffect(() => {
+    if (hashScrolled.current) return;
     const m = /^#ajet-(\d+)$/.exec(window.location.hash);
-    if (m) document.getElementById(`ajet-${m[1]}`)?.scrollIntoView({ block: "start" });
-  }, []);
+    if (!m) {
+      hashScrolled.current = true;
+      return;
+    }
+    const el = document.getElementById(`ajet-${m[1]}`);
+    if (el) {
+      el.scrollIntoView({ block: "start" });
+      hashScrolled.current = true;
+    }
+  }, [renderCount]);
 
   function getAudio(): HTMLAudioElement {
     if (audioRef.current === null) {
@@ -175,7 +216,7 @@ export function SuraReader({
       <div className={`sura-main-column${rootPanel ? " has-root-panel" : ""}`}>
         {header}
         <div className="sura-reader" onClick={clearHighlight}>
-          {data.ayat.map((ayah) => (
+          {data.ayat.slice(0, renderCount).map((ayah) => (
             <AyahRow
               key={ayah.ayah_number}
               ayah={ayah}
