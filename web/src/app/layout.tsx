@@ -65,6 +65,14 @@ export default function RootLayout({
         {children}
 
         <footer className="site-footer">
+          <aside className="site-support">
+            <p>
+              Smatrate li ovu stranicu korisnom? Podržite naš rad pomažući projekte poput ovoga.
+            </p>
+            <a href="https://zagazu.ba" target="_blank" rel="noopener noreferrer" className="site-support-link">
+              Podrži na zagazu.ba
+            </a>
+          </aside>
           <p>© {currentYear} Zejd Hadžić. Sva prava zadržana.</p>
         </footer>
 
