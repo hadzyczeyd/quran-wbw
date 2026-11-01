@@ -111,7 +111,7 @@ def build(run_dir):
     for t in snap["tokens"]:
         tid = t["bosnian_token_id"]
         r = tok_rows[tid]
-        if r["compare_status"] == "MATCH":
+        if r["compare_status"] == "MATCH" and not resolutions.get(tid, {}).get("override"):
             if r["entry_1"]["inserted"]:
                 inserted_notes[tid] = r["entry_1"]["note"]
         elif tid in resolutions:

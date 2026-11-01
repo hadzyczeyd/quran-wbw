@@ -22,8 +22,11 @@ def run(RUN, D):
     # Segment koji su OBA entryja ostavila u review_required također traži odluku.
     seg_mism = [r["stable_id"] for r in cmp_["rows"] if r["entity_type"] == "SEGMENT"
                 and (r["compare_status"] != "MATCH" or r["entry_1"].get("kind") == "REVIEW")]
+    # Token koji je vezan u oba entryja, a nakon odluka ostaje bez veze, traži izričitu odluku ("INS", osnova).
+    tok_ins = {k: v[1] for k, v in D.items() if k.count("-") == 2 and v[0] == "INS"}
+    D = {k: v for k, v in D.items() if k not in tok_ins}
     missing = [s for s in seg_mism if s not in D]
-    extra = [s for s in D if s not in seg_mism]
+    extra = [s for s in D if s not in seg_mism] + [t for t in tok_ins if t not in tok_text]
     if missing or extra:
         print("nedostaju odluke:", missing, "višak:", extra)
         sys.exit(1)
@@ -40,6 +43,7 @@ def run(RUN, D):
             for word in choice.get("add", []):
                 tid = word if word in tok_text else next(x for x in ayah_toks if tok_text[x] == word)  # ID kad se riječ ponavlja
                 targets.append([tid, None])
+            targets.sort(key=lambda t: t[0])  # bosanski redoslijed
             res[sid] = {"kind": "LINK", "targets": targets, "semantic_role": e.get("semantic_role"),
                         "evidence_type": e.get("evidence_type"),
                         "bosnian_target_phrase": " ".join(tok_text[t[0]] for t in targets),
@@ -65,6 +69,11 @@ def run(RUN, D):
         note = (r["entry_1"]["note"] if r["entry_1"]["inserted"] else r["entry_2"]["note"]) if inserted else ""
         res[tid] = {"inserted": inserted, "note": note or "token ne prenosi QAC segment nakon razrješenja",
                     "basis": "deterministički iz razriješenih veza segmenata"}
+    for tid, basis in tok_ins.items():
+        if tid in final_linked:
+            print(f"INS odluka za vezani token: {tid} '{tok_text[tid]}'")
+            sys.exit(1)
+        res[tid] = {"inserted": True, "note": basis, "basis": "CP4 odluka: " + basis, "override": True}
     # Konzistentnost: MATCH token koji je ostao bez veze ili inserted koji je dobio vezu.
     problems = []
     for r in cmp_["rows"]:
@@ -72,7 +81,7 @@ def run(RUN, D):
             tid = r["stable_id"]
             if r["entry_1"]["inserted"] and tid in final_linked:
                 problems.append(f"{tid} '{tok_text[tid]}' bio inserted u oba, sada vezan")
-            if not r["entry_1"]["inserted"] and tid not in final_linked:
+            if not r["entry_1"]["inserted"] and tid not in final_linked and tid not in tok_ins:
                 problems.append(f"{tid} '{tok_text[tid]}' bio vezan u oba, sada bez veze")
     if problems:
         print("token konflikti:", problems)
