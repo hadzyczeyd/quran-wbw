@@ -15,6 +15,8 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - DET al- normalno unexpressed s pojedinačnim razlogom; kopula/pomoćni glagol imenske rečenice bez arapskog segmenta → inserted;
 - NEG token dobija NEG segment, glagol svoj uski token; negirani oblici ("nije/neće/nisu") se dijele ni-/ne- vs. ostatak
   `part` rasponima samo na stvarnoj unutrašnjoj granici koja pokriva cijeli token; ekspletivno "ne" (uz "dok", glagole straha) nije NEG;
+- kāna + imperfekt ("ono što ste radili"): kāna i njegov sufiks → zajednički pomoćni "ste/su", a -ūna imperfekta također na taj
+  pomoćni (ili na eksplicitnu zamjenicu ako postoji); glagol nosi samo svoj token; u "in kuntum + glagol" bez pomoćnog kāna je fused na glagol;
 - pomoćni glagol pripada glagolskom obliku koji gradi; REL → stvarni bosanski relativni izraz (ponovljeni "koji" istog REL-a u istom ajetu
   nose taj REL); povratne (resumptivne) zamjenice smiju biti unexpressed, ali ako njihovu ulogu nosi padežni/posvojni
   oblik relativnog izraza ("kojima" 89:8, "Čija" 85:9, "onima" 85:11), vežu se na taj token;
