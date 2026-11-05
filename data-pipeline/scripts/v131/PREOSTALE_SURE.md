@@ -11,8 +11,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 4 | 19 Merjem | 98 | 961 | 9.8 | gotovo (2026-11-05) |
 | 5 | 20 Ta-ha | 135 | 1335 | 9.9 | gotovo (2026-11-05) |
 | 6 | 21 El-Enbija | 112 | 1169 | 10.4 | gotovo (2026-11-05) |
-| 7 | 25 El-Furkan | 77 | 893 | 11.6 | u radu |
-| 8 | 27 En-Neml | 93 | 1151 | 12.4 | |
+| 7 | 25 El-Furkan | 77 | 893 | 11.6 | gotovo (2026-11-05) |
+| 8 | 27 En-Neml | 93 | 1151 | 12.4 | u radu |
 | 9 | 17 El-Isra | 111 | 1556 | 14.0 | |
 | 10 | 29 El-Ankebut | 69 | 976 | 14.1 | |
 | 11 | 18 El-Kehf | 110 | 1579 | 14.4 | |
