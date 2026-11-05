@@ -9,8 +9,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 2 | 15 El-Hidžr | 99 | 655 | 6.6 | gotovo (2026-11-05) |
 | 3 | 23 El-Mu'minun | 118 | 1050 | 8.9 | gotovo (2026-11-05) |
 | 4 | 19 Merjem | 98 | 961 | 9.8 | gotovo (2026-11-05) |
-| 5 | 20 Ta-ha | 135 | 1335 | 9.9 | u radu |
-| 6 | 21 El-Enbija | 112 | 1169 | 10.4 | |
+| 5 | 20 Ta-ha | 135 | 1335 | 9.9 | gotovo (2026-11-05) |
+| 6 | 21 El-Enbija | 112 | 1169 | 10.4 | u radu |
 | 7 | 25 El-Furkan | 77 | 893 | 11.6 | |
 | 8 | 27 En-Neml | 93 | 1151 | 12.4 | |
 | 9 | 17 El-Isra | 111 | 1556 | 14.0 | |
@@ -41,3 +41,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - DONE 2026-11-05 dosljednost: ka-ḏālika „Eto, tako“ — većina (42:3, 42:7, 44:54, 47:3, 40:34, 40:74, 54:35) DEM → 'Eto,'; 30:28, 30:59, 37:80, 37:110, 37:121, 37:131 imaju 'Eto,' inserted → ispravljeno (CONSISTENCY_FIXES; i 40:34, 40:74, 54:35 'tako' skinut s DEM), reimportovano.
 - DONE 2026-11-05: crtica '-' ne nosi fa-/wa- (15:3, 15:22, 30:16, 30:39, 30:44×2 → UNEXPRESSED), reimportovano.
 - DONE 2026-11-05: 'da' u 'neće da' ide uz glagol (većina: 23:74, 34:8, 36:35, 41:52, 57:24) → ispravljeno 26:3 i 26:190, reimportovano.
+- 20: 20:129 propust izvora (Mehanović bez „wa-ajalun musammā“) → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90 redova.
