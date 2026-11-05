@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { Amiri_Quran, Montserrat, Reem_Kufi } from "next/font/google";
 import { SiteNav } from "@/components/SiteNav";
+import { ConsentManager, ConsentSettingsLink } from "@/components/ConsentManager";
 import "@/styles/tokens.css";
 import "@/styles/base.css";
 
@@ -80,7 +81,16 @@ export default function RootLayout({
             </a>
             . Sva prava zadržana.
           </p>
+          <p className="site-footer-links">
+            <Link href="/privatnost" className="site-footer-link">
+              Privatnost
+            </Link>
+            <span aria-hidden="true">·</span>
+            <ConsentSettingsLink />
+          </p>
         </footer>
+
+        <ConsentManager />
 
         <Analytics />
       </body>

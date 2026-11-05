@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { excludeAdminDeviceByDefault } from "@/lib/consent";
 import { supabase } from "@/lib/supabase";
 
 type GuardState = "loading" | "ok" | "no-access" | "setup-error";
@@ -30,7 +31,11 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
       const { data, error } = await supabase.rpc("is_blog_admin");
       if (!active) return;
       if (error) setState("setup-error");
-      else setState(data === true ? "ok" : "no-access");
+      else {
+        // Admin uređaj se ne broji u statistici (može se promijeniti na /admin/statistika).
+        if (data === true) excludeAdminDeviceByDefault();
+        setState(data === true ? "ok" : "no-access");
+      }
     }
 
     check();
@@ -77,10 +82,11 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   return (
     <main className="page-shell admin-shell">
       <div className="admin-bar">
-        <h1 className="admin-bar-title">Uređivanje bloga</h1>
+        <h1 className="admin-bar-title">Administracija</h1>
         <nav className="admin-bar-links">
           <Link href="/admin">Članci</Link>
           <Link href="/admin/novi">Novi članak</Link>
+          <Link href="/admin/statistika">Statistika</Link>
           <Link href="/blog">Pogledaj blog</Link>
           <button type="button" className="admin-link-btn" onClick={logout}>
             Odjava
