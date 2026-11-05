@@ -14,8 +14,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 7 | 25 El-Furkan | 77 | 893 | 11.6 | gotovo (2026-11-05) |
 | 8 | 27 En-Neml | 93 | 1151 | 12.4 | gotovo (2026-11-05) |
 | 9 | 17 El-Isra | 111 | 1556 | 14.0 | gotovo (2026-11-05) |
-| 10 | 29 El-Ankebut | 69 | 976 | 14.1 | u radu |
-| 11 | 18 El-Kehf | 110 | 1579 | 14.4 | |
+| 10 | 29 El-Ankebut | 69 | 976 | 14.1 | gotovo (2026-11-05) |
+| 11 | 18 El-Kehf | 110 | 1579 | 14.4 | u radu |
 | 12 | 16 En-Nahl | 128 | 1844 | 14.4 | |
 | 13 | 11 Hud | 123 | 1917 | 15.6 | |
 | 14 | 12 Jusuf | 111 | 1777 | 16.0 | |
@@ -46,5 +46,5 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 21: 21:67 u izvoru duplikat 21:66 → odobrena zamjena prijevodom Besima Korkuta (scripts/v131/MEHANOVIC_OVERRIDES.json, napomena na /izvori).
 - DONE 2026-11-05: neodređenici 'jedan/neki/kakav' uz neodređenu imenicu — većina objavljenih (≈50) ih veže na imenicu, ≈31 inserted (npr. 20:10 'nekakvu', 26:29 'nekoga', 26:154 'jedno', 26:189 'jednog', 21:111 'izvjesno'?) → 27 mjesta u 13 sura (20, 21, 25, 26, 30, 36, 37, 42, 48, 49, 54, 62, 77) vezano na imenicu, reimportovano; 'ikakav' uz negaciju (25:3, 72:21) i 'neka je' (37:109, 181) ostaju inserted.
 - TODO: laʿalla 'bi' uz glagol (dosljedno 30:46): 21:31 'kuda žele stizali.' i 21:58 'se obratili.' bez 'bi' na V; provjeriti i 46:23 'ste' (PRON) / 'u neznanju ogrezao' (V).
-- TODO (nakon 29): al- iscrpnosti ('Sva/Svaka hvala', 'svi ljudi', 'svih svjetova') → DET (većina: 1:2, 34:1, 39:29/74/75, 40:65, 43:33); uskladiti INS slučajeve (21:91, 26:165, 30:18, 35:1, 62:6, 59:17?) i NOUN slučajeve (17:60, 17:88, 17:111) — pregledati svaki.
+- DONE 2026-11-05: al- iscrpnosti ('Sva/Svaka hvala', 'svi ljudi', 'svih svjetova') → DET (većina: 1:2, 34:1, 39:29/74/75, 40:65, 43:33); ispravljeno 15 mjesta u 17, 21, 26, 30, 35, 59, 62, 64, 66, 77; 'sve/svi' uz kull/jamīʿ ili kao objekat ('sve zna') ostaje kako jeste.
 - 29: izvorni tipo 29:47 'Knjigu-i' (bez razmaka); 29:60 Mehanović ʿalīm prevodi 'Svevideći' (njegov izbor).
