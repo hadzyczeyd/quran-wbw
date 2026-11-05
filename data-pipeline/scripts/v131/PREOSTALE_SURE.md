@@ -8,8 +8,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 1 | 26 Eš-Šu'ara | 227 | 1318 | 5.8 | gotovo (2026-11-05) |
 | 2 | 15 El-Hidžr | 99 | 655 | 6.6 | gotovo (2026-11-05) |
 | 3 | 23 El-Mu'minun | 118 | 1050 | 8.9 | gotovo (2026-11-05) |
-| 4 | 19 Merjem | 98 | 961 | 9.8 | u radu |
-| 5 | 20 Ta-ha | 135 | 1335 | 9.9 | |
+| 4 | 19 Merjem | 98 | 961 | 9.8 | gotovo (2026-11-05) |
+| 5 | 20 Ta-ha | 135 | 1335 | 9.9 | u radu |
 | 6 | 21 El-Enbija | 112 | 1169 | 10.4 | |
 | 7 | 25 El-Furkan | 77 | 893 | 11.6 | |
 | 8 | 27 En-Neml | 93 | 1151 | 12.4 | |
