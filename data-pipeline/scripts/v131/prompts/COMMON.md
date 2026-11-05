@@ -12,7 +12,7 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - bosanski prijedlog koji kodira padež imenice pripada toj imenici; ako zasebnog prijedloga nema, padežni oblik imenice nosi
   arapski prijedlog (bi- uz a'ūḏu → "Gospodaru"); ali pridjev/riječ koja samo slaže s drugom riječju ne nosi prijedlog;
 - arapski prijedlog koji traži samo arapski glagol, a bosanski glagol uzima direktni objekat → unexpressed;
-- DET al- normalno unexpressed s pojedinačnim razlogom; kopula/pomoćni glagol imenske rečenice bez arapskog segmenta → inserted;
+- DET al- normalno unexpressed s pojedinačnim razlogom; al- iscrpnosti koji Mehanović izražava sa 'sav/svaki' ('Svaka hvala' 1:2, 'svi ljudi') nosi taj token; kopula/pomoćni glagol imenske rečenice bez arapskog segmenta → inserted;
 - NEG token dobija NEG segment, glagol svoj uski token; negirani oblici ("nije/neće/nisu") se dijele ni-/ne- vs. ostatak
   `part` rasponima samo na stvarnoj unutrašnjoj granici koja pokriva cijeli token; ekspletivno "ne" (uz "dok", glagole straha) nije NEG;
 - kāna + imperfekt ("ono što ste radili"): kāna i njegov sufiks → zajednički pomoćni "ste/su", a -ūna imperfekta također na taj

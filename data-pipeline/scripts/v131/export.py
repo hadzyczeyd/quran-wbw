@@ -327,7 +327,9 @@ def main():
         later = [x for x in later if x is not None] if ph != "FIRST" else later
         # kasniji FAIL (npr. THIRD vraća korekciju SECOND) je razriješen ako je konačno stanje potvrđeno THIRD_RECHECK-om
         recheck = results.get("THIRD_RECHECK", {}).get(k, {}).get(rid, {}).get("status")
-        return not (rid in changed and later and (all(x == "PASS" for x in later) or recheck == "PASS"))
+        # SECOND vraća/mijenja korekciju FIRST-a: konačno stanje je semantički potvrđeno u THIRD (29:6 i sl.)
+        third = results.get("THIRD", {}).get(k, {}).get(rid, {}).get("status") if ph != "THIRD" else None
+        return not (rid in changed and later and (all(x == "PASS" for x in later) or recheck == "PASS" or third == "PASS"))
     fails = {ph: sum(1 for k in ("segments", "tokens", "links") for rid, v in results.get(ph, {}).get(k, {}).items()
                      if unresolved_fail(ph, k, rid, v)) for ph, _ in PHASES}
     review_missing = sum(1 for r in S["Audit_tokena"] + S["Audit_segmenata"] + S["Audit_veza"] for c in r if isinstance(c, str) and c.endswith("_REVIEW_MISSING"))
