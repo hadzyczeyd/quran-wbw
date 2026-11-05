@@ -6,8 +6,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | Red | Sura | Ajeta | Riječi | Riječi/ajet | Status |
 |---|---|---|---|---|---|
 | 1 | 26 Eš-Šu'ara | 227 | 1318 | 5.8 | gotovo (2026-11-05) |
-| 2 | 15 El-Hidžr | 99 | 655 | 6.6 | u radu |
-| 3 | 23 El-Mu'minun | 118 | 1050 | 8.9 | |
+| 2 | 15 El-Hidžr | 99 | 655 | 6.6 | gotovo (2026-11-05) |
+| 3 | 23 El-Mu'minun | 118 | 1050 | 8.9 | u radu |
 | 4 | 19 Merjem | 98 | 961 | 9.8 | |
 | 5 | 20 Ta-ha | 135 | 1335 | 9.9 | |
 | 6 | 21 El-Enbija | 112 | 1169 | 10.4 | |
@@ -39,3 +39,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 ## Bilješke
 - 26: 26:220 greška izvora (Mehanović „Silni i Milostivi“ umjesto as-samīʿ al-ʿalīm) → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_MISMATCH), QA 90 redova.
 - DONE 2026-11-05 dosljednost: ka-ḏālika „Eto, tako“ — većina (42:3, 42:7, 44:54, 47:3, 40:34, 40:74, 54:35) DEM → 'Eto,'; 30:28, 30:59, 37:80, 37:110, 37:121, 37:131 imaju 'Eto,' inserted → ispravljeno (CONSISTENCY_FIXES; i 40:34, 40:74, 54:35 'tako' skinut s DEM), reimportovano.
+- DONE 2026-11-05: crtica '-' ne nosi fa-/wa- (15:3, 15:22, 30:16, 30:39, 30:44×2 → UNEXPRESSED), reimportovano.

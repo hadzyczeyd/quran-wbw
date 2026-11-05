@@ -20,6 +20,7 @@ from derive import CONTENT_TAGS, derive  # noqa: E402
 PHASES = [("FIRST", "cp5_first"), ("SECOND", "cp6_second"), ("THIRD", "cp7_third")]
 CHANGE_IDS = {}
 TOUCHED = set()  # segmenti/tokeni zahvaćeni korekcijom (direktno ili preko veze sa zahvaćenim zapisom)
+SECOND_AYAHS = set()  # prefiksi "SNNN-AXXX" ajeta s korekcijom u SECOND
 ERROR_MARKERS = ("#REF!", "#VALUE!", "#NAME?", "#DIV/0!", "#N/A", "#NUM!", "#NULL!", "#SPILL!", "#CALC!")
 
 
@@ -53,6 +54,11 @@ def review_cols(results_by_phase, kind, rid, row_h, risky, changed):
             # Red nastao/zahvaćen korekcijom nakon ove faze: potvrđen ciljanom provjerom u kasnijoj fazi.
             ci = ",".join(sorted({c for x in rid.split(">") for c in CHANGE_IDS.get(x, [])}))
             out += [f"{ph}_REVIEW_PASS", f"Red nastao korekcijom nakon {ph} ({ci}); ponovna ciljana provjera nakon korekcije PASS u kasnijoj fazi."]
+        elif (ph == "SECOND" and rid[:9] in SECOND_AYAHS
+              and results_by_phase.get("THIRD", {}).get(kind, {}).get(rid, {}).get("status") == "PASS"):
+            # Red je ušao u semantički opseg tek zbog SECOND korekcije u istom ajetu; potvrđen u THIRD (15:89).
+            out += ["SECOND_REVIEW_PASS", "Red ušao u semantički opseg nakon SECOND korekcije u istom ajetu; "
+                                          f"semantički potvrđen u THIRD: {results_by_phase['THIRD'][kind][rid]['note']}"]
         elif results_by_phase.get("THIRD_RECHECK", {}).get(kind, {}).get(rid):
             rr = results_by_phase["THIRD_RECHECK"][kind][rid]
             out += [f"{ph}_REVIEW_{rr['status']}", f"Red nastao korekcijom u THIRD (prije nije postojao); {rr['note']}"]
@@ -100,6 +106,8 @@ def main():
         c = os.path.join(run_dir, d, "CHANGE_IMPACT.json")
         if os.path.exists(c):
             changes += load_json(c)["changes"]
+            if ph == "SECOND":
+                SECOND_AYAHS.update(x[:9] for ch in load_json(c)["changes"] for x in ch["affected_records"])
     rc = os.path.join(run_dir, "cp7_third", "RECHECK_RESULTS.json")
     if os.path.exists(rc):
         results["THIRD_RECHECK"] = load_json(rc)

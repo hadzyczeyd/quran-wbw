@@ -44,6 +44,7 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
   "i" sa značenjem "također/čak" ("ćemo i povećati") ostaje inserted;
 - min u min qabli/min baʿdi → unexpressed ("prije/poslije/nakon" nosi qabl/baʿd); složeni prijedlozi min taḥti/min ʿindi →
   "kroz"/"od" nosi i imenicu (taḥt/ʿind) fused s min;
+- interpunkcijski token (crtica '-') ne nosi veznik fa-/wa- (ostaje inserted); unutar dubleta ('smutnja - nevjerovanje') dio je izraza;
 - ka-ḏālika „Eto, tako“: DEM ḏālika → 'Eto,' (deiksa), ka- → 'tako'; bez 'Eto' oba na 'tako' (42:3, 44:54, 47:3, 26:59, 30:28);
 - partitivni min uz jedninu/predikat (min al-kāfirīn → 'poricatelj') → unexpressed; uz genitiv/neodređenost ('pomagača', 'neki od') → taj token;
 - korelativno immā … wa-immā / aw ("ili … ili"): drugo "ili" nosi wa- zajedno s drugim immā (kao "ni … ni", 47:4);
