@@ -207,8 +207,11 @@ def main():
     for c in der["coverage"]:
         comp = completeness.get(str(c["ayah_id"])) or completeness.get(c["ayah_id"]) or {"status": "MISSING"}
         c["source_translation_completeness"] = comp["status"]
-        if comp["status"] == "FAIL" and c.get("documented_exception", {}).get("kind") == "SOURCE_TRANSLATION_OMISSION":
+        exc_kind = c.get("documented_exception", {}).get("kind")
+        if comp["status"] == "FAIL" and exc_kind == "SOURCE_TRANSLATION_OMISSION":
             c["source_translation_completeness"] = "PASS_DOCUMENTED_SOURCE_OMISSION"
+        elif comp["status"] == "FAIL" and exc_kind == "SOURCE_TRANSLATION_MISMATCH":  # izvorni tekst ne odgovara arapskom (26:220)
+            c["source_translation_completeness"] = "PASS_DOCUMENTED_SOURCE_MISMATCH"
         elif comp["status"] != "PASS":
             c["coverage_status"] = "REVIEW_REQUIRED"
         S["Coverage_matrix"].append([c["ayah_id"], c["coverage_status"], c["lexical_bosnian_token_count"], c["lexical_inserted_no_arabic_segment_count"],
@@ -348,7 +351,7 @@ def main():
     q("consensus_master_integrity", "svi listovi iz istog mastera", master["master_hash"][:16], True, "CONSENSUS_MASTER.json")
     q("arabic_reconstruction", "QAC segmenti po riječi; prikaz iz Uthmani", "PASS", True, "ARABIC_SOURCE_ALIGNMENT")
     q("mehanovic_text_exact", 0, counts["recon_fail"], counts["recon_fail"] == 0, "gap_before + token")
-    comp_fail = sum(1 for c in der["coverage"] if c["source_translation_completeness"] not in ("PASS", "PASS_DOCUMENTED_SOURCE_OMISSION"))
+    comp_fail = sum(1 for c in der["coverage"] if c["source_translation_completeness"] not in ("PASS", "PASS_DOCUMENTED_SOURCE_OMISSION", "PASS_DOCUMENTED_SOURCE_MISMATCH"))
     q("source_translation_completeness", "PASS za svaki ajet", f"{counts['ayah'] - comp_fail}/{counts['ayah']}", comp_fail == 0, "FIRST revizija po ajetu")
     q("ayah_coverage_pass_count", counts["ayah"], counts["cov_pass"], counts["cov_pass"] == counts["ayah"], "Coverage_matrix")
     q("unexpressed_qac_segment_count", "potpun broj + lokacije", counts["unexpressed"], True, "Coverage_matrix.unexpressed_segment_ids")
