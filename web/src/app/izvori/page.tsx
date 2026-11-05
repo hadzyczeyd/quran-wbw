@@ -80,6 +80,11 @@ export default function IzvoriPage() {
           izmjena. Za pitanja, primjedbe ili uočene greške koristi{" "}
           <a href="/contact">Kontakt stranicu</a>.
         </p>
+        <p>
+          Jedini izuzetak je ajet 21:67: u dostupnom izdanju Mehanovićevog
+          prijevoda (QuranEnc) njegov tekst je greškom isti kao tekst 21:66,
+          pa je za taj ajet prikazan prijevod Besima Korkuta.
+        </p>
       </section>
     </main>
   );

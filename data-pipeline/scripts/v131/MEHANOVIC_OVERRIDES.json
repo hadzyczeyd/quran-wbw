@@ -1,0 +1,11 @@
+{
+ "note": "Jedine zamjene izvornog Mehanovićevog teksta. Svaka je odobrena od korisnika i prikazuje se s napomenom o prevodiocu.",
+ "ayahs": {
+  "21:67": {
+   "text": "Teško vama i onima kojima se, umjesto Allahu, klanjate! Zašto se ne opametite?",
+   "translator": "Besim Korkut",
+   "reason": "U izvoru (QuranEnc bosnian_mihanovich v1.1.0, i na quranenc.com 2026-11-05) tekst 21:67 je duplikat teksta 21:66; Mehanovićev prijevod 21:67 nije dostupan. Korisnik je 2026-11-05 dostavio prijevod Besima Korkuta.",
+   "approved_by": "korisnik, 2026-11-05"
+  }
+ }
+}

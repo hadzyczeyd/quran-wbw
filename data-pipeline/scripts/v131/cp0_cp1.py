@@ -10,7 +10,7 @@ import uuid
 
 sys.path.insert(0, os.path.dirname(__file__))
 from common import (  # noqa: E402
-    API_MORPH, MEHANOVIC_XLSX, PROFILES, PROTOCOL_DOC, QAC_MORPH, RUNS, SOURCES, UTHMANI, WBW,
+    API_MORPH, MEHANOVIC_OVERRIDES, MEHANOVIC_XLSX, PROFILES, PROTOCOL_DOC, QAC_MORPH, RUNS, SOURCES, UTHMANI, WBW,
     api_lines_by_word, assign_pronoun_types, atomic_write_json, build_color_master, canonical_json,
     color_for, is_word_token, load_json, load_mehanovic_surah, load_qac_surah, load_uthmani_surah,
     now, reconstruct, seg_id, sha256_bytes, sha256_file, tok_id, tokenize, word_id,
@@ -98,6 +98,7 @@ def main():
         "qac_word_by_word_hash": sha256_file(WBW),
         "uthmani_text_master_hash": sha256_file(UTHMANI),
         "mehanovic_source_hash": sha256_file(MEHANOVIC_XLSX),
+        "mehanovic_overrides_hash": sha256_file(MEHANOVIC_OVERRIDES) if os.path.exists(MEHANOVIC_OVERRIDES) else None,
         "app_ready_schema_hash": schema_hash("APP_READY"),
         "vizuelna_schema_hash": schema_hash("VIZUELNA"),
         "workspace_write_test": wt_hash,

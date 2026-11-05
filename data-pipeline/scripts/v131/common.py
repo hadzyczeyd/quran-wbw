@@ -17,6 +17,7 @@ RUNS = os.path.join(ROOT, "runs")
 QAC_MORPH = os.path.join(SOURCES, "quranic-corpus-morphology-0.4.txt")
 UTHMANI = os.path.join(SOURCES, "quran-uthmani.txt")
 MEHANOVIC_XLSX = os.path.join(SOURCES, "bosnian_mihanovich_v1.1.0-excel.1.xlsx")
+MEHANOVIC_OVERRIDES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MEHANOVIC_OVERRIDES.json")
 COLOR_DIR = os.path.join(SOURCES, "qac_color_source")
 API_MORPH = os.path.join(COLOR_DIR, "api", "morphology-api.txt")
 WBW = os.path.join(COLOR_DIR, "api", "word-by-word.txt")
@@ -310,6 +311,13 @@ def load_mehanovic_surah(surah):
         if r[1] == surah:
             out[int(r[2])] = {"id": r[0], "text": r[3], "footnotes": r[4]}
     wb.close()
+    # Jedine odobrene zamjene (npr. 21:67 je u izvoru duplikat 21:66) — vidi sources/MEHANOVIC_OVERRIDES.json.
+    if os.path.exists(MEHANOVIC_OVERRIDES):
+        for ref, ov in load_json(MEHANOVIC_OVERRIDES)["ayahs"].items():
+            s, a = map(int, ref.split(":"))
+            if s == surah and a in out:
+                out[a] = {**out[a], "text": ov["text"], "source_override": {k: ov[k] for k in ("translator", "reason", "approved_by")},
+                          "original_text": out[a]["text"]}
     return out
 
 

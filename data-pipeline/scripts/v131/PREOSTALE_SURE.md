@@ -10,8 +10,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 3 | 23 El-Mu'minun | 118 | 1050 | 8.9 | gotovo (2026-11-05) |
 | 4 | 19 Merjem | 98 | 961 | 9.8 | gotovo (2026-11-05) |
 | 5 | 20 Ta-ha | 135 | 1335 | 9.9 | gotovo (2026-11-05) |
-| 6 | 21 El-Enbija | 112 | 1169 | 10.4 | u radu |
-| 7 | 25 El-Furkan | 77 | 893 | 11.6 | |
+| 6 | 21 El-Enbija | 112 | 1169 | 10.4 | gotovo (2026-11-05) |
+| 7 | 25 El-Furkan | 77 | 893 | 11.6 | u radu |
 | 8 | 27 En-Neml | 93 | 1151 | 12.4 | |
 | 9 | 17 El-Isra | 111 | 1556 | 14.0 | |
 | 10 | 29 El-Ankebut | 69 | 976 | 14.1 | |
@@ -42,3 +42,5 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - DONE 2026-11-05: crtica '-' ne nosi fa-/wa- (15:3, 15:22, 30:16, 30:39, 30:44×2 → UNEXPRESSED), reimportovano.
 - DONE 2026-11-05: 'da' u 'neće da' ide uz glagol (većina: 23:74, 34:8, 36:35, 41:52, 57:24) → ispravljeno 26:3 i 26:190, reimportovano.
 - 20: 20:129 propust izvora (Mehanović bez „wa-ajalun musammā“) → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90 redova.
+- TODO (nakon 21): subḥāna — optativno 'neka je/si' pripada subḥāna, obična kopula 'je' inserted; provjeriti/ispraviti 30:40 ('Čist je' — kopula vezana) i 34:41 ('Uzvišen neka' — 'si/je' nevezano); ostali objavljeni već dosljedni.
+- 21: 21:67 u izvoru duplikat 21:66 → odobrena zamjena prijevodom Besima Korkuta (scripts/v131/MEHANOVIC_OVERRIDES.json, napomena na /izvori).
