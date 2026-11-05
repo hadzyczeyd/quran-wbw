@@ -38,4 +38,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 
 ## Bilješke
 - 26: 26:220 greška izvora (Mehanović „Silni i Milostivi“ umjesto as-samīʿ al-ʿalīm) → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_MISMATCH), QA 90 redova.
-- TODO dosljednost (nakon 26): ka-ḏālika „Eto, tako“ — većina (42:3, 42:7, 44:54, 47:3, 40:34, 40:74, 54:35) DEM → 'Eto,'; 30:28, 30:59, 37:80, 37:110, 37:121, 37:131 imaju 'Eto,' inserted → ispraviti (CONSISTENCY_FIXES).
+- DONE 2026-11-05 dosljednost: ka-ḏālika „Eto, tako“ — većina (42:3, 42:7, 44:54, 47:3, 40:34, 40:74, 54:35) DEM → 'Eto,'; 30:28, 30:59, 37:80, 37:110, 37:121, 37:131 imaju 'Eto,' inserted → ispravljeno (CONSISTENCY_FIXES; i 40:34, 40:74, 54:35 'tako' skinut s DEM), reimportovano.
