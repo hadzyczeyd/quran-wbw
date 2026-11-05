@@ -225,6 +225,17 @@ a {
   text-align: center;
 }
 
+.site-footer-author {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.site-footer-author:hover,
+.site-footer-author:focus-visible {
+  color: var(--color-text);
+}
+
 .site-support {
   max-width: 36rem;
   margin: 0 auto 1.25rem;

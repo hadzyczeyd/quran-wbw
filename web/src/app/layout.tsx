@@ -73,7 +73,13 @@ export default function RootLayout({
               Podrži na zagazu.ba
             </a>
           </aside>
-          <p>© {currentYear} Zejd Hadžić. Sva prava zadržana.</p>
+          <p>
+            © {currentYear}{" "}
+            <a href="https://z-one.dev" target="_blank" rel="noopener noreferrer" className="site-footer-author">
+              Zejd Hadžić
+            </a>
+            . Sva prava zadržana.
+          </p>
         </footer>
 
         <Analytics />
