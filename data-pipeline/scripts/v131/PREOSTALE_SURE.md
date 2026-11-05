@@ -13,8 +13,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 6 | 21 El-Enbija | 112 | 1169 | 10.4 | gotovo (2026-11-05) |
 | 7 | 25 El-Furkan | 77 | 893 | 11.6 | gotovo (2026-11-05) |
 | 8 | 27 En-Neml | 93 | 1151 | 12.4 | gotovo (2026-11-05) |
-| 9 | 17 El-Isra | 111 | 1556 | 14.0 | u radu |
-| 10 | 29 El-Ankebut | 69 | 976 | 14.1 | |
+| 9 | 17 El-Isra | 111 | 1556 | 14.0 | gotovo (2026-11-05) |
+| 10 | 29 El-Ankebut | 69 | 976 | 14.1 | u radu |
 | 11 | 18 El-Kehf | 110 | 1579 | 14.4 | |
 | 12 | 16 En-Nahl | 128 | 1844 | 14.4 | |
 | 13 | 11 Hud | 123 | 1917 | 15.6 | |
@@ -45,3 +45,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - DONE 2026-11-05: subḥāna — optativno 'neka je/si' pripada subḥāna, obična kopula 'je' inserted; 30:40 ispravljen ('je' inserted); 34:41 je ispravan ('si' nosi -ka); reimportovano.
 - 21: 21:67 u izvoru duplikat 21:66 → odobrena zamjena prijevodom Besima Korkuta (scripts/v131/MEHANOVIC_OVERRIDES.json, napomena na /izvori).
 - DONE 2026-11-05: neodređenici 'jedan/neki/kakav' uz neodređenu imenicu — većina objavljenih (≈50) ih veže na imenicu, ≈31 inserted (npr. 20:10 'nekakvu', 26:29 'nekoga', 26:154 'jedno', 26:189 'jednog', 21:111 'izvjesno'?) → 27 mjesta u 13 sura (20, 21, 25, 26, 30, 36, 37, 42, 48, 49, 54, 62, 77) vezano na imenicu, reimportovano; 'ikakav' uz negaciju (25:3, 72:21) i 'neka je' (37:109, 181) ostaju inserted.
+- TODO: laʿalla 'bi' uz glagol (dosljedno 30:46): 21:31 'kuda žele stizali.' i 21:58 'se obratili.' bez 'bi' na V; provjeriti i 46:23 'ste' (PRON) / 'u neznanju ogrezao' (V).
