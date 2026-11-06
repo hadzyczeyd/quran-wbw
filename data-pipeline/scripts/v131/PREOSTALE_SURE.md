@@ -16,8 +16,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 9 | 17 El-Isra | 111 | 1556 | 14.0 | gotovo (2026-11-05) |
 | 10 | 29 El-Ankebut | 69 | 976 | 14.1 | gotovo (2026-11-05) |
 | 11 | 18 El-Kehf | 110 | 1579 | 14.4 | gotovo (2026-11-06) |
-| 12 | 16 En-Nahl | 128 | 1844 | 14.4 | u radu |
-| 13 | 11 Hud | 123 | 1917 | 15.6 | |
+| 12 | 16 En-Nahl | 128 | 1844 | 14.4 | gotovo (2026-11-06) |
+| 13 | 11 Hud | 123 | 1917 | 15.6 | u radu |
 | 14 | 12 Jusuf | 111 | 1777 | 16.0 | |
 | 15 | 14 Ibrahim | 52 | 830 | 16.0 | |
 | 16 | 7 El-A'raf | 206 | 3320 | 16.1 | |
@@ -49,3 +49,5 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - DONE 2026-11-05: al- iscrpnosti ('Sva/Svaka hvala', 'svi ljudi', 'svih svjetova') → DET (većina: 1:2, 34:1, 39:29/74/75, 40:65, 43:33); ispravljeno 15 mjesta u 17, 21, 26, 30, 35, 59, 62, 64, 66, 77; 'sve/svi' uz kull/jamīʿ ili kao objekat ('sve zna') ostaje kako jeste.
 - 29: izvorni tipo 29:47 'Knjigu-i' (bez razmaka); 29:60 Mehanović ʿalīm prevodi 'Svevideći' (njegov izbor).
 - 18: propusti izvora 18:26 (nebesa i Zemlja u ġaybu s-samāwāti wa-l-arḍ) i 18:86 (vokativ 'O Zulkarnejne') → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90.
+- 16: propust izvora 16:106 (wa-qalbuhu muṭmaʾinnun bi-l-īmān, W010–W012) → DOCUMENTED_EXCEPTIONS, QA 90. Konzistencija: iza samostalnog hum zamjenica nosi samo hum (16:16, 16:20, 16:72 → -ūna fused/pomoćni).
+- TODO konzistencija objavljenih: 63:7 W003-S02 (-ūna) je na 'Oni' zajedno s hum → treba fused 'govore:'.
