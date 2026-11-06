@@ -22,6 +22,8 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - laʿalla → "da" ("ne bi li": laʿalla → "ne … li"); -kum/-hum i -ūna → "bi/biste", a glagol uključuje "bi/biste" (16:14, 16:90, 21:31);
 - fa sababiyya s konjunktivom (skriveni an) → "pa da" (ili samo "da") na fa; ponovljeno "da" pred koordiniranim glagolom nosi isti fa,
   a glagol samo svoj token (17:22, 17:29, 33:32, 80:4, 11:113);
+- zakletveno la- (+ -nna) čiji sadržaj Mehanović uvodi sa "da" ("naumpade da ga smjeste") → la- nosi "da", glagol samo svoj token (12:35, 12:66);
+  kauzativno "dati/učiniti da" ostaje glagolu;
 - iza samostalnog hum / imena inna / demonstrativa ulāʾika zamjenica nosi samo taj segment; subjektni sufiks glagola ide na pomoćni ili je
   fused na glagol (16:16, 16:72, 63:7, 39:25);
 - pomoćni glagol pripada glagolskom obliku koji gradi; REL → stvarni bosanski relativni izraz (ponovljeni "koji" istog REL-a u istom ajetu
