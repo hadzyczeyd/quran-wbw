@@ -25,7 +25,11 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
 - zakletveno la- (+ -nna) čiji sadržaj Mehanović uvodi sa "da" ("naumpade da ga smjeste") → la- nosi "da", glagol samo svoj token (12:35, 12:66);
   kauzativno "dati/učiniti da" ostaje glagolu;
 - iza samostalnog hum / imena inna / demonstrativa ulāʾika zamjenica nosi samo taj segment; subjektni sufiks glagola ide na pomoćni ili je
-  fused na glagol (16:16, 16:72, 63:7, 39:25);
+  fused na glagol (16:16, 16:72, 63:7, 39:25); isto za ime laʿalla uz eksplicitnu zamjenicu: "oni" nosi -hum, a -ūna ide na "bi"
+  (12:46, 20:113, 32:3, 7:26, 16:44);
+- imenica/particip preveden glagolom (mufliḥūn "će uspjeti", ḫālidūn "će vječno ostati", ẓālima "su zulum činila", mā bayna aydīhim
+  "su uradili") → pomoćni "će/su/ćete" nosi zamjenica ili ime koje ga već ima (hum, hiya, ulāʾika, -hum, lakum, ime inna), a imenica
+  samo leksički dio (11:23, 7:8, 7:36, 7:45, 7:97, 7:171, 28, 22:45, 22:76);
 - pomoćni glagol pripada glagolskom obliku koji gradi; REL → stvarni bosanski relativni izraz (ponovljeni "koji" istog REL-a u istom ajetu
   nose taj REL); povratne (resumptivne) zamjenice smiju biti unexpressed, ali ako njihovu ulogu nosi padežni/posvojni
   oblik relativnog izraza ("kojima" 89:8, "Čija" 85:9, "onima" 85:11), vežu se na taj token;

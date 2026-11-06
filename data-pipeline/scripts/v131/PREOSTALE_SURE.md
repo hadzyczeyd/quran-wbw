@@ -22,8 +22,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 15 | 14 Ibrahim | 52 | 830 | 16.0 | gotovo (2026-11-06) |
 | 16 | 7 El-A'raf | 206 | 3320 | 16.1 | gotovo (2026-11-06) |
 | 17 | 28 El-Kasas | 88 | 1430 | 16.2 | gotovo (2026-11-06) |
-| 18 | 22 El-Hadždž | 78 | 1274 | 16.3 | u radu |
-| 19 | 8 El-Enfal | 75 | 1233 | 16.4 | |
+| 18 | 22 El-Hadždž | 78 | 1274 | 16.3 | gotovo (2026-11-06) |
+| 19 | 8 El-Enfal | 75 | 1233 | 16.4 | u radu |
 | 20 | 10 Junus | 109 | 1833 | 16.8 | |
 | 21 | 3 Alu Imran | 200 | 3481 | 17.4 | |
 | 22 | 6 El-En'am | 165 | 3050 | 18.5 | |
@@ -54,3 +54,5 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - DONE 2026-11-06: pravila li-/laʿalla/fa sababiyya/hum zapisana u COMMON.md; fa sababiyya → 'pa da' na fa (većina objavljenih: 17:22, 17:29, 33:32, 80:4) — 16:94 i 26:102 usklađeni, reimportovano.
 - DONE 2026-11-06: 16:44 W012-S02 (-ūna od yatafakkarūn) je na 'oni', a ime laʿalla već nosi 'oni' → 'bi' (većina: 12:46, 20:113, 32:3, 32:21, 44:58), reimportovano.
 - 28: propust izvora 28:50 (wa-man aḍallu mimmani ttabaʿa hawāhu, W009–W013; detektovani blok W012–W013) → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90.
+- 22: izvorni tipfeleri (samo prijavljeno): 22:37 'bogogojaznost', 22:40 'pomažuv -Allah', 22:54 'Kur 'an' (razmak), 22:64 '?' iza izjavne rečenice.
+- DONE 2026-11-06: COMMON dopunjen — particip/imenica prevedena glagolom: pomoćni nosi zamjenicu/ime (SECOND u S022 je to prekršio, THIRD vratio); 22:71 'nikakav' na sulṭān (kao 7:33), reimportovano.
