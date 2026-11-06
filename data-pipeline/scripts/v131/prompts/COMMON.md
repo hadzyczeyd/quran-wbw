@@ -17,6 +17,13 @@ Pravila (protokol `sources/NALOG_V13.1_tekst.txt` je autoritet):
   `part` rasponima samo na stvarnoj unutrašnjoj granici koja pokriva cijeli token; ekspletivno "ne" (uz "dok", glagole straha) nije NEG;
 - kāna + imperfekt ("ono što ste radili"): kāna i njegov sufiks → zajednički pomoćni "ste/su", a -ūna imperfekta također na taj
   pomoćni (ili na eksplicitnu zamjenicu ako postoji); glagol nosi samo svoj token; u "in kuntum + glagol" bez pomoćnog kāna je fused na glagol;
+- namjerni li-/an → "da"; ponovljeno "da" pred koordiniranim glagolom nosi isti li-/an, a glagol samo svoj token (16:14, 16:33, 18:2);
+  "bi" uz glagol gradi oblik i nosi subjektni sufiks (11:5, 11:7);
+- laʿalla → "da" ("ne bi li": laʿalla → "ne … li"); -kum/-hum i -ūna → "bi/biste", a glagol uključuje "bi/biste" (16:14, 16:90, 21:31);
+- fa sababiyya s konjunktivom (skriveni an) → "pa da" (ili samo "da") na fa; ponovljeno "da" pred koordiniranim glagolom nosi isti fa,
+  a glagol samo svoj token (17:22, 17:29, 33:32, 80:4, 11:113);
+- iza samostalnog hum / imena inna / demonstrativa ulāʾika zamjenica nosi samo taj segment; subjektni sufiks glagola ide na pomoćni ili je
+  fused na glagol (16:16, 16:72, 63:7, 39:25);
 - pomoćni glagol pripada glagolskom obliku koji gradi; REL → stvarni bosanski relativni izraz (ponovljeni "koji" istog REL-a u istom ajetu
   nose taj REL); povratne (resumptivne) zamjenice smiju biti unexpressed, ali ako njihovu ulogu nosi padežni/posvojni
   oblik relativnog izraza ("kojima" 89:8, "Čija" 85:9, "onima" 85:11), vežu se na taj token;

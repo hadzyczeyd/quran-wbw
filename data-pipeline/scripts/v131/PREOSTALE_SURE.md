@@ -51,3 +51,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 18: propusti izvora 18:26 (nebesa i Zemlja u ġaybu s-samāwāti wa-l-arḍ) i 18:86 (vokativ 'O Zulkarnejne') → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90.
 - 16: propust izvora 16:106 (wa-qalbuhu muṭmaʾinnun bi-l-īmān, W010–W012) → DOCUMENTED_EXCEPTIONS, QA 90. Konzistencija: iza samostalnog hum zamjenica nosi samo hum (16:16, 16:20, 16:72 → -ūna fused/pomoćni).
 - DONE 2026-11-06: 63:7 W003-S02 (-ūna) s 'Oni' (hum) → fused 'govore:', reimportovano.
+- DONE 2026-11-06: pravila li-/laʿalla/fa sababiyya/hum zapisana u COMMON.md; fa sababiyya → 'pa da' na fa (većina objavljenih: 17:22, 17:29, 33:32, 80:4) — 16:94 i 26:102 usklađeni, reimportovano.
