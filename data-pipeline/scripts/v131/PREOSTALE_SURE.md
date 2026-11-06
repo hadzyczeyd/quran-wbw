@@ -18,8 +18,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 11 | 18 El-Kehf | 110 | 1579 | 14.4 | gotovo (2026-11-06) |
 | 12 | 16 En-Nahl | 128 | 1844 | 14.4 | gotovo (2026-11-06) |
 | 13 | 11 Hud | 123 | 1917 | 15.6 | gotovo (2026-11-06) |
-| 14 | 12 Jusuf | 111 | 1777 | 16.0 | u radu |
-| 15 | 14 Ibrahim | 52 | 830 | 16.0 | |
+| 14 | 12 Jusuf | 111 | 1777 | 16.0 | gotovo (2026-11-06) |
+| 15 | 14 Ibrahim | 52 | 830 | 16.0 | u radu |
 | 16 | 7 El-A'raf | 206 | 3320 | 16.1 | |
 | 17 | 28 El-Kasas | 88 | 1430 | 16.2 | |
 | 18 | 22 El-Hadždž | 78 | 1274 | 16.3 | |
