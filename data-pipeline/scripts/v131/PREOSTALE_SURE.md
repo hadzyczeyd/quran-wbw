@@ -50,4 +50,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 29: izvorni tipo 29:47 'Knjigu-i' (bez razmaka); 29:60 Mehanović ʿalīm prevodi 'Svevideći' (njegov izbor).
 - 18: propusti izvora 18:26 (nebesa i Zemlja u ġaybu s-samāwāti wa-l-arḍ) i 18:86 (vokativ 'O Zulkarnejne') → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90.
 - 16: propust izvora 16:106 (wa-qalbuhu muṭmaʾinnun bi-l-īmān, W010–W012) → DOCUMENTED_EXCEPTIONS, QA 90. Konzistencija: iza samostalnog hum zamjenica nosi samo hum (16:16, 16:20, 16:72 → -ūna fused/pomoćni).
-- TODO konzistencija objavljenih: 63:7 W003-S02 (-ūna) je na 'Oni' zajedno s hum → treba fused 'govore:'.
+- DONE 2026-11-06: 63:7 W003-S02 (-ūna) s 'Oni' (hum) → fused 'govore:', reimportovano.
