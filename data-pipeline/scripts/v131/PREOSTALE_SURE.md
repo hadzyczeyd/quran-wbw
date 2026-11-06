@@ -23,8 +23,8 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 16 | 7 El-A'raf | 206 | 3320 | 16.1 | gotovo (2026-11-06) |
 | 17 | 28 El-Kasas | 88 | 1430 | 16.2 | gotovo (2026-11-06) |
 | 18 | 22 El-Hadždž | 78 | 1274 | 16.3 | gotovo (2026-11-06) |
-| 19 | 8 El-Enfal | 75 | 1233 | 16.4 | u radu |
-| 20 | 10 Junus | 109 | 1833 | 16.8 | |
+| 19 | 8 El-Enfal | 75 | 1233 | 16.4 | gotovo (2026-11-06) |
+| 20 | 10 Junus | 109 | 1833 | 16.8 | u radu |
 | 21 | 3 Alu Imran | 200 | 3481 | 17.4 | |
 | 22 | 6 El-En'am | 165 | 3050 | 18.5 | |
 | 23 | 9 Et-Tevba | 129 | 2498 | 19.4 | |
@@ -56,3 +56,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 28: propust izvora 28:50 (wa-man aḍallu mimmani ttabaʿa hawāhu, W009–W013; detektovani blok W012–W013) → DOCUMENTED_EXCEPTIONS (SOURCE_TRANSLATION_OMISSION), QA 90.
 - 22: izvorni tipfeleri (samo prijavljeno): 22:37 'bogogojaznost', 22:40 'pomažuv -Allah', 22:54 'Kur 'an' (razmak), 22:64 '?' iza izjavne rečenice.
 - DONE 2026-11-06: COMMON dopunjen — particip/imenica prevedena glagolom: pomoćni nosi zamjenicu/ime (SECOND u S022 je to prekršio, THIRD vratio); 22:71 'nikakav' na sulṭān (kao 7:33), reimportovano.
+- 8: izvor (samo prijavljeno): 8:6 'naočigled svoj', 8:7 i 8:58 '-Allah' bez razmaka; QAC 0.4 u 8:43 W008 spaja glagol i -ka u S01.
