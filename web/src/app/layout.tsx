@@ -92,7 +92,8 @@ export default function RootLayout({
 
         <ConsentManager />
 
-        <Analytics />
+        {/* Vercel Web Analytics postoji samo na Vercelu; na Hostingeru bi /_vercel/insights bio 404. */}
+        {process.env.VERCEL === "1" && <Analytics />}
       </body>
     </html>
   );
