@@ -70,6 +70,15 @@ export default function IzvoriPage() {
             Ulanovsky) za bosanski — oba preko Google Fonts, slobodne
             licence.
           </dd>
+
+          <dt>Država posjetioca u statistici</dt>
+          <dd>
+            Ovaj proizvod uključuje GeoLite2 podatke koje je izradio MaxMind, dostupne na{" "}
+            <a href="https://www.maxmind.com" target="_blank" rel="noreferrer">
+              maxmind.com
+            </a>{" "}
+            (CC BY-SA 4.0).
+          </dd>
         </dl>
       </section>
 

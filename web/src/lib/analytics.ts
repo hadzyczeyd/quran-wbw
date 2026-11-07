@@ -1,7 +1,8 @@
 /**
  * Pomoćne funkcije za statistiku posjeta (server). Iz User-Agenta i
  * preporučioca izvlače se samo grube kategorije — ništa što identifikuje
- * osobu. IP adresa se ne čuva; država dolazi iz Vercel zaglavlja.
+ * osobu. IP adresa se ne čuva; država dolazi iz zaglavlja hostinga ili iz
+ * GeoLite2 pretrage u memoriji (vidi api/track).
  */
 
 const BOT_RE =

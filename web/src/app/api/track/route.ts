@@ -12,7 +12,7 @@ import {
 /**
  * Prima jedan pregled stranice od posjetioca koji je pristao na statistiku
  * (vidi ConsentManager). Broji se samo na produkciji, bez botova; IP adresa
- * se ne čuva — koristi se samo država iz zaglavlja hostinga (Vercel/Cloudflare).
+ * se ne čuva — koristi se samo država (zaglavlje hostinga ili GeoLite2 iz IP-a u memoriji).
  * Produkcija: Vercel (VERCEL_ENV=production) ili Hostinger (PRODUKCIJA=1).
  */
 export async function POST(request: Request) {
@@ -62,7 +62,8 @@ export async function POST(request: Request) {
   const country =
     request.headers.get("x-vercel-ip-country") ??
     request.headers.get("cf-ipcountry") ??
-    request.headers.get("x-country-code");
+    request.headers.get("x-country-code") ??
+    (await countryFromIp(request));
 
   await supabase.rpc("record_page_view", {
     p_visitor_id: visitorId,
@@ -78,4 +79,21 @@ export async function POST(request: Request) {
   });
 
   return empty;
+}
+
+/**
+ * Hostinger ne šalje zaglavlje s državom: država se određuje iz IP adrese samo u memoriji
+ * (GeoLite2, MaxMind; atribucija na /izvori). IP adresa se nigdje ne upisuje.
+ */
+async function countryFromIp(request: Request): Promise<string | null> {
+  const ip =
+    request.headers.get("x-real-ip")?.trim() ||
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim();
+  if (!ip) return null;
+  try {
+    const geoip = (await import("geoip-country")).default;
+    return geoip.lookup(ip)?.country ?? null;
+  } catch {
+    return null;
+  }
 }

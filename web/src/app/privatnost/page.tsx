@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   description: "Kako Kur'an riječ po riječ postupa s podacima posjetilaca i kolačićima.",
 };
 
+// Tekst o hostingu prati platformu na kojoj je stranica izgrađena (Vercel ili Hostinger).
+const onVercel = process.env.VERCEL === "1";
+
 export default function PrivatnostPage() {
   return (
     <main className="page-shell about-page">
@@ -57,17 +60,21 @@ export default function PrivatnostPage() {
           izbor, kako vas ne bismo stalno pitali. Prijava administratora koristi tehnički neophodnu pohranu
           Supabase sesije, i to samo na stranici za prijavu.
         </p>
-        <p>
-          Hosting (Vercel) vodi agregatnu statistiku bez kolačića i bez praćenja pojedinaca (Vercel Web
-          Analytics), uz uobičajene sigurnosne zapise servera.
-        </p>
+        {onVercel ? (
+          <p>
+            Hosting (Vercel) vodi agregatnu statistiku bez kolačića i bez praćenja pojedinaca (Vercel Web
+            Analytics), uz uobičajene sigurnosne zapise servera.
+          </p>
+        ) : (
+          <p>Hosting (Hostinger) vodi samo uobičajene sigurnosne zapise servera.</p>
+        )}
       </section>
 
       <section>
         <h2>Gdje se podaci čuvaju</h2>
         <p>
-          Statistika se čuva u bazi podataka kod pružaoca Supabase, a stranica radi na Vercel serverima u
-          Frankfurtu. Oba pružaoca obrađuju podatke samo za potrebe rada ove stranice.
+          Statistika se čuva u bazi podataka kod pružaoca Supabase, a stranica radi na{" "}
+          {onVercel ? "Vercel serverima u Frankfurtu" : "serverima pružaoca Hostinger"}. Oba pružaoca obrađuju podatke samo za potrebe rada ove stranice.
         </p>
       </section>
 

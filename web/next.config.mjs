@@ -42,6 +42,8 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  // geoip-country čita svoje podatke s diska (node_modules), ne smije se bundlati.
+  serverExternalPackages: ["geoip-country"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
