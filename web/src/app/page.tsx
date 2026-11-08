@@ -6,8 +6,8 @@ import { DevStatusBanner } from "@/components/DevStatusBanner";
 import { SurahGrid } from "@/components/SurahGrid";
 import { getAvailableSurahIds } from "@/lib/availableSurahs";
 
-// Statično, osvježava se u pozadini nakon uvoza novih sura.
-export const revalidate = 3600;
+// Statično; lista dostupnih sura se osvježava najkasnije minut nakon uvoza nove sure.
+export const revalidate = 60;
 
 export default async function Home() {
   const availableSurahIds = await getAvailableSurahIds();
