@@ -25,7 +25,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 18 | 22 El-Hadždž | 78 | 1274 | 16.3 | gotovo (2026-11-06) |
 | 19 | 8 El-Enfal | 75 | 1233 | 16.4 | gotovo (2026-11-06) |
 | 20 | 10 Junus | 109 | 1833 | 16.8 | gotovo (2026-11-06) |
-| 21 | 3 Alu Imran | 200 | 3481 | 17.4 | |
+| 21 | 3 Alu Imran | 200 | 3481 | 17.4 | gotovo (2026-11-08) |
 | 22 | 6 El-En'am | 165 | 3050 | 18.5 | |
 | 23 | 9 Et-Tevba | 129 | 2498 | 19.4 | |
 | 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | |
@@ -60,3 +60,6 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 10: izvor (samo prijavljeno): 10:58 'blagodarnosti' (faḍl), 10:64/108 razmaci uz crticu, 10:87/90 malo 'mi' za Allaha, 10:88 drugo rabbanā 'Gospodaru moj', 10:93 'Israllove'.
 - DONE 2026-11-06: 7:125 ime inna 'Mi' nosi i 'ćemo' (particip munqalibūn samo leksički), dosljedno 10:20, 10:102; reimportovano.
 - Pauza 2026-11-06 po nalogu korisnika; sljedeća: 3 Alu Imran.
+- 3: izvor (samo prijavljeno): 3:19 'sviđa', 3:199 'svidjeti' (svodi/svesti), 3:41 'išaretorn', 3:81 'Potvrđujerno', 3:98 'Allahova ajete', interpunkcija 36/78/154, veliko 'A' iza zareza u 140; li-n-nās (110) i fī l-amr (159) nisu prevedeni (pojedinačno UNEXPRESSED, bez bloka).
+- 3: pomoćni 'će' participa/imenice prevedene glagolom uz običnu imeničku subjekat-frazu ostaje uz glagolski izraz (185 'će okusiti' kao 21:35, 29:57; 198 'će ugostiti'); SECOND/THIRD su ga bili prebacili na subjekat → vraćeno kroz CONSISTENCY_FIXES.
+- Pauza 2026-11-08 po nalogu korisnika (deploy nakon sure 3); sljedeća: 6 El-En'am.
