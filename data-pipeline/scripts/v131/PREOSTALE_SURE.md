@@ -29,7 +29,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 22 | 6 El-En'am | 165 | 3050 | 18.5 | |
 | 23 | 9 Et-Tevba | 129 | 2498 | 19.4 | |
 | 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | gotovo (2026-11-09) |
-| 25 | 24 En-Nur | 64 | 1316 | 20.6 | |
+| 25 | 24 En-Nur | 64 | 1316 | 20.6 | gotovo (2026-11-09) |
 | 26 | 4 En-Nisa | 176 | 3747 | 21.3 | |
 | 27 | 2 El-Bekara | 286 | 6116 | 21.4 | |
 | 28 | 5 El-Maida | 120 | 2804 | 23.4 | |
@@ -64,3 +64,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 3: pomoćni 'će' participa/imenice prevedene glagolom uz običnu imeničku subjekat-frazu ostaje uz glagolski izraz (185 'će okusiti' kao 21:35, 29:57; 198 'će ugostiti'); SECOND/THIRD su ga bili prebacili na subjekat → vraćeno kroz CONSISTENCY_FIXES.
 - Pauza 2026-11-08 po nalogu korisnika (deploy nakon sure 3); sljedeća: 6 El-En'am.
 - 13: izvor (samo prijavljeno): 13:33 bez negacije za lā yaʿlamu ('što on zna da postoji', NEG pojedinačno UNEXPRESSED) i malo 'on' za Allaha; 13:31 'rade-sve' bez razmaka; 13:16 neobični navodnici.
+- 24: izvor (samo prijavljeno): 24:23 ʿaḏābun ʿaẓīm → 'patnja bolna'; neprevedeno (pojedinačno UNEXPRESSED): 24:13 ʿalayhi, 24:32 minkum, 24:54 innamā, 24:55 baʿd u min baʿdi ḫawfihim.
