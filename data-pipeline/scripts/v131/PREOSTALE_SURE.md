@@ -28,7 +28,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 21 | 3 Alu Imran | 200 | 3481 | 17.4 | gotovo (2026-11-08) |
 | 22 | 6 El-En'am | 165 | 3050 | 18.5 | |
 | 23 | 9 Et-Tevba | 129 | 2498 | 19.4 | |
-| 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | |
+| 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | gotovo (2026-11-09) |
 | 25 | 24 En-Nur | 64 | 1316 | 20.6 | |
 | 26 | 4 En-Nisa | 176 | 3747 | 21.3 | |
 | 27 | 2 El-Bekara | 286 | 6116 | 21.4 | |
@@ -63,3 +63,4 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 3: izvor (samo prijavljeno): 3:19 'sviđa', 3:199 'svidjeti' (svodi/svesti), 3:41 'išaretorn', 3:81 'Potvrđujerno', 3:98 'Allahova ajete', interpunkcija 36/78/154, veliko 'A' iza zareza u 140; li-n-nās (110) i fī l-amr (159) nisu prevedeni (pojedinačno UNEXPRESSED, bez bloka).
 - 3: pomoćni 'će' participa/imenice prevedene glagolom uz običnu imeničku subjekat-frazu ostaje uz glagolski izraz (185 'će okusiti' kao 21:35, 29:57; 198 'će ugostiti'); SECOND/THIRD su ga bili prebacili na subjekat → vraćeno kroz CONSISTENCY_FIXES.
 - Pauza 2026-11-08 po nalogu korisnika (deploy nakon sure 3); sljedeća: 6 El-En'am.
+- 13: izvor (samo prijavljeno): 13:33 bez negacije za lā yaʿlamu ('što on zna da postoji', NEG pojedinačno UNEXPRESSED) i malo 'on' za Allaha; 13:31 'rade-sve' bez razmaka; 13:16 neobični navodnici.
