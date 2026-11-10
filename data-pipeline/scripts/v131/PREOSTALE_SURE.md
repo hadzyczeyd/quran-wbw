@@ -30,7 +30,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 23 | 9 Et-Tevba | 129 | 2498 | 19.4 | gotovo (2026-11-09) |
 | 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | gotovo (2026-11-09) |
 | 25 | 24 En-Nur | 64 | 1316 | 20.6 | gotovo (2026-11-09) |
-| 26 | 4 En-Nisa | 176 | 3747 | 21.3 | |
+| 26 | 4 En-Nisa | 176 | 3747 | 21.3 | gotovo (2026-11-10) |
 | 27 | 2 El-Bekara | 286 | 6116 | 21.4 | |
 | 28 | 5 El-Maida | 120 | 2804 | 23.4 | gotovo (2026-11-10) |
 
@@ -76,3 +76,8 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
   108 'da se ne plaše' ('ne' bez arapske negacije, inserted); 117 'im' umjesto -nī; neprevedeno 11 i 12 ʿankum, 107 al-awlayān.
   Konvencije: zamjenica razdvajanja → kopula + 'baš' (9:10); inna + la- → inna 'jer/da' + 'doista', la- UNEXPRESSED; ḏālika bi- → 'zato' (fused);
   neponovljeni prijedlog (ʿalā/ʿan/bi-/bayna) → UNEXPRESSED; iscrpni min uz negiranu imenicu → token imenice.
+- 4: greške izvora (samo prijavljeno): 25 'vjernicom-'/'vlasništvu-'; 53 'ništa-ni'; 97 "vama?''"/"iseliti?''"; 102 'budite.Allah' (token podijeljen [0:7]/[7:]); 135 'izbjegavati'; 155 "omotu''".
+  Konvencije: kāna uz imenski predikat preveden prezentom ('Allah zna') → UNEXPRESSED (17:30, 33:2); 'je … je' → kāna nosi oba; ḫabīr → 'u potpunosti zna';
+  'nemojte' → nemojte[0,2] | nemojte[2,7]; law anna → anna UNEXPRESSED; ilā uz a-lam tara UNEXPRESSED; anfus 'sami sebe' + sufiks 'sebe';
+  kondicionalno man → 'onoga ko'; qabli an → 'prije' | 'nego što'; mā kāna li- (92) → li- UNEXPRESSED (3:145, 3:161);
+  pomoćni 'su/budu' kod koordiniranih glagola (137, 157, 173, 175) samo na subjektnim sufiksima (SECOND vratio FIRST); 61 dopunsko 'kako' inserted (THIRD, kao 44/51/60).
