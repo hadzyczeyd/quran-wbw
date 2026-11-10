@@ -31,7 +31,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | gotovo (2026-11-09) |
 | 25 | 24 En-Nur | 64 | 1316 | 20.6 | gotovo (2026-11-09) |
 | 26 | 4 En-Nisa | 176 | 3747 | 21.3 | gotovo (2026-11-10) |
-| 27 | 2 El-Bekara | 286 | 6116 | 21.4 | |
+| 27 | 2 El-Bekara | 286 | 6116 | 21.4 | gotovo (2026-11-10) |
 | 28 | 5 El-Maida | 120 | 2804 | 23.4 | gotovo (2026-11-10) |
 
 Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama izvora po suri ispod.
@@ -81,3 +81,8 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
   'nemojte' → nemojte[0,2] | nemojte[2,7]; law anna → anna UNEXPRESSED; ilā uz a-lam tara UNEXPRESSED; anfus 'sami sebe' + sufiks 'sebe';
   kondicionalno man → 'onoga ko'; qabli an → 'prije' | 'nego što'; mā kāna li- (92) → li- UNEXPRESSED (3:145, 3:161);
   pomoćni 'su/budu' kod koordiniranih glagola (137, 157, 173, 175) samo na subjektnim sufiksima (SECOND vratio FIRST); 61 dopunsko 'kako' inserted (THIRD, kao 44/51/60).
+- 2: greške izvora (samo prijavljeno): 34 'Iblisa."'; 35 'drvetu"'; 37 'riječi"'; 38 'koj'; 41 'daje'; 80 'dana."Reci:' (token podijeljen); 97 'potvrdujući'; 153 zalutali token '0'; 202 'sviđa'; 253 'Daje' (= 'Da je', podijeljen [0,2]/[2,4]);
+  neprevedeno: raġadan 35 i 58, turīdūna 108 (i drugi pojedinačni UNEXPRESSED po napomenama Entry/FIRST).
+  Konvencije: eksplicitna 'Mi/vi' nosi samo sufiks (pomoćni na glagolu); li- + zamjenica → 'pripada' | dativ; ulāʾika → 'To', relativ 'oni koji';
+  partitivni min → imenica, 'Ima' inserted; jusiv 'neka' na glagolu, lā 'ne'; fa odgovora UNEXPRESSED ('neka' na imeničkoj naredbi);
+  ḥayṯu/ayna mā → 'gdje' | 'god'; 'rob-vjernik' [0,4]|[4,11]; 251 al- iscrpnosti 'svim' (kao 166/210/213); 258 'smrt daje' (zajednički glagol); 32 lā ʿilma lanā → li- UNEXPRESSED.
