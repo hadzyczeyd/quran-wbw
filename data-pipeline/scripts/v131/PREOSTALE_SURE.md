@@ -26,7 +26,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 19 | 8 El-Enfal | 75 | 1233 | 16.4 | gotovo (2026-11-06) |
 | 20 | 10 Junus | 109 | 1833 | 16.8 | gotovo (2026-11-06) |
 | 21 | 3 Alu Imran | 200 | 3481 | 17.4 | gotovo (2026-11-08) |
-| 22 | 6 El-En'am | 165 | 3050 | 18.5 | |
+| 22 | 6 El-En'am | 165 | 3050 | 18.5 | gotovo (2026-11-10) |
 | 23 | 9 Et-Tevba | 129 | 2498 | 19.4 | gotovo (2026-11-09) |
 | 24 | 13 Er-Ra'd | 43 | 853 | 19.8 | gotovo (2026-11-09) |
 | 25 | 24 En-Nur | 64 | 1316 | 20.6 | gotovo (2026-11-09) |
@@ -67,3 +67,8 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
 - 24: izvor (samo prijavljeno): 24:23 ʿaḏābun ʿaẓīm → 'patnja bolna'; neprevedeno (pojedinačno UNEXPRESSED): 24:13 ʿalayhi, 24:32 minkum, 24:54 innamā, 24:55 baʿd u min baʿdi ḫawfihim.
 - 9: greška izvora 9:15 ('Onaj Koji sve čuje i mudar je' za ʿalīmun ḥakīm) i 9:98 ('Onaj Koji sve zna i mudar je' za samīʿun ʿalīm) → ʿalīm/samīʿ pojedinačno UNEXPRESSED, neodgovarajući tokeni inserted (kao 26:220, bez bloka). Ostalo (samo prijavljeno): 9:69 'bili poništena', 9:106 'AAllah', 9:118 'bilo im se stisnula', 9:124 navodnik/velika slova, 9:120 ḥawlahum 'u njegovoj blizini'; ʿasā neprevedeno 9:18/102, innamā 9:18/55/85/93.
 - 9: COMMON potvrđeno: pomoćni pripada i glagolu koji gradi (38, 42, 83); ime inna/anna → zamjenica + kopula; amara bi- → bi- nosi 'da' (kao 7:28; u 3:21/110/114 'da se …' ostalo inserted — kandidat za usklađivanje).
+- 6: greške izvora (samo prijavljeno): 63 'zahvalnil', 74 'očitaj', 161 'pravovjemika'; navodnici u 46, 80, 93, 128, 131.
+  Konvencije: ka-ḏālika 'Isto tako' → oba na 'tako' ('isto' inserted); 'u obožavanju' uz ašraka inserted; law tarā → 'da' | 'ti je vidjeti';
+  laysa lahum 'neće imati' → laysa 'ni ne-', -hum '-će', li- 'imati'; 'nema' (lā/lam … lahu) → ne|ma; bi-ġayri → 'ne' (bi- + ġayr).
+  THIRD je negativnu konkordanciju ('nikakve sumnje' 12, 23, 81, 91, 119, 158) prebacio na NEG; vraćeno CONSISTENCY_FIXES (imenica s vlastitim segmentom nosi 'nikakav', praksa 30:5).
+  6:17 li- uz kāšif → UNEXPRESSED (FIRST+SECOND+THIRD); 10:107 isti izraz ima li- → 'je' (kandidat za usklađivanje).
