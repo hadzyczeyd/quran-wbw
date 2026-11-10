@@ -32,7 +32,7 @@ Nalog korisnika (2026-11-05): uraditi sure 2–29, prvo one s kraćim ajetima
 | 25 | 24 En-Nur | 64 | 1316 | 20.6 | gotovo (2026-11-09) |
 | 26 | 4 En-Nisa | 176 | 3747 | 21.3 | |
 | 27 | 2 El-Bekara | 286 | 6116 | 21.4 | |
-| 28 | 5 El-Maida | 120 | 2804 | 23.4 | |
+| 28 | 5 El-Maida | 120 | 2804 | 23.4 | gotovo (2026-11-10) |
 
 Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama izvora po suri ispod.
 
@@ -72,3 +72,7 @@ Status: "u radu" → "gotovo (commit …)". Bilješke o konvencijama/greškama i
   laysa lahum 'neće imati' → laysa 'ni ne-', -hum '-će', li- 'imati'; 'nema' (lā/lam … lahu) → ne|ma; bi-ġayri → 'ne' (bi- + ġayr).
   THIRD je negativnu konkordanciju ('nikakve sumnje' 12, 23, 81, 91, 119, 158) prebacio na NEG; vraćeno CONSISTENCY_FIXES (imenica s vlastitim segmentom nosi 'nikakav', praksa 30:5).
   6:17 li- uz kāšif → UNEXPRESSED (FIRST+SECOND+THIRD); 10:107 isti izraz ima li- → 'je' (kandidat za usklađivanje).
+- 5: greške izvora (samo prijavljeno): tipfeleri 3 'žtrvenicima', 4 'sviđa' (svodi), 12 'lsrailovih', 14 'medu', 34 'opršta', 66 'lndžila', 72 'lsrailovi';
+  108 'da se ne plaše' ('ne' bez arapske negacije, inserted); 117 'im' umjesto -nī; neprevedeno 11 i 12 ʿankum, 107 al-awlayān.
+  Konvencije: zamjenica razdvajanja → kopula + 'baš' (9:10); inna + la- → inna 'jer/da' + 'doista', la- UNEXPRESSED; ḏālika bi- → 'zato' (fused);
+  neponovljeni prijedlog (ʿalā/ʿan/bi-/bayna) → UNEXPRESSED; iscrpni min uz negiranu imenicu → token imenice.
