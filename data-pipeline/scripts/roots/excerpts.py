@@ -99,6 +99,14 @@ def main():
         if bad:
             sys.exit(1)
         for _, c in cards(d):
+            if c["id"] not in ex:
+                # bez izvoda: cijeli ajet; stari rasponi izvoda (iz preuzetog objekta) ne smiju ostati
+                assert c["arabic"] == c["arabic_full"] and c["bosnian"] == c["bosnian_full"], c["id"]
+                c["excerpt_arabic"] = {"start": 0, "end": len(c["arabic_full"])}
+                c["excerpt_bosnian"] = {"start": 0, "end": len(c["bosnian_full"])}
+                c["is_excerpt"] = False
+                c["ellipsis"] = {"arabic_before": False, "arabic_after": False, "bosnian_before": False, "bosnian_after": False}
+                c["highlight_display_span"] = c["highlight_span"]
             if "highlight_display_span" not in c or not c.get("is_excerpt"):
                 c["highlight_display_span"] = c["highlight_span"]
                 c["is_excerpt"] = c.get("is_excerpt", False) and c["arabic"] != c["arabic_full"]

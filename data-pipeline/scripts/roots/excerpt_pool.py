@@ -47,8 +47,9 @@ def main():
         have = known()
         todo = {}
         for n in suras:
+            byid = {c["id"]: c for c in cards(n)}
             for item in json.load(open(os.path.join(D, f"EXCERPT_TODO_{n}.json"), encoding="utf-8")):
-                c = next(c for c in cards(n) if c["id"] == item["id"])
+                c = byid[item["id"]]
                 k = key_of(c)
                 if k not in have and k not in todo:
                     item = dict(item, key=k)

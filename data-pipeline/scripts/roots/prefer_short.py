@@ -22,6 +22,9 @@ def main():
     limit = int(sys.argv[3]) if len(sys.argv) > 3 else 12
     d = json.load(open(src, encoding="utf-8"))
     changed, long_cards = 0, []
+    # ne biraj riječ koja je klikabilna u ovoj suri (dupli aktuelni kontekst) ni ajet gdje QAC spaja dvije riječi
+    here = {tuple(w["qac_location"][:3]) for v in d.get("surah_verses", []) for w in v["words"] if w.get("clickable")}
+    merged = {(2, 181), (13, 37), (8, 6), (37, 130)}
     for root in d["roots"]:
         for sec in ("nouns", "verbs"):
             for c in root[sec]:
@@ -30,6 +33,8 @@ def main():
                     if alt["highlight_word"] != c["form"]:
                         continue
                     s, a, w = alt["qac_location"][:3]
+                    if (s, a, w) in here or (s, a) in merged:
+                        continue
                     u, meh = verse(s, a)
                     ws = words_with_spans(u["ayah_text"])
                     if w > len(ws) or ws[w - 1][2] != c["form"]:
