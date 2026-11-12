@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { RootPanelCard, RootPanelData } from "@/lib/rootPanel";
+import type { RootPanelCard, RootPanelIndex, RootPanelRoot } from "@/lib/rootPanel";
+import { loadRootPanelRoots } from "@/lib/rootPanelClient";
 
 export interface RootSelection {
   ayahNumber: number;
@@ -9,7 +10,7 @@ export interface RootSelection {
 }
 
 interface RootPanelProps {
-  panel: RootPanelData;
+  panel: RootPanelIndex;
   selection: RootSelection | null;
   /** Zatvaranje ploče na mobitelu (gasi i isticanje riječi). */
   onClose: () => void;
@@ -92,7 +93,22 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
   const rootBw = selection
     ? panel.words[`${selection.ayahNumber}:${selection.position}`]
     : undefined;
-  const root = rootBw ? panel.roots[rootBw] : undefined;
+  // Kartice se učitavaju tek pri prvom kliku na imenicu ili glagol.
+  const [roots, setRoots] = useState<Record<string, RootPanelRoot> | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const needRoots = rootBw !== undefined && roots === null;
+  useEffect(() => {
+    if (!needRoots) return;
+    let alive = true;
+    loadRootPanelRoots(panel.surah).then(
+      (r) => alive && setRoots(r),
+      () => alive && setLoadFailed(true),
+    );
+    return () => {
+      alive = false;
+    };
+  }, [needRoots, panel.surah, selection?.ayahNumber, selection?.position]);
+  const root = rootBw && roots ? roots[rootBw] : undefined;
   const [expanded, setExpanded] = useState(false);
   const dragStart = useRef<number | null>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -105,6 +121,7 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
   if (prevKey !== selKey) {
     setPrevKey(selKey);
     setExpanded(false);
+    setLoadFailed(false);
   }
   useEffect(() => {
     bodyRef.current?.scrollTo({ top: 0 });
@@ -134,7 +151,7 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
 
   return (
     <aside
-      className={`root-panel${root ? " has-root" : ""}${expanded ? " is-expanded" : ""}`}
+      className={`root-panel${rootBw ? " has-root" : ""}${expanded ? " is-expanded" : ""}`}
       aria-label="Korijen riječi"
       onClick={(e) => e.stopPropagation()}
     >
@@ -166,7 +183,14 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
             srodne riječi.
           </p>
         )}
-        {selection && !root && (
+        {rootBw && !roots && (
+          <p className="rp-hint" role="status">
+            {loadFailed
+              ? "Korijen se nije mogao učitati. Provjerite vezu i kliknite riječ ponovo."
+              : "Učitavanje korijena…"}
+          </p>
+        )}
+        {selection && !rootBw && (
           <p className="rp-hint">
             Korijen se prikazuje samo za imenice i glagole.
           </p>

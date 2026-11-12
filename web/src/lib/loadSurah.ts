@@ -3,13 +3,24 @@ import type { Ayah, BosnianToken, QacSegment, QacWord, SurahData } from "./types
 
 const PAGE = 1000;
 
+function isTimeout(error: unknown) {
+  return (error as { code?: string } | null)?.code === "57014";
+}
+
 /** PostgREST vraća najviše 1000 redova po upitu — duže sure se čitaju u dijelovima. */
 async function fetchAll<T>(
   query: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: unknown }>
 ): Promise<T[]> {
   const rows: T[] = [];
   for (let from = 0; ; from += PAGE) {
-    const { data, error } = await query(from, from + PAGE - 1);
+    let res = await query(from, from + PAGE - 1);
+    // Pri buildu više radnika istovremeno čita bazu pa Postgres povremeno
+    // prekine upit (57014, statement timeout) — ponovi uz kratku pauzu.
+    for (let i = 1; i <= 3 && isTimeout(res.error); i++) {
+      await new Promise((r) => setTimeout(r, 1000 * i));
+      res = await query(from, from + PAGE - 1);
+    }
+    const { data, error } = res;
     if (error) throw error;
     rows.push(...(data ?? []));
     if (!data || data.length < PAGE) return rows;

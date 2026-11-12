@@ -8,7 +8,7 @@ import { SuraReader } from "@/components/SuraReader";
 import { getAvailableSurahIds } from "@/lib/availableSurahs";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
 import { juzStartsInSurah } from "@/lib/quranMeta";
-import { getRootPanel } from "@/lib/rootPanel";
+import { getRootPanelIndex } from "@/lib/rootPanel";
 import { SURAHS } from "@/lib/surahs";
 
 // Sure se generišu statično pri buildu i serviraju s CDN-a (klik na karticu
@@ -55,7 +55,7 @@ export default async function SuraPage({
       </div>
       <SuraReader
         data={data}
-        rootPanel={await getRootPanel(surahId)}
+        rootPanel={await getRootPanelIndex(surahId)}
         juzStarts={juzStartsInSurah(surahId)}
         header={surahMeta && <SuraOpeningHeader surah={surahMeta} />}
       />

@@ -11,14 +11,14 @@ import {
 } from "react";
 import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
-import type { RootPanelData } from "@/lib/rootPanel";
+import type { RootPanelIndex } from "@/lib/rootPanel";
 import { AyahRow } from "./AyahRow";
 import { RootPanel } from "./RootPanel";
 
 interface SuraReaderProps {
   data: SurahData;
   /** Panel korijena (desna kolona na širem ekranu); postoji samo za sure s ROOT_PANEL podacima. */
-  rootPanel?: RootPanelData | null;
+  rootPanel?: RootPanelIndex | null;
   /** Otvarajući blok sure iznad prvog ajeta (server komponenta). */
   header?: ReactNode;
   /** Ajeti ove sure na kojima počinje džuz: ajet → broj džuza. */
