@@ -1,7 +1,7 @@
 # Zajedničko za sve V13.1 agente
 
-Radni folder: `C:\Users\haris\OneDrive\Desktop\wbw app\data-pipeline` (Windows; Bash s POSIX putanjama
-`/c/Users/haris/OneDrive/Desktop/wbw app/data-pipeline`; Python preko `uv run`).
+Radni folder: `data-pipeline` u korijenu repozitorija (Windows; u Bashu POSIX putanje, npr.
+`/c/Projekti/wbw app/data-pipeline`; Python preko `uv run`).
 Aplikacija veže svaki arapski QAC morfološki segment za tačne tokene NEPROMIJENJENOG bosanskog prijevoda
 Muhameda Mehanovića koji nose njegovo značenje/funkciju u cijelom ajetu.
 
