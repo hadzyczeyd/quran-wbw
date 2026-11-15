@@ -44,6 +44,11 @@ const nextConfig = {
   poweredByHeader: false,
   // geoip-country čita svoje podatke s diska (node_modules), ne smije se bundlati.
   serverExternalPackages: ["geoip-country"],
+  // Ako stranica sure ipak padne (npr. Supabase 57014 i nakon retryja u
+  // loadSurah), Next je pokuša generisati ponovo prije nego obori build.
+  experimental: {
+    staticGenerationRetryCount: 2,
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

@@ -7,20 +7,27 @@ function isTimeout(error: unknown) {
   return (error as { code?: string } | null)?.code === "57014";
 }
 
+/**
+ * Pri buildu više radnika istovremeno čita bazu pa Postgres povremeno
+ * prekine upit (57014, statement timeout) — ponovi uz rastuću pauzu
+ * (1, 2, 4, 8, 16 s + slučajni pomak da se radnici ne sudare ponovo).
+ */
+async function withRetry<R extends { error: unknown }>(run: () => PromiseLike<R>): Promise<R> {
+  let res = await run();
+  for (let i = 0; i < 5 && isTimeout(res.error); i++) {
+    await new Promise((r) => setTimeout(r, 1000 * 2 ** i + Math.random() * 1000));
+    res = await run();
+  }
+  return res;
+}
+
 /** PostgREST vraća najviše 1000 redova po upitu — duže sure se čitaju u dijelovima. */
 async function fetchAll<T>(
   query: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: unknown }>
 ): Promise<T[]> {
   const rows: T[] = [];
   for (let from = 0; ; from += PAGE) {
-    let res = await query(from, from + PAGE - 1);
-    // Pri buildu više radnika istovremeno čita bazu pa Postgres povremeno
-    // prekine upit (57014, statement timeout) — ponovi uz kratku pauzu.
-    for (let i = 1; i <= 3 && isTimeout(res.error); i++) {
-      await new Promise((r) => setTimeout(r, 1000 * i));
-      res = await query(from, from + PAGE - 1);
-    }
-    const { data, error } = res;
+    const { data, error } = await withRetry(() => query(from, from + PAGE - 1));
     if (error) throw error;
     rows.push(...(data ?? []));
     if (!data || data.length < PAGE) return rows;
@@ -34,19 +41,26 @@ async function fetchAll<T>(
  * najviše ~250 riječi, pa je ovo brzo i čitljivo.
  */
 export async function loadSurahFromSupabase(surahId: number): Promise<SurahData | null> {
-  const { data: ayahRows, error: ayahError } = await supabase
-    .from("ayahs")
-    .select("ayah_number, text_uthmani, mehanovic_text")
-    .eq("surah_id", surahId)
-    .order("ayah_number");
+  const { data: ayahRows, error: ayahError } = await withRetry(() =>
+    supabase
+      .from("ayahs")
+      .select("ayah_number, text_uthmani, mehanovic_text")
+      .eq("surah_id", surahId)
+      .order("ayah_number")
+  );
 
-  if (ayahError || !ayahRows || ayahRows.length === 0) {
+  // Greška baze nije isto što i "sura nije uvezena": bez throw-a bi build
+  // tiho zapekao poruku "još nema podataka" za postojeću suru.
+  if (ayahError) throw ayahError;
+  if (!ayahRows || ayahRows.length === 0) {
     return null;
   }
 
-  // ID-ovi svih redova sure počinju s "S057-" — filter po prefiksu umjesto
-  // dugačke .in() liste.
-  const idPrefix = `S${String(surahId).padStart(3, "0")}-%`;
+  // ID-ovi svih redova sure počinju s "S057-". Raspon [S057-, S058-) umjesto
+  // LIKE 'S057-%': LIKE pod ne-C kolacijom ne koristi btree indeks pa čita
+  // cijelu tabelu, što pri buildu (114 sura paralelno) izaziva 57014.
+  const idFrom = `S${String(surahId).padStart(3, "0")}-`;
+  const idTo = `S${String(surahId + 1).padStart(3, "0")}-`;
 
   const [wordRows, tokenRows, segmentRows, linkRows] = await Promise.all([
     fetchAll((from, to) =>
@@ -73,7 +87,8 @@ export async function loadSurahFromSupabase(surahId: number): Promise<SurahData 
         .select(
           "segment_id, word_id, segment_order, segment_text, qac_tag, qac_full_description, qac_css_class, qac_hex_color, lemma, root, expression_status"
         )
-        .like("segment_id", idPrefix)
+        .gte("segment_id", idFrom)
+        .lt("segment_id", idTo)
         .order("segment_id")
         .range(from, to)
     ),
@@ -81,7 +96,8 @@ export async function loadSurahFromSupabase(surahId: number): Promise<SurahData 
       supabase
         .from("token_segment_links")
         .select("segment_id, token_id")
-        .like("token_id", idPrefix)
+        .gte("token_id", idFrom)
+        .lt("token_id", idTo)
         .order("segment_id")
         .order("token_id")
         .range(from, to)
