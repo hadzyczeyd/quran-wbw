@@ -1,12 +1,14 @@
 "use client";
 
+import { memo, useState } from "react";
 import type { Ayah, BosnianToken, QacWord } from "@/lib/types";
 import { ArabicWord } from "./ArabicWord";
 import { AyahEndMark } from "./AyahEndMark";
 import { BosnianTokenSpan } from "./BosnianTokenSpan";
-import { PlayIcon } from "./PlayIcon";
+import { Icon } from "./Icon";
 
 interface AyahRowProps {
+  surahId: number;
   ayah: Ayah;
   activeWordId: string | null;
   activeTokenIds: Set<string>;
@@ -18,7 +20,32 @@ interface AyahRowProps {
   juzStart?: number;
 }
 
-export function AyahRow({
+function CopyLinkButton({ surahId, ayahNumber }: { surahId: number; ayahNumber: number }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      type="button"
+      className="icon-btn"
+      aria-label={copied ? "Link kopiran" : `Kopiraj link na ajet ${ayahNumber}`}
+      onClick={async (e) => {
+        e.stopPropagation();
+        const url = `${location.origin}/sura/${surahId}#ajet-${ayahNumber}`;
+        try {
+          await navigator.clipboard.writeText(url);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1800);
+        } catch {
+          // Bez dozvole za clipboard — ništa.
+        }
+      }}
+    >
+      <Icon name={copied ? "check" : "link"} size={18} />
+    </button>
+  );
+}
+
+export const AyahRow = memo(function AyahRow({
+  surahId,
   ayah,
   activeWordId,
   activeTokenIds,
@@ -29,25 +56,37 @@ export function AyahRow({
   juzStart,
 }: AyahRowProps) {
   return (
-    <div className="ayah-row" id={`ajet-${ayah.ayah_number}`}>
-      <div className="ayah-gutter">
+    <article className="ayah" id={`ajet-${ayah.ayah_number}`} data-ayah={ayah.ayah_number} aria-label={`Ajet ${ayah.ayah_number}`}>
+      <div className="ayah-bar">
         <span className="ayah-number">{ayah.ayah_number}</span>
-        {juzStart && <span className="ayah-juz-badge">Džuz {juzStart}</span>}
-        <button
-          type="button"
-          className="ayah-play-button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onPlayAyah(ayah.ayah_number);
-          }}
-          aria-label={`Preslušaj ajet ${ayah.ayah_number}`}
-          aria-pressed={isAyahPlaying}
-        >
-          <PlayIcon playing={isAyahPlaying} />
-        </button>
+        {juzStart && <span className="ayah-juz">Početak {juzStart}. džuza</span>}
+        <span className="ayah-actions">
+          <CopyLinkButton surahId={surahId} ayahNumber={ayah.ayah_number} />
+          <button
+            type="button"
+            className="icon-btn play-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onPlayAyah(ayah.ayah_number);
+            }}
+            aria-label={isAyahPlaying ? `Zaustavi ajet ${ayah.ayah_number}` : `Preslušaj ajet ${ayah.ayah_number}`}
+            aria-pressed={isAyahPlaying}
+          >
+            <Icon name={isAyahPlaying ? "pause" : "play"} size={18} />
+          </button>
+        </span>
       </div>
 
-      <div className="ayah-translation">
+      <p className="ayah-arabic" dir="rtl" lang="ar">
+        {ayah.words.map((w) => (
+          <span key={w.word_id}>
+            <ArabicWord word={w} isHighlighted={activeWordId === w.word_id} onWordClick={onWordClick} />{" "}
+          </span>
+        ))}
+        <AyahEndMark number={ayah.ayah_number} />
+      </p>
+
+      <p className="ayah-translation" lang="bs">
         {ayah.bosnian_tokens.map((t) => (
           <span key={t.token_id}>
             <BosnianTokenSpan
@@ -57,20 +96,7 @@ export function AyahRow({
             />{" "}
           </span>
         ))}
-      </div>
-
-      <div className="ayah-arabic" dir="rtl" lang="ar">
-        {ayah.words.map((w) => (
-          <span key={w.word_id}>
-            <ArabicWord
-              word={w}
-              isHighlighted={activeWordId === w.word_id}
-              onWordClick={onWordClick}
-            />{" "}
-          </span>
-        ))}
-        <AyahEndMark number={ayah.ayah_number} />
-      </div>
-    </div>
+      </p>
+    </article>
   );
-}
+});

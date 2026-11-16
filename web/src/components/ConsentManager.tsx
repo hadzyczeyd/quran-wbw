@@ -75,10 +75,10 @@ export function ConsentManager() {
         <Link href="/privatnost">politici privatnosti</Link>.
       </p>
       <div className="consent-actions">
-        <button type="button" className="consent-btn" onClick={() => choose("denied")}>
+        <button type="button" className="btn btn-secondary" onClick={() => choose("denied")}>
           Odbijam
         </button>
-        <button type="button" className="consent-btn" onClick={() => choose("granted")}>
+        <button type="button" className="btn btn-primary" onClick={() => choose("granted")}>
           Prihvatam
         </button>
       </div>

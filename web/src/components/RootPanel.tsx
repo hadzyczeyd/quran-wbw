@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { RootPanelCard, RootPanelIndex, RootPanelRoot } from "@/lib/rootPanel";
 import { loadRootPanelRoots } from "@/lib/rootPanelClient";
+import { ColorLegend } from "./ColorLegend";
+import { Icon } from "./Icon";
 
 export interface RootSelection {
   ayahNumber: number;
@@ -10,7 +12,8 @@ export interface RootSelection {
 }
 
 interface RootPanelProps {
-  panel: RootPanelIndex;
+  /** null = sura nema podatke o korijenima; panel tada samo objašnjava čitanje i boje. */
+  panel: RootPanelIndex | null;
   selection: RootSelection | null;
   /** Zatvaranje ploče na mobitelu (gasi i isticanje riječi). */
   onClose: () => void;
@@ -90,24 +93,24 @@ function Section({ title, cards }: { title: string; cards: RootPanelCard[] }) {
  * nagore je širi, nadolje zatvara).
  */
 export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
-  const rootBw = selection
-    ? panel.words[`${selection.ayahNumber}:${selection.position}`]
-    : undefined;
+  const rootBw =
+    selection && panel ? panel.words[`${selection.ayahNumber}:${selection.position}`] : undefined;
   // Kartice se učitavaju tek pri prvom kliku na imenicu ili glagol.
   const [roots, setRoots] = useState<Record<string, RootPanelRoot> | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
   const needRoots = rootBw !== undefined && roots === null;
+  const surah = panel?.surah ?? 0;
   useEffect(() => {
-    if (!needRoots) return;
+    if (!needRoots || !surah) return;
     let alive = true;
-    loadRootPanelRoots(panel.surah).then(
+    loadRootPanelRoots(surah).then(
       (r) => alive && setRoots(r),
       () => alive && setLoadFailed(true),
     );
     return () => {
       alive = false;
     };
-  }, [needRoots, panel.surah, selection?.ayahNumber, selection?.position]);
+  }, [needRoots, surah, selection?.ayahNumber, selection?.position]);
   const root = rootBw && roots ? roots[rootBw] : undefined;
   const [expanded, setExpanded] = useState(false);
   const dragStart = useRef<number | null>(null);
@@ -128,7 +131,7 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
   }, [selKey]);
 
   // Kartica koja bi samo ponovila kliknutu riječ u istom ajetu privremeno se izostavlja (nalog V7, 6).
-  const here = selection ? `${panel.surah}:${selection.ayahNumber}` : "";
+  const here = selection ? `${surah}:${selection.ayahNumber}` : "";
   const notHere = (c: RootPanelCard) =>
     !(selection && c.ref === here && c.w === selection.position);
   const nouns = root ? root.nouns.filter(notHere) : [];
@@ -168,20 +171,27 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
         />
         <button
           type="button"
-          className="rp-close"
+          className="icon-btn rp-close"
           onClick={onClose}
           aria-label="Zatvori"
         >
-          ×
+          <Icon name="close" />
         </button>
       </div>
 
       <div className="rp-body" ref={bodyRef}>
         {!selection && (
-          <p className="rp-hint">
-            Kliknite na imenicu ili glagol u ajetu da vidite njen korijen i
-            srodne riječi.
-          </p>
+          <div className="rp-intro">
+            <h2 className="rp-intro-title">Kako čitati</h2>
+            <p className="rp-hint">
+              Dodirnite arapsku riječ da čujete izgovor i istaknete njen bosanski par.
+              {panel
+                ? " Za imenice i glagole ovdje se prikazuje korijen i srodne riječi iz Kur’ana."
+                : ""}
+            </p>
+            <h3 className="rp-section-title">Legenda boja</h3>
+            <ColorLegend />
+          </div>
         )}
         {rootBw && !roots && (
           <p className="rp-hint" role="status">
@@ -216,7 +226,7 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
             {nouns.length + verbs.length === 0 ? (
               // Jedini primjer korijena je upravo kliknuta riječ (izostavljena po nalogu V7, 6).
               <p className="rp-hint">
-                Imenice i glagoli ovog korijena javljaju se u Kur'anu samo na
+                Imenice i glagoli ovog korijena javljaju se u Kur&apos;anu samo na
                 ovom mjestu.
               </p>
             ) : (

@@ -12,7 +12,9 @@ import {
 import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
 import type { RootPanelIndex } from "@/lib/rootPanel";
+import { setLastRead } from "@/lib/lastRead";
 import { AyahRow } from "./AyahRow";
+import { ReaderToolbar } from "./ReaderToolbar";
 import { RootPanel } from "./RootPanel";
 
 interface SuraReaderProps {
@@ -23,6 +25,10 @@ interface SuraReaderProps {
   header?: ReactNode;
   /** Ajeti ove sure na kojima počinje džuz: ajet → broj džuza. */
   juzStarts?: Record<number, number>;
+  /** Bosanski naziv sure (traka čitača). */
+  surahName: string;
+  /** Blok ispod zadnjeg ajeta (prethodna/sljedeća sura). */
+  footer?: ReactNode;
 }
 
 /** Koliko ajeta se iscrta odmah pri prelasku na suru; ostatak dolazi u dijelovima. */
@@ -47,6 +53,8 @@ export function SuraReader({
   rootPanel,
   header,
   juzStarts,
+  surahName,
+  footer,
 }: SuraReaderProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [activeWordId, setActiveWordId] = useState<string | null>(null);
@@ -91,21 +99,60 @@ export function SuraReader({
     return map;
   }, [data.ayat]);
 
-  // Link na ajet (#ajet-N, npr. iz navigacije po džuzevima): skrol čim je taj ajet iscrtan.
-  const hashScrolled = useRef(false);
+  // Skok na ajet (link #ajet-N, "Nastavi čitati" ili traka): ajet mora biti
+  // iscrtan, pa se po potrebi odmah iscrtaju svi do njega.
+  const pendingJump = useRef<number | null>(null);
+  const renderCountRef = useRef(renderCount);
   useEffect(() => {
-    if (hashScrolled.current) return;
-    const m = /^#ajet-(\d+)$/.exec(window.location.hash);
-    if (!m) {
-      hashScrolled.current = true;
-      return;
-    }
-    const el = document.getElementById(`ajet-${m[1]}`);
-    if (el) {
-      el.scrollIntoView({ block: "start" });
-      hashScrolled.current = true;
+    renderCountRef.current = renderCount;
+    if (pendingJump.current !== null && renderCount >= pendingJump.current) {
+      document.getElementById(`ajet-${pendingJump.current}`)?.scrollIntoView({ block: "start" });
+      pendingJump.current = null;
     }
   }, [renderCount]);
+
+  function jumpTo(ayah: number, updateHash = true) {
+    if (updateHash) history.replaceState(null, "", `#ajet-${ayah}`);
+    if (renderCountRef.current >= ayah) {
+      document.getElementById(`ajet-${ayah}`)?.scrollIntoView({ block: "start" });
+    } else {
+      pendingJump.current = ayah;
+      setRenderCount(Math.min(total, ayah + CHUNK));
+    }
+  }
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      const m = /^#ajet-(\d+)$/.exec(window.location.hash);
+      if (m) jumpTo(Number(m[1]), false);
+    }, 0);
+    return () => clearTimeout(id);
+    // Samo pri otvaranju sure.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Trenutni ajet = onaj koji prelazi gornju trećinu ekrana. Pamti se kao
+  // "zadnje čitanje" (localStorage) za karticu "Nastavi čitati" na početnoj.
+  const [currentAyah, setCurrentAyah] = useState(1);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            const n = Number((e.target as HTMLElement).dataset.ayah);
+            if (n) setCurrentAyah(n);
+          }
+        }
+      },
+      { rootMargin: "-25% 0px -70% 0px" },
+    );
+    document.querySelectorAll<HTMLElement>(".ayah[data-ayah]").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [renderCount]);
+  useEffect(() => {
+    const id = setTimeout(() => setLastRead({ surah: data.surah_id, ayah: currentAyah }), 800);
+    return () => clearTimeout(id);
+  }, [currentAyah, data.surah_id]);
 
   function getAudio(): HTMLAudioElement {
     if (audioRef.current === null) {
@@ -150,7 +197,7 @@ export function SuraReader({
   function revealAboveSheet(word: QacWord, ayahNumber: number) {
     if (!rootPanel || !rootPanel.words[`${ayahNumber}:${word.position}`])
       return;
-    if (!window.matchMedia("(max-width: 74.99rem)").matches) return;
+    if (!window.matchMedia("(max-width: 71.99rem)").matches) return;
     const el = document.querySelector(`[data-word-id="${word.word_id}"]`);
     if (!el) return;
     const top = el.getBoundingClientRect().top;
@@ -213,12 +260,21 @@ export function SuraReader({
 
   return (
     <>
-      <div className={`sura-main-column${rootPanel ? " has-root-panel" : ""}`}>
+      <ReaderToolbar
+        surahId={data.surah_id}
+        surahName={surahName}
+        ayahCount={total}
+        currentAyah={currentAyah}
+        onJump={jumpTo}
+      />
+      <div className="reader-columns">
+      <div className="reader-main">
         {header}
         <div className="sura-reader" onClick={clearHighlight}>
           {data.ayat.slice(0, renderCount).map((ayah) => (
             <AyahRow
               key={ayah.ayah_number}
+              surahId={data.surah_id}
               ayah={ayah}
               activeWordId={activeWordId}
               activeTokenIds={activeTokenIds}
@@ -233,14 +289,10 @@ export function SuraReader({
             />
           ))}
         </div>
+        {renderCount >= total && footer}
       </div>
-      {rootPanel && (
-        <RootPanel
-          panel={rootPanel}
-          selection={rootSelection}
-          onClose={clearHighlight}
-        />
-      )}
+      <RootPanel panel={rootPanel ?? null} selection={rootSelection} onClose={clearHighlight} />
+      </div>
     </>
   );
 }

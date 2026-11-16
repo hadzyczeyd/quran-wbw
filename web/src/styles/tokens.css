@@ -1,50 +1,205 @@
 /*
- * Jedino mjesto gdje žive hex boje.
- * Kategorije boja odgovaraju stvarnim QAC (Quranic Arabic Corpus /
- * corpus.quran.com) CSS klasama, pročitanim iz Legenda listova u
- * APP_READY Excel fajlovima (NALOG-V13, poglavlje 5: "QAC boje se
- * preslikavaju direktno") — koja QAC klasa dobija koju riječ ostaje
- * potpuno vjerno izvoru. Konkretni tonovi su blago prilagođeni radi
- * čitljivosti i estetike na svijetloj pozadini; raspodjela kategorija
- * se ne mijenja.
+ * Dizajn tokeni — jedino mjesto gdje žive boje, razmaci i tipografska skala.
+ * Slojevi: primitivi (QAC boje) → semantičke uloge (--bg, --text, --accent…)
+ * → komponente (u base/home/reader.css). Promjena teme mijenja samo
+ * semantičke uloge i QAC tonove; komponente koriste isključivo var().
+ *
+ * QAC kategorije odgovaraju stvarnim QAC (corpus.quran.com) CSS klasama iz
+ * Legenda listova APP_READY fajlova (NALOG-V13, pogl. 5) — koja klasa dobija
+ * koju riječ ostaje vjerno izvoru. Tonovi su prilagođeni čitljivosti (≥ 4.5:1
+ * na pozadini u obje teme); raspodjela kategorija se ne mijenja.
  */
 
 :root {
-  /* QAC segmentne boje — primjenjuju se preko [data-qac-class] */
-  --qac-seagreen: #2e7d46; /* V — glagol */
-  --qac-sky: #3b78b0; /* N, PRON — imenica / vezana zamjenica uz glagol */
-  --qac-blue: #1f7a8c; /* PN — vlastita imenica (uklj. Allah) */
-  --qac-purple: #7b4fa6; /* ADJ — pridjev */
-  --qac-gray: #8a7f6e; /* DET — određeni član */
-  --qac-metal: #56708a; /* PRON — lična/posvojna/objektna zamjenica */
-  --qac-rust: #b5502f; /* P — prijedlog */
-  --qac-navy: #3d4f9e; /* CIRC, CONJ, REM, RSLT — veznici i čestice */
-  --qac-red: #c33a2e; /* NEG, PRO — negacija, zabrana */
-  --qac-rose: #c85374; /* INTG — upitna čestica */
-  --qac-orange: #c97a1f; /* COND, LOC, PREV, T — uslovne, mjesne, vremenske */
-  --qac-gold: #9c8526; /* PRP, REL, SUB — namjera, odnosna zamjenica, podređeni veznik */
-  --qac-brown: #a67c3d; /* DEM — pokazna zamjenica */
-  --qac-green: #5b7f2e; /* VOC — dozivna čestica */
-  --qac-pink: #a64b85; /* sitne čestice: ACC, EMPH, SUP, FUT, CAUS... */
+  color-scheme: light;
+
+  /* QAC segmentne boje — svijetla tema */
+  --qac-seagreen: #2a7442; /* V — glagol */
+  --qac-sky: #2f6ea6; /* N, PRON — imenica / vezana zamjenica uz glagol */
+  --qac-blue: #1a6f80; /* PN — vlastita imenica (uklj. Allah) */
+  --qac-purple: #7448a0; /* ADJ — pridjev */
+  --qac-gray: #6f6758; /* DET — određeni član */
+  --qac-metal: #4f6880; /* PRON — lična/posvojna/objektna zamjenica */
+  --qac-rust: #a8492a; /* P — prijedlog */
+  --qac-navy: #3a4b98; /* CIRC, CONJ, REM, RSLT — veznici i čestice */
+  --qac-red: #b8352a; /* NEG, PRO — negacija, zabrana */
+  --qac-rose: #b84466; /* INTG — upitna čestica */
+  --qac-orange: #a8641a; /* COND, LOC, PREV, T — uslovne, mjesne, vremenske */
+  --qac-gold: #85711f; /* PRP, REL, SUB — namjera, odnosna zamjenica, podređeni veznik */
+  --qac-brown: #8c6630; /* DEM — pokazna zamjenica */
+  --qac-green: #4f7027; /* VOC — dozivna čestica */
+  --qac-pink: #9a4279; /* sitne čestice: ACC, EMPH, SUP, FUT, CAUS... */
   --qac-inserted: #000000; /* bosanska riječ bez arapskog površinskog segmenta */
 
-  /* Isticanje — nikad ne mijenja boju teksta, samo pozadinu/obrub. */
-  --highlight-bg-mix: 20%;
+  /* Semantičke uloge — svijetla tema (topli neutralni tonovi, zlatni akcent kao logo) */
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-2: #efede7;
+  --line: #e3dfd6;
+  --line-strong: #ccc6b9;
+  --text: #1f1d19;
+  --text-2: #59544a;
+  --text-3: #6e685d;
+  --accent: #866514;
+  --accent-hover: #6f530f;
+  --accent-ink: #ffffff;
+  --accent-soft: #f2ead6;
+  --ornament: #a07d22; /* samo ukrasi: broj kraja ajeta, bismilla u čitaču */
+  --logo: #b8912e; /* originalna zlatna boja logotipa */
+  --word-highlight: #fff0a0;
+  --focus-ring: #866514;
+  --success: #2a7442;
+  --danger: #b8352a;
+  --scrim: rgb(20 16 10 / 0.45);
+  --shadow-1: 0 1px 2px rgb(40 32 16 / 0.06), 0 2px 6px rgb(40 32 16 / 0.05);
+  --shadow-2: 0 4px 12px rgb(40 32 16 / 0.1), 0 12px 32px rgb(40 32 16 / 0.1);
 
-  /* Osnovna paleta sučelja — light mode, topla bež pozadina. */
-  --color-bg: #f6f4ef;
-  --color-bg-elevated: #ffffff;
-  --color-text: #262420;
-  --color-text-muted: #6f6a5f;
-  --color-border: #e3ded2;
-  --color-gold: #b8912e;
-  --color-accent: var(--color-gold);
-  --color-gold-soft: color-mix(in srgb, var(--color-gold) 14%, transparent);
-
+  /* Tipografija */
   --font-arabic: var(--font-amiri-quran), "Amiri Quran", serif;
-  --font-arabic-title: var(--font-reem-kufi), "Reem Kufi", sans-serif;
-  --font-latin: var(--font-montserrat), "Montserrat", sans-serif;
+  --font-latin: var(--font-atkinson), "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  /* Korisnička postavka veličine teksta u čitaču (data-ar-size / data-tr-size na <html>) */
+  --ar-scale: 1;
+  --tr-scale: 1;
+
+  /* Razmaci (4px baza) */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+
+  --radius-sm: 0.5rem;
+  --radius: 0.875rem;
+  --radius-pill: 999px;
+
+  --tap: 2.75rem; /* 44px — minimalna ciljna površina za dodir */
+  --header-h: 3.5rem;
+  --tabbar-h: 3.75rem;
+  --measure: 46rem;
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+
+  /* Stari nazivi (admin, editor) — mapirani na nove uloge */
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--surface);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-2);
+  --color-border: var(--line);
+  --color-gold: var(--accent);
+  --color-accent: var(--accent);
+  --color-gold-soft: var(--accent-soft);
 }
+
+/*
+ * Tamna tema: vlastite površine i tonovi, ne invertovana svijetla.
+ * Sistemska postavka važi dok korisnik ne izabere temu (data-theme na <html>,
+ * postavlja ga skripta u layout.tsx prije prvog iscrtavanja).
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --qac-seagreen: #6cc58a;
+    --qac-sky: #7fb2e3;
+    --qac-blue: #5cc0d2;
+    --qac-purple: #bb95e6;
+    --qac-gray: #ada594;
+    --qac-metal: #9db2c8;
+    --qac-rust: #ec8b6a;
+    --qac-navy: #9eabf2;
+    --qac-red: #f27d72;
+    --qac-rose: #f08fac;
+    --qac-orange: #eaa75a;
+    --qac-gold: #d9c25e;
+    --qac-brown: #d2ab72;
+    --qac-green: #a6cc72;
+    --qac-pink: #dd8fc6;
+    --qac-inserted: #efebe3;
+
+    --bg: #131210;
+    --surface: #1b1a17;
+    --surface-2: #25231f;
+    --line: #34312b;
+    --line-strong: #47433b;
+    --text: #efebe3;
+    --text-2: #bcb5a8;
+    --text-3: #9e978a;
+    --accent: #d9b662;
+    --accent-hover: #e6c77e;
+    --accent-ink: #1e1707;
+    --accent-soft: #302815;
+    --ornament: #d4b467;
+    --logo: #d4b05a;
+    --word-highlight: rgb(255 214 90 / 0.24);
+    --focus-ring: #d9b662;
+    --success: #6cc58a;
+    --danger: #f27d72;
+    --scrim: rgb(0 0 0 / 0.6);
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 6px rgb(0 0 0 / 0.3);
+    --shadow-2: 0 6px 16px rgb(0 0 0 / 0.45), 0 16px 40px rgb(0 0 0 / 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --qac-seagreen: #6cc58a;
+  --qac-sky: #7fb2e3;
+  --qac-blue: #5cc0d2;
+  --qac-purple: #bb95e6;
+  --qac-gray: #ada594;
+  --qac-metal: #9db2c8;
+  --qac-rust: #ec8b6a;
+  --qac-navy: #9eabf2;
+  --qac-red: #f27d72;
+  --qac-rose: #f08fac;
+  --qac-orange: #eaa75a;
+  --qac-gold: #d9c25e;
+  --qac-brown: #d2ab72;
+  --qac-green: #a6cc72;
+  --qac-pink: #dd8fc6;
+  --qac-inserted: #efebe3;
+
+  --bg: #131210;
+  --surface: #1b1a17;
+  --surface-2: #25231f;
+  --line: #34312b;
+  --line-strong: #47433b;
+  --text: #efebe3;
+  --text-2: #bcb5a8;
+  --text-3: #9e978a;
+  --accent: #d9b662;
+  --accent-hover: #e6c77e;
+  --accent-ink: #1e1707;
+  --accent-soft: #302815;
+  --ornament: #d4b467;
+  --logo: #d4b05a;
+  --word-highlight: rgb(255 214 90 / 0.24);
+  --focus-ring: #d9b662;
+  --success: #6cc58a;
+  --danger: #f27d72;
+  --scrim: rgb(0 0 0 / 0.6);
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 6px rgb(0 0 0 / 0.3);
+  --shadow-2: 0 6px 16px rgb(0 0 0 / 0.45), 0 16px 40px rgb(0 0 0 / 0.35);
+}
+
+/* Veličina teksta u čitaču (postavke) */
+:root[data-ar-size="s"] { --ar-scale: 0.85; }
+:root[data-ar-size="l"] { --ar-scale: 1.2; }
+:root[data-ar-size="xl"] { --ar-scale: 1.4; }
+:root[data-tr-size="s"] { --tr-scale: 0.9; }
+:root[data-tr-size="l"] { --tr-scale: 1.15; }
+:root[data-tr-size="xl"] { --tr-scale: 1.3; }
 
 /* Primjena QAC boje preko data-atributa na segmentu unutar riječi. */
 [data-qac-class="segSeagreen"] { color: var(--qac-seagreen); }
@@ -63,3 +218,8 @@
 [data-qac-class="segGreen"] { color: var(--qac-green); }
 [data-qac-class="segPink"] { color: var(--qac-pink); }
 [data-qac-class="inserted_no_arabic_segment"] { color: var(--qac-inserted); }
+
+/* Isključene boje (postavka): sav tekst u jednoj boji, za čitanje bez gramatike. */
+:root[data-colors="off"] .ayah [data-qac-class] {
+  color: var(--text);
+}

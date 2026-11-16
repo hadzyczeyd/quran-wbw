@@ -1,8 +1,7 @@
+import Link from "next/link";
 import "@/styles/home.css";
-import { AppInfoSection } from "@/components/AppInfoSection";
 import { Bismillah } from "@/components/Bismillah";
-import { ColorLegend } from "@/components/ColorLegend";
-import { DevStatusBanner } from "@/components/DevStatusBanner";
+import { ContinueReading } from "@/components/ContinueReading";
 import { SurahGrid } from "@/components/SurahGrid";
 import { getAvailableSurahIds } from "@/lib/availableSurahs";
 
@@ -13,26 +12,21 @@ export default async function Home() {
   const availableSurahIds = await getAvailableSurahIds();
 
   return (
-    <main className="page-shell">
-      <section className="home-hero">
+    <main className="shell home">
+      <section className="hero">
         <Bismillah />
-        <h1 className="home-title">Kur&apos;an riječ po riječ</h1>
-        <p className="home-lede">
-          Arapski tekst obojen prema gramatičkoj ulozi svake riječi, uz
-          bosanski prijevod i izgovor na dodir.
+        <h1 className="hero-title">Kur&apos;an riječ po riječ</h1>
+        <p className="hero-lede">
+          Svaka arapska riječ obojena je prema gramatičkoj ulozi i povezana s bosanskim prijevodom.
+          Dodirnite riječ da čujete izgovor i vidite njen korijen.
         </p>
-        <DevStatusBanner />
+        <ContinueReading />
       </section>
 
-      <AppInfoSection />
-
-      <section className="legend-section">
-        <input type="checkbox" id="legend-toggle" className="legend-toggle-checkbox" />
-        <label htmlFor="legend-toggle" className="section-heading legend-toggle-label">
-          Legenda boja
-        </label>
-        <ColorLegend />
-      </section>
+      <p className="note home-note">
+        Aplikacija je u razvoju. Ako primijetite grešku, javite nam sa imenom sure i brojem ajeta
+        putem <Link href="/contact">kontakt forme</Link>.
+      </p>
 
       <SurahGrid availableSurahIds={availableSurahIds} />
     </main>

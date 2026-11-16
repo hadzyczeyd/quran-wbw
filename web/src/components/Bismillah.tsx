@@ -40,9 +40,9 @@ const WORDS: QacSegment[][] = [
   ],
 ];
 
-export function Bismillah() {
+export function Bismillah({ plain = false }: { plain?: boolean } = {}) {
   return (
-    <p className="home-bismillah">
+    <p className={`bismillah${plain ? " is-plain" : ""}`} lang="ar" dir="rtl">
       {WORDS.map((wordSegments, i) => (
         <span key={i}>
           {mergeSegmentsForDisplay(wordSegments).map((s) => (

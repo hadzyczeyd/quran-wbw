@@ -50,7 +50,7 @@ export default async function BlogPostPage({
         <div className="blog-post-meta">
           <span>{formatBlogDate(post.created_at)}</span>
           <div className="blog-share">
-            <ShareMenu />
+            <ShareMenu label="Podijeli" />
           </div>
         </div>
         {/* Sadržaj piše isključivo admin (RLS); ipak se čisti prije prikaza (sanitizeBlogHtml). */}

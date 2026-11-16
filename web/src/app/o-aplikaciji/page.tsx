@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/about.css";
+import { ColorLegend } from "@/components/ColorLegend";
 import { APP_INFO_SECTIONS } from "@/lib/appInfoContent";
 
 export const metadata: Metadata = {
@@ -17,6 +18,10 @@ export default function OAplikacijiPage() {
           {section.body}
         </section>
       ))}
+      <section>
+        <h2>Legenda boja</h2>
+        <ColorLegend wide />
+      </section>
     </main>
   );
 }

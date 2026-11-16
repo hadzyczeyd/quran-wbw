@@ -15,8 +15,8 @@ export default async function SurePage() {
   const availableSurahIds = await getAvailableSurahIds();
 
   return (
-    <main className="page-shell" style={{ paddingBlock: "2rem" }}>
-      <SurahGrid availableSurahIds={availableSurahIds} />
+    <main className="shell home is-index">
+      <SurahGrid availableSurahIds={availableSurahIds} headingLevel={1} />
     </main>
   );
 }

@@ -1,426 +1,492 @@
-/* Okvir aplikacije: reset, tijelo, zaglavlje, podnožje. */
+/* Okvir aplikacije: reset, tipografija, zaglavlje, donja traka, podnožje i dijeljene kontrole. */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--sp-4));
 }
 
-html,
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
-  padding: 0;
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-latin);
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  text-wrap: balance;
   margin: 0;
 }
 
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-latin);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Tanki zlatni scrollbar, u akcentnim bojama stranice. */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-gold) transparent;
-}
-
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: var(--color-gold);
-  border-radius: 999px;
-  border: 2px solid var(--color-bg);
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background-color: color-mix(in srgb, var(--color-gold) 80%, black);
+p {
+  text-wrap: pretty;
 }
 
 a {
   color: inherit;
 }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--color-bg-elevated);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.site-header-inner {
-  padding-block: 0.8rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem 1rem;
-}
-
-.site-brand {
-  font-weight: 700;
-  text-decoration: none;
-  color: var(--color-text);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-}
-
-.site-brand-accent {
-  color: var(--color-gold);
-}
-
-/*
- * Hamburger meni na uskom ekranu — klijentska komponenta (SiteNav.tsx),
- * ne checkbox-hack, jer treba JS da se zatvori na klik van menija, na
- * klik na link i da ikona animira u X. Od 48rem nav je uvijek vidljiv
- * u jednom redu, hamburger dugme se sakriva.
- */
-.nav-toggle-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  border: none;
-  background: none;
-  padding: 0;
-  color: var(--color-text);
-  cursor: pointer;
-  order: 1;
-}
-
-/* Tri linije hamburgera animiraju se u X kad je meni otvoren. */
-.nav-toggle-line {
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.nav-toggle-button.is-open .nav-toggle-line-top {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.nav-toggle-button.is-open .nav-toggle-line-middle {
-  opacity: 0;
-}
-
-.nav-toggle-button.is-open .nav-toggle-line-bottom {
-  transform: translateY(-6px) rotate(-45deg);
-}
-
-.site-nav {
-  display: none;
-  flex-direction: column;
-  gap: 0.9rem;
-  width: 100%;
-  padding-block: 0.9rem 0.3rem;
-  font-size: 0.95rem;
-  order: 2;
-}
-
-.site-nav.is-open {
-  display: flex;
-}
-
-.site-nav a {
-  text-decoration: none;
-}
-
-/* Dugme za dijeljenje i njegov dropdown — vidi ShareMenu.tsx. */
-.share-wrapper {
-  position: relative;
-}
-
-.share-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  border: none;
-  background: none;
-  padding: 0;
-  color: inherit;
+button,
+input,
+textarea,
+select {
   font: inherit;
-  cursor: pointer;
+  color: inherit;
 }
 
-.share-menu {
-  position: absolute;
-  top: calc(100% + 0.6rem);
-  right: 0;
-  z-index: 30;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  min-width: 11.5rem;
-  padding: 0.4rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.6rem;
-  background: var(--color-bg-elevated);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+button {
+  touch-action: manipulation;
 }
 
-.share-option {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  border: none;
-  background: none;
-  padding: 0.45rem 0.5rem;
-  border-radius: 0.4rem;
-  font-family: var(--font-latin);
-  font-size: 0.85rem;
-  color: var(--color-text);
-  text-align: start;
-  cursor: pointer;
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-.share-option:hover {
-  background: var(--color-gold-soft);
+.page {
+  flex: 1;
 }
 
-.share-option-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 999px;
-  flex-shrink: 0;
+.shell,
+.page-shell {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: max(var(--sp-4), env(safe-area-inset-left));
 }
 
 @media (min-width: 48rem) {
-  .nav-toggle-button {
-    display: none;
-  }
-
-  .site-nav {
-    display: flex !important;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: auto;
-    padding-block: 0;
-    gap: 1.2rem;
-    font-size: 0.9rem;
+  .shell,
+  .page-shell {
+    padding-inline: var(--sp-6);
   }
 }
 
-.site-footer {
-  border-top: 1px solid var(--color-border);
-  padding: 1.5rem clamp(1rem, 4vw, 3rem);
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-  line-height: 1.6;
-  text-align: center;
+.skip-link {
+  position: absolute;
+  left: var(--sp-2);
+  top: -4rem;
+  z-index: 100;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-ink);
+  text-decoration: none;
 }
 
-.site-footer-author {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.skip-link:focus {
+  top: var(--sp-2);
 }
 
-.site-footer-author:hover,
-.site-footer-author:focus-visible {
-  color: var(--color-text);
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-.site-footer-links {
+/* ---------- Zaglavlje ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding-top: env(safe-area-inset-top);
+}
+
+.site-header-inner {
+  height: var(--header-h);
   display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin: 0.25rem 0 0;
+  align-items: center;
+  gap: var(--sp-4);
 }
 
-.site-footer-link {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 700;
+  font-size: var(--fs-md);
+  text-decoration: none;
+  white-space: nowrap;
+  min-height: var(--tap);
 }
 
-.site-footer-link:hover,
-.site-footer-link:focus-visible {
-  color: var(--color-text);
+.brand-mark {
+  flex-shrink: 0;
 }
 
-.consent-banner {
+.header-nav {
+  display: none;
+}
+
+.header-actions {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+@media (min-width: 64rem) {
+  .header-nav {
+    display: flex;
+    gap: var(--sp-1);
+    margin-inline-start: var(--sp-5);
+  }
+
+  .header-nav a {
+    padding: var(--sp-2) var(--sp-3);
+    border-radius: var(--radius-sm);
+    color: var(--text-2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .header-nav a:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  .header-nav a[aria-current="page"] {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+}
+
+/* ---------- Donja traka (mobitel) ---------- */
+
+.tabbar {
   position: fixed;
-  left: 50%;
-  bottom: 1rem;
-  z-index: 1000;
-  transform: translateX(-50%);
-  width: min(40rem, calc(100% - 2rem));
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  background: var(--color-bg-elevated);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  color: var(--color-text);
-  font-size: 0.88rem;
-  line-height: 1.5;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
 }
 
-.consent-banner p {
-  margin: 0;
-}
-
-.consent-banner a {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.consent-actions {
+.tab {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.6rem;
-  margin-top: 0.8rem;
-}
-
-.consent-btn {
-  min-width: 7rem;
-  padding: 0.45rem 1rem;
-  border: 1px solid var(--color-gold);
-  border-radius: 999px;
-  background: var(--color-gold);
-  color: #fff;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.consent-btn:hover,
-.consent-btn:focus-visible {
-  background: color-mix(in srgb, var(--color-gold) 85%, black);
-}
-
-.consent-current {
-  margin-top: 0.5rem !important;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-}
-
-.site-support {
-  max-width: 36rem;
-  margin: 0 auto 1.25rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  background: var(--color-gold-soft);
-  color: var(--color-text);
-  font-size: 0.9rem;
-}
-
-.site-support p {
-  margin: 0 0 0.6rem;
-}
-
-.site-support-link {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-  background: var(--color-gold);
-  color: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--text-3);
+  font-size: var(--fs-xs);
   font-weight: 600;
   text-decoration: none;
 }
 
-.site-support-link:hover,
-.site-support-link:focus-visible {
-  background: color-mix(in srgb, var(--color-gold) 85%, black);
+.tab[aria-current="page"] {
+  color: var(--accent);
 }
 
-.page-shell {
-  max-width: 96rem;
-  margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 3rem);
+.tab[aria-current="page"] svg {
+  stroke-width: 2.2;
 }
 
-/*
- * Isticanje (klik na riječ/token) — NIKAD ne mijenja `color` teksta
- * (OPIS zamka 5.6). Dva varijanta jer nose različit sadržaj:
- *
- * .is-highlighted — za bosanski token, koji ima TAČNO jednu QAC boju.
- * Pozadina izvedena iz currentColor daje svakoj boji njenu blagu
- * podlogu (provjereno rješenje iz OPIS 5.6).
- *
- * .is-highlighted-word — za arapsku riječ, koja iznutra nosi VIŠE
- * različitih boja segmenata odjednom, pa nema jedan currentColor za
- * miješanje. Fiksna blijedožuta podloga (#FFF2A8) je vrijednost
- * zabilježena u App_schema listu stvarnih Excel podataka.
- */
-.is-highlighted {
-  background: color-mix(in srgb, currentColor var(--highlight-bg-mix), transparent);
-  border-radius: 0.2em;
+@media (min-width: 64rem) {
+  .tabbar {
+    display: none;
+  }
 }
 
-.is-highlighted-word {
-  background: #fff2a8;
-  border-radius: 0.2em;
-}
+/* ---------- Dugmad i kontrole ---------- */
 
-/* Dijeljeno dugme za zatvaranje popup dijaloga (koristi ga i AppInfoSection i MobileLegendButton). */
-.app-info-dialog-close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.9rem;
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  border-radius: 999px;
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
   background: transparent;
-  color: var(--color-text-muted);
-  font-size: 1.5rem;
-  line-height: 1;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.icon-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.icon-btn[aria-pressed="true"],
+.icon-btn[aria-expanded="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: var(--tap);
+  padding: 0 var(--sp-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-2);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Segmentni izbor (tema, veličina teksta, Sure/Džuzevi) */
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+}
+
+.segmented button {
+  min-height: 2.5rem;
+  padding: 0 var(--sp-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
   cursor: pointer;
 }
 
-.app-info-dialog-close:hover {
-  background: var(--color-border);
+.segmented button[aria-checked="true"],
+.segmented button[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-1);
 }
 
-/*
- * Legenda boja — dijeli je početna (mreža, ColorLegend) i čitač
- * (kompaktna bočna traka, ColorLegend compact).
- */
+/* Prekidač (checkbox kao switch) */
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  min-height: var(--tap);
+  cursor: pointer;
+}
+
+.switch input {
+  appearance: none;
+  flex-shrink: 0;
+  position: relative;
+  width: 2.75rem;
+  height: 1.6rem;
+  margin: 0;
+  border-radius: var(--radius-pill);
+  background: var(--line-strong);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.switch input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: calc(1.6rem - 6px);
+  height: calc(1.6rem - 6px);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.switch input:checked {
+  background: var(--accent);
+}
+
+.switch input:checked::after {
+  transform: translateX(1.15rem);
+}
+
+/* ---------- Popover / ploča (native popover API) ---------- */
+
+.sheet {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-2);
+  /* Mobitel: ploča odozdo */
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: none;
+  max-height: 85dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.sheet::backdrop {
+  background: var(--scrim);
+}
+
+.sheet-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-5);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.sheet-head h2 {
+  font-size: var(--fs-lg);
+}
+
+.sheet-body {
+  padding: var(--sp-4) var(--sp-5) var(--sp-5);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheet:popover-open {
+    animation: sheet-in var(--dur) var(--ease-out);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(12%);
+    opacity: 0;
+  }
+}
+
+@media (min-width: 48rem) {
+  .sheet {
+    inset: 0;
+    margin: auto;
+    width: min(28rem, calc(100vw - 2rem));
+    height: fit-content;
+    max-height: min(80dvh, 44rem);
+    border-radius: var(--radius);
+    padding-bottom: 0;
+  }
+}
+
+.field-label {
+  display: block;
+  margin: var(--sp-4) 0 var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.field-label:first-child {
+  margin-top: 0;
+}
+
+/* ---------- Legenda boja ---------- */
+
+.legend-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-1) var(--sp-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 30rem) {
+  .legend-list.is-wide {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  padding: 0.4rem 0.6rem;
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-gold);
-  border-radius: 0.4rem;
-  background: var(--color-bg-elevated);
+  gap: var(--sp-3);
+  min-height: 2rem;
+  font-size: var(--fs-sm);
 }
 
 .legend-dot {
-  display: inline-block;
-  width: 0.85rem;
-  height: 0.85rem;
-  border-radius: 999px;
-  background: currentColor;
   flex-shrink: 0;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-inline: 0.44rem;
+  border-radius: 50%;
+  background: currentColor;
 }
 
-/* Marker segmenta ispod fused bosanskog tokena (i uzorak u legendi). */
+.legend-label {
+  color: var(--text);
+}
+
+/* Marker segmenta ispod spojenog bosanskog tokena (i uzorak u legendi). */
 .fused-marker {
+  display: inline-block;
   width: 0.32em;
   height: 0.32em;
   border-radius: 50%;
@@ -429,68 +495,226 @@ a {
 
 .legend-fused-sample {
   display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.15rem;
-  width: 0.85rem;
+  gap: 3px;
+  width: 1.75rem;
   flex-shrink: 0;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
-.legend-label {
-  color: var(--color-text-muted);
+/*
+ * Isticanje (klik na riječ/token) — NIKAD ne mijenja boju teksta (OPIS
+ * zamka 5.6). Bosanski token ima jednu QAC boju pa mu podloga dolazi iz
+ * currentColor; arapska riječ nosi više boja pa dobija fiksnu podlogu.
+ */
+.is-highlighted {
+  background: color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 0.25em;
 }
 
-/* Bismilla — dijele je hero sekcija početne i otvarajući blok u čitaču. */
-.home-bismillah {
+.is-highlighted-word {
+  background: var(--word-highlight);
+  border-radius: 0.25em;
+}
+
+/* Bismilla — šarena na početnoj (pokazuje koncept), jednobojna u čitaču. */
+.bismillah {
+  margin: 0;
   font-family: var(--font-arabic);
-  font-size: clamp(2rem, 1.4rem + 2.5vw, 3.2rem);
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
   line-height: 2;
   direction: rtl;
 }
 
-/*
- * Sitni elementi kartice sure — dijele ih mreža sura na početnoj
- * (SurahGrid, surah-card) i fiksna info-kartica u čitaču
- * (SurahInfoSidebar), zato su ovdje, ne u home.css.
- */
-.surah-card-number {
+/* ---------- Prazna stanja ---------- */
+
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-3);
+  padding-block: var(--sp-8);
+  text-align: center;
+}
+
+.empty-state h1 {
+  font-size: var(--fs-xl);
+}
+
+.empty-state p {
+  max-width: 32rem;
+  margin: 0;
+  color: var(--text-2);
+}
+
+/* ---------- Podnožje ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: var(--sp-6) calc(var(--sp-6) + var(--tabbar-h) + env(safe-area-inset-bottom));
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 64rem) {
+  .site-footer {
+    padding-bottom: var(--sp-6);
+  }
+}
+
+.site-footer-inner {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a,
+.site-footer-link {
+  color: var(--text-2);
+  text-underline-offset: 3px;
+}
+
+.site-footer a:hover,
+.site-footer-link:hover {
+  color: var(--text);
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-5);
+}
+
+.site-footer-links a,
+.site-footer-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.site-footer-copy {
+  color: var(--text-3);
+}
+
+/* ---------- Pristanak na statistiku ---------- */
+
+.consent-banner {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--sp-3));
+  z-index: 60;
+  transform: translateX(-50%);
+  width: min(38rem, calc(100% - 2 * var(--sp-3)));
+  padding: var(--sp-4) var(--sp-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+@media (min-width: 64rem) {
+  .consent-banner {
+    bottom: var(--sp-5);
+  }
+}
+
+.consent-banner p {
+  margin: 0;
+}
+
+.consent-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.consent-current {
+  margin-top: var(--sp-2) !important;
+  color: var(--text-2);
+}
+
+/* ---------- Dijeljenje ---------- */
+
+.share-wrapper {
+  position: relative;
+}
+
+.share-menu {
+  position: absolute;
+  top: calc(100% + var(--sp-2));
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 12rem;
+  padding: var(--sp-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+}
+
+.share-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--tap);
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-size: var(--fs-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+.share-option:hover {
+  background: var(--surface-2);
+}
+
+.share-option-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 999px;
-  background: var(--color-gold-soft);
-  color: var(--color-gold);
-  font-size: 0.7rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.surah-card-arabic {
-  font-family: var(--font-arabic);
-  font-size: 1.9rem;
-  line-height: 1.4;
-  text-align: right;
-  direction: rtl;
-  color: var(--color-gold);
-}
-
-.surah-card-name {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.surah-card-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-}
-
-.surah-card-meta svg {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
   flex-shrink: 0;
+}
+
+/* Napomena (npr. aplikacija u razvoju) */
+.note {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.note a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

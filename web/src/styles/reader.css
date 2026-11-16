@@ -1,216 +1,429 @@
-.sura-reader {
+/*
+ * Čitač sure. Mobitel: jedna kolona, traka čitača ispod zaglavlja, panel
+ * korijena kao ploča odozdo. Od 72rem: kolona teksta + stalni panel desno
+ * (bez riječi pokazuje uputstvo i legendu boja).
+ */
+
+.reader {
+  --toolbar-h: 3.25rem;
+}
+
+/* ---------- Traka čitača ---------- */
+
+.reader-toolbar {
+  position: sticky;
+  top: calc(var(--header-h) + env(safe-area-inset-top));
+  z-index: 30;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.reader-toolbar-inner {
   display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-  padding-block: 2rem;
+  align-items: center;
+  gap: var(--sp-1);
+  max-width: 76rem;
+  height: var(--toolbar-h);
+  margin-inline: auto;
+  padding-inline: var(--sp-2);
+}
+
+@media (min-width: 48rem) {
+  .reader-toolbar-inner {
+    padding-inline: var(--sp-5);
+  }
+}
+
+.reader-where {
+  display: grid;
+  flex: 1;
   min-width: 0;
-}
-
-/*
- * Raspored čitača: glavni sadržaj + bočna traka s legendom. Na uskom
- * ekranu traka ide ispod čitača (ne sticky, da ne pojede ekran); od
- * 75rem postaje prava sticky bočna traka pored teksta.
- */
-.reader-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-/* Na uskom ekranu lijeva kolona (legenda) ide ispod čitača, kao i ranije. */
-.reader-left-column {
-  order: 2;
-}
-
-.legend-sidebar {
-  border: 1px solid var(--color-border);
-  border-radius: 0.6rem;
-  background: var(--color-bg-elevated);
-  padding: 1rem 1.1rem;
-  height: fit-content;
-}
-
-/*
- * Info-kartica o suri — samo na širem ekranu (isti prag kao sticky
- * legenda desno), otud "display: none" prije 75rem umjesto stacked
- * prikaza: kraća verzija istih podataka već stoji iznad sure u
- * .sura-opening, pa se ne ponavlja na uskom ekranu.
- */
-.surah-info-sidebar {
-  display: none;
-}
-
-.sura-main-column {
-  min-width: 0;
-}
-
-/*
- * Otvarajući blok prije prvog ajeta — bismilla (bez prijevoda) i
- * kratka meta-linija. Nije fiksiran, dio je normalnog toka teksta.
- */
-.sura-opening {
-  text-align: center;
-  padding-block-end: 1.25rem;
-  margin-block-end: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.sura-opening .home-bismillah {
-  font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.3rem);
-  line-height: 1.8;
-}
-
-/*
- * Ovdje (za razliku od hero bismille na početnoj, koja ostaje šarena
- * da pokazuje koncept boja aplikacije) bismilla je jednobojna zlatna —
- * dio je ponavljajućeg otvarajućeg bloka, ne primarna demonstracija
- * QAC boja.
- */
-.sura-opening .home-bismillah [data-qac-class] {
-  color: var(--color-gold);
-}
-
-.sura-opening-name-arabic {
-  font-family: var(--font-arabic);
-  direction: rtl;
-  color: var(--color-gold);
-  font-size: clamp(1.7rem, 1.4rem + 1.2vw, 2.2rem);
-  line-height: 1.4;
-  margin: 0.5rem 0 0;
-}
-
-.sura-opening-name {
-  color: var(--color-gold);
-  font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
-  margin: 0.2rem 0 0;
-}
-
-.sura-opening-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-block-start: 0.4rem;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
-}
-
-.legend-sidebar-heading {
-  font-size: 0.95rem;
-  color: var(--color-text-muted);
-  margin: 0 0 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.legend-sidebar-heading::before {
-  content: "";
-  display: inline-block;
-  width: 1.1rem;
-  height: 2px;
-  background: var(--color-gold);
-}
-
-.legend-sidebar-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.legend-sidebar-list .legend-item {
-  font-size: 0.82rem;
-  padding: 0.3rem 0.5rem;
-}
-
-/*
- * Floating dugme za legendu — samo dok nema sticky bočne trake (ispod
- * 75rem, vidi media query ispod). Otvara popup sa istom kompaktnom
- * legendom. Definicija MORA biti prije @media bloka koji je isključuje
- * na širem ekranu — kasnije pravilo iste specifičnosti pobjeđuje u
- * cascade-u, bez obzira je li unutar media queryja ili ne.
- */
-.legend-fab {
-  position: fixed;
-  right: 1.1rem;
-  bottom: 1.1rem;
-  z-index: 20;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.1rem;
-  border: 1px solid var(--color-gold);
-  border-radius: 999px;
-  background: var(--color-bg-elevated);
-  color: var(--color-text);
-  font-family: var(--font-latin);
-  font-size: 0.85rem;
-  font-weight: 600;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  min-height: var(--tap);
+  padding: 0 var(--sp-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  text-align: start;
+  line-height: 1.25;
   cursor: pointer;
 }
 
-/*
- * Panel korijena (nalog ROOT_PANEL V7): zaglavlje "Korijen:" + korijen,
- * sekcije Imenice i Glagoli, svaka kartica = oblik + kratko značenje
- * lijevo, referenca + primjer desno. Boje su iz palete stranice (bež +
- * zlatna), ciljna riječ u primjeru ima istu žutu podlogu kao kliknuta
- * riječ u čitaču.
- *
- * Uski ekran: ploča odozdo, vidljiva tek kad je kliknuta riječ s
- * korijenom (.has-root); do pola ekrana, .is-expanded skoro cijeli.
- */
+.reader-where:hover {
+  background: var(--surface-2);
+}
+
+.reader-where-name {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reader-where-ayah {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.reader-toolbar-actions {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.jump-row {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap);
+  padding: 0 var(--sp-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--fs-md);
+}
+
+.input:focus {
+  outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-color: var(--accent);
+}
+
+.settings-switches {
+  display: grid;
+  gap: var(--sp-1);
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--line);
+}
+
+.size-picker button {
+  min-width: 3rem;
+  font-weight: 700;
+}
+
+/* ---------- Kolone ---------- */
+
+.reader-columns {
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: var(--sp-4);
+}
+
+.reader-main {
+  min-width: 0;
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+@media (min-width: 48rem) {
+  .reader-columns {
+    padding-inline: var(--sp-6);
+  }
+}
+
+@media (min-width: 72rem) {
+  .reader-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 23rem;
+    gap: var(--sp-7);
+    align-items: start;
+  }
+
+  .reader-main {
+    margin-inline: 0 auto;
+    width: 100%;
+  }
+}
+
+/* ---------- Otvaranje sure ---------- */
+
+.sura-opening {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  padding-block: var(--sp-6) var(--sp-5);
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.sura-opening-ar {
+  margin: 0;
+  font-family: var(--font-arabic);
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  line-height: 1.5;
+}
+
+.sura-opening-name {
+  font-size: var(--fs-xl);
+}
+
+.sura-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0 0;
+}
+
+.sura-facts > div {
+  display: flex;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  font-size: var(--fs-sm);
+}
+
+.sura-facts dt {
+  color: var(--text-2);
+}
+
+.sura-facts dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sura-opening .bismillah {
+  margin-top: var(--sp-4);
+  color: var(--ornament);
+}
+
+.bismillah.is-plain [data-qac-class] {
+  color: inherit;
+}
+
+/* ---------- Ajet ---------- */
+
+.sura-reader {
+  padding-bottom: var(--sp-6);
+}
+
+.ayah {
+  padding-block: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + var(--toolbar-h) + env(safe-area-inset-top) + var(--sp-2));
+}
+
+.ayah-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--tap);
+}
+
+.ayah-number {
+  display: grid;
+  place-items: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding-inline: var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ayah-juz {
+  color: var(--accent);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.ayah-actions {
+  display: flex;
+  margin-inline-start: auto;
+}
+
+.play-btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.ayah-arabic {
+  margin: var(--sp-2) 0 0;
+  font-family: var(--font-arabic);
+  font-size: calc(clamp(1.85rem, 1.6rem + 1.2vw, 2.4rem) * var(--ar-scale));
+  line-height: 2.3;
+  text-align: right;
+  word-spacing: 0.08em;
+}
+
+.arabic-word {
+  padding: 0.05em 0.12em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .arabic-word:hover {
+    background: var(--surface-2);
+  }
+}
+
+.arabic-word.is-highlighted-word,
+.arabic-word.is-highlighted-word:hover {
+  background: var(--word-highlight);
+}
+
+/* Ukrasni broj kraja ajeta (﴿ ﴾ oko istočnoarapske cifre, Amiri Quran ga crta kao medaljon). */
+.ayah-end-mark {
+  margin-inline-start: 0.15em;
+  color: var(--ornament);
+}
+
+.ayah-translation {
+  margin: var(--sp-2) 0 0;
+  font-size: calc(clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem) * var(--tr-scale));
+  font-weight: 500;
+  line-height: 1.85;
+}
+
+:root[data-translation="off"] .ayah-translation {
+  display: none;
+}
+
+.bosnian-token {
+  padding: 0.05em 0.08em;
+  border-radius: 0.25em;
+}
+
+.bosnian-token[role="button"] {
+  cursor: pointer;
+}
+
+/* Token s više QAC segmenata: neutralan tekst + po jedna tačka za svaki segment. */
+.bosnian-token.is-fused {
+  position: relative;
+}
+
+.fused-markers {
+  position: absolute;
+  left: 50%;
+  bottom: -0.25em;
+  display: flex;
+  gap: 0.18em;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* ---------- Kraj sure ---------- */
+
+.sura-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+  padding-block: var(--sp-5) var(--sp-7);
+}
+
+.sura-pager-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 4rem;
+  padding: var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-decoration: none;
+}
+
+.sura-pager-link:hover {
+  border-color: var(--line-strong);
+  background: var(--surface-2);
+}
+
+.sura-pager-link > span {
+  display: grid;
+  min-width: 0;
+}
+
+.sura-pager-link.is-next {
+  justify-content: flex-end;
+  text-align: end;
+}
+
+.sura-pager-label {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+.sura-pager-name {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Panel korijena ---------- */
+
 .root-panel {
   position: fixed;
   inset-inline: 0;
   bottom: 0;
-  z-index: 30;
+  z-index: 50;
   display: flex;
   flex-direction: column;
-  height: 52vh;
-  border-top: 1px solid var(--color-border);
-  border-radius: 1rem 1rem 0 0;
-  background: var(--color-bg-elevated);
-  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.14);
+  height: 55dvh;
+  border-top: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+  padding-bottom: env(safe-area-inset-bottom);
   transform: translateY(105%);
-  transition: transform 0.25s ease, height 0.25s ease;
+  visibility: hidden;
+  transition: transform var(--dur) var(--ease-in), height var(--dur) var(--ease-out), visibility 0s var(--dur);
 }
 
 .root-panel.has-root {
   transform: translateY(0);
+  visibility: visible;
+  transition: transform var(--dur) var(--ease-out), height var(--dur) var(--ease-out), visibility 0s;
 }
 
 .root-panel.is-expanded {
-  height: 90vh;
+  height: 92dvh;
 }
 
 .rp-sheet-top {
   position: relative;
   display: flex;
   justify-content: center;
-  padding: 0.5rem 0 0.25rem;
+  align-items: center;
+  min-height: var(--tap);
   touch-action: none;
 }
 
 .rp-handle {
-  width: 2.75rem;
-  height: 0.35rem;
+  width: 4rem;
+  height: var(--tap);
   padding: 0;
-  border: none;
-  border-radius: 999px;
-  background: var(--color-border);
+  border: 0;
+  background: none;
   cursor: pointer;
+}
+
+.rp-handle::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 0.3rem;
+  margin-inline: auto;
+  border-radius: var(--radius-pill);
+  background: var(--line-strong);
 }
 
 .rp-close {
   position: absolute;
-  top: 0.2rem;
-  right: 0.75rem;
-  border: none;
-  background: none;
-  color: var(--color-text-muted);
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
+  top: 0;
+  right: var(--sp-2);
 }
 
 .rp-body {
@@ -218,13 +431,22 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0 1rem 1.25rem;
+  padding: 0 var(--sp-4) var(--sp-5);
+}
+
+.rp-intro {
+  display: none;
+}
+
+.rp-intro-title {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--sp-2);
 }
 
 .rp-hint {
-  margin: 0.5rem 0;
-  color: var(--color-text-muted);
-  font-size: 0.92rem;
+  margin: var(--sp-2) 0;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
   line-height: 1.6;
 }
 
@@ -232,63 +454,50 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.25rem 0.6rem;
-  margin: 0 0 0.8rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--color-text);
+  gap: var(--sp-1) var(--sp-3);
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-lg);
 }
 
 .rp-root {
   font-family: var(--font-arabic);
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   font-weight: 400;
   line-height: 1.6;
   word-spacing: 0.35em;
-  color: var(--color-gold);
 }
 
 .rp-counts {
   margin-inline-start: auto;
-  color: var(--color-text-muted);
-  font-size: 0.78rem;
-  font-weight: 500;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 400;
 }
 
 .rp-section + .rp-section {
-  margin-top: 1.1rem;
+  margin-top: var(--sp-5);
 }
 
 .rp-section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.6rem;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
+  margin: var(--sp-4) 0 var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
-.rp-section-title::before {
-  content: "";
-  display: inline-block;
-  width: 1.1rem;
-  height: 2px;
-  background: var(--color-gold);
+.rp-section .rp-section-title {
+  margin-top: 0;
 }
 
 .rp-empty {
   margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.88rem;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
 }
 
 .rp-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+  display: grid;
+  gap: var(--sp-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -296,149 +505,91 @@
 
 .rp-card {
   display: grid;
-  grid-template-columns: minmax(6rem, 30%) minmax(0, 1fr);
-  border: 1px solid var(--color-border);
-  border-radius: 0.6rem;
-  background: var(--color-bg);
+  grid-template-columns: minmax(6rem, 32%) minmax(0, 1fr);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
 }
 
 .rp-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.15rem;
+  gap: 2px;
   min-width: 0;
-  padding: 0.55rem 0.7rem;
-  border-inline-end: 1px solid var(--color-border);
+  padding: var(--sp-2) var(--sp-3);
+  border-inline-end: 1px solid var(--line);
 }
 
 .rp-form-ar {
   font-family: var(--font-arabic);
   font-size: 1.5rem;
   line-height: 1.8;
-  color: var(--color-text);
   overflow-wrap: anywhere;
 }
 
 .rp-meaning {
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
   line-height: 1.35;
 }
 
 .rp-example {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 2px;
   min-width: 0;
-  padding: 0.5rem 0.75rem 0.6rem;
+  padding: var(--sp-2) var(--sp-3);
 }
 
 .rp-ref {
   align-self: flex-start;
-  padding: 0.05rem 0.5rem;
-  border-radius: 999px;
-  background: var(--color-gold-soft);
-  color: var(--color-text-muted);
-  font-size: 0.72rem;
+  padding: 0 var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
   font-variant-numeric: tabular-nums;
 }
 
 .rp-ar {
   margin: 0;
   font-family: var(--font-arabic);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   line-height: 2.1;
   text-align: right;
   overflow-wrap: anywhere;
 }
 
 .rp-target {
-  background: #fff2a8;
-  color: inherit;
   border-radius: 0.2em;
   padding: 0 0.1em;
+  background: var(--word-highlight);
+  color: inherit;
 }
 
 .rp-bs {
   margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
   line-height: 1.5;
 }
 
-@media (min-width: 75rem) {
-  .reader-layout {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .sura-main-column {
-    flex: 1;
-  }
-
-  /* Lijeva kolona: kartica o suri, ispod nje legenda boja (desno je panel korijena). */
-  .reader-left-column {
-    order: 0;
+@media (min-width: 72rem) {
+  .root-panel,
+  .root-panel.has-root {
     position: sticky;
-    top: 5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 13rem;
-    flex-shrink: 0;
-    max-height: calc(100vh - 6rem);
-    overflow-y: auto;
-  }
-
-  /* U uskoj lijevoj koloni legenda je sažeta (bez okvira po stavci) da stane bez skrolanja. */
-  .reader-left-column .legend-sidebar {
-    padding: 0.85rem 0.9rem;
-  }
-
-  .reader-left-column .legend-sidebar-list {
-    gap: 0.1rem;
-  }
-
-  .reader-left-column .legend-item {
-    padding: 0.08rem 0;
-    border: none;
-    background: none;
-    font-size: 0.78rem;
-    line-height: 1.3;
-  }
-
-  .surah-info-sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 0.6rem;
-    background: var(--color-bg-elevated);
-    padding: 1.1rem 1.2rem;
-  }
-
-  .surah-info-sidebar .surah-card-arabic {
-    font-size: 2.1rem;
-  }
-
-  .sura-main-column {
-    flex: 1 1 55%;
-  }
-
-  /* Širi ekran: panel je stalna sticky desna kolona, bez ploče. */
-  .root-panel {
-    position: sticky;
-    top: 5rem;
+    top: calc(var(--header-h) + var(--toolbar-h) + var(--sp-5));
     z-index: auto;
-    flex: 0 0 clamp(24rem, 38%, 34rem);
     height: auto;
-    max-height: calc(100vh - 6rem);
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
+    max-height: calc(100dvh - var(--header-h) - var(--toolbar-h) - var(--sp-7));
+    margin-top: var(--sp-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
     box-shadow: none;
+    padding-bottom: 0;
     transform: none;
+    visibility: visible;
     transition: none;
   }
 
@@ -451,187 +602,61 @@
   }
 
   .rp-body {
-    padding: 1rem 1rem 1.25rem;
+    padding: var(--sp-5);
   }
 
-  /* Sidebar preuzima ulogu legende od ovdje — floating dugme više ne treba. */
-  .legend-fab {
+  .rp-intro {
+    display: block;
+  }
+
+  /* Na širem ekranu legenda stoji u panelu — dugme u traci je suvišno. */
+  .legend-btn {
     display: none;
   }
 }
 
-/* position: fixed (ne default absolute) — vidi napomenu uz .app-info-dialog u home.css. */
-.legend-fab-dialog {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  max-width: min(24rem, 90vw);
-  max-height: 75vh;
-  overflow-y: auto;
-  border: none;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  background: var(--color-bg-elevated);
-  color: var(--color-text);
+/* ---------- Učitavanje ---------- */
+
+.skeleton-block {
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
 }
 
-.legend-fab-dialog::backdrop {
-  background: rgba(20, 18, 14, 0.5);
+.skeleton-block.is-title {
+  width: 40%;
+  height: 2.5rem;
+  margin: var(--sp-7) auto var(--sp-6);
 }
 
-.ayah-row {
+.skeleton-ayah {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-  padding-block-end: 1.75rem;
-  border-bottom: 1px solid var(--color-border);
+  gap: var(--sp-3);
+  padding-block: var(--sp-5);
+  border-bottom: 1px solid var(--line);
 }
 
-.ayah-gutter {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--color-text-muted);
-  order: 0;
+.skeleton-block.is-ar {
+  height: 2.25rem;
 }
 
-.ayah-number {
-  font-variant-numeric: tabular-nums;
-  font-size: 0.9rem;
+.skeleton-block.is-ar.short {
+  width: 60%;
+  justify-self: end;
 }
 
-.ayah-play-button {
-  border: 1px solid var(--color-gold);
-  background: var(--color-bg-elevated);
-  color: var(--color-gold);
-  border-radius: 999px;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  line-height: 1;
+.skeleton-block.is-tr {
+  width: 85%;
+  height: 1.25rem;
 }
 
-/* Ikona play trougla ima optički centar blago desno od geometrijskog —
-   pomjeri je da vizuelno sjedne na sredinu kruga. */
-.ayah-play-button svg {
-  transform: translateX(1px);
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-block {
+    animation: pulse 1.4s linear infinite alternate;
+  }
 }
 
-.ayah-play-button:hover {
-  background: var(--color-gold-soft);
-}
-
-.ayah-translation {
-  font-family: var(--font-latin);
-  font-size: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem);
-  font-weight: 500;
-  line-height: 1.9;
-  order: 2;
-}
-
-.bosnian-token {
-  cursor: pointer;
-  padding: 0.05em 0.1em;
-}
-
-/* Token koji nosi više QAC segmenata različitih boja: neutralan tekst +
-   po jedan obojeni marker za svaki segment (nema dominantne boje). */
-.bosnian-token.is-fused {
-  position: relative;
-}
-
-.fused-markers {
-  position: absolute;
-  left: 50%;
-  bottom: -0.3em;
-  display: flex;
-  gap: 0.18em;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.ayah-arabic {
-  font-family: var(--font-arabic);
-  font-size: clamp(1.9rem, 1.6rem + 1.4vw, 2.4rem);
-  line-height: 2.4;
-  text-align: right;
-  order: 1;
-}
-
-.arabic-word {
-  position: relative;
-  cursor: pointer;
-  padding: 0.05em 0.15em;
-  white-space: nowrap;
-}
-
-/*
- * Ukrasni broj kraja ajeta — ornamentalne Unicode zagrade ﴿ ﴾
- * (U+FD3E/FD3F) oko istočnoarapske cifre, isti pristup kao tanzil.net.
- * Amiri Quran ih iscrtava kao medaljon oko broja.
- */
-.ayah-end-mark {
-  font-family: var(--font-arabic);
-  color: var(--color-gold);
-  margin-inline-start: 0.15em;
-}
-
-/*
- * Isti stacked raspored na svim širinama: arapski ide IZNAD prijevoda
- * (order su postavljeni gore: gutter 0, arapski 1, prijevod 2) — bez
- * posebnog tro-kolonskog rasporeda za desktop.
- */
-
-/* Opširniji podaci o suri u lijevoj kartici (Tanzil metapodaci + QAC broj riječi). */
-.surah-info-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  width: 100%;
-  margin: 0.4rem 0 0;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--color-border);
-  font-size: 0.8rem;
-}
-
-.surah-info-details > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.surah-info-details dt {
-  color: var(--color-text-muted);
-}
-
-.surah-info-details dd {
-  margin: 0;
-  font-weight: 600;
-  text-align: end;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Sidro ajeta (#ajet-N, npr. iz navigacije po džuzevima) ne smije završiti ispod zaglavlja. */
-.ayah-row {
-  scroll-margin-top: 5.5rem;
-}
-
-.ayah-juz-badge {
-  margin-inline-start: auto;
-  padding: 0.1rem 0.6rem;
-  border: 1px solid var(--color-gold);
-  border-radius: 999px;
-  color: var(--color-gold);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.sura-loading {
-  padding-block: 3rem;
-  text-align: center;
-  color: var(--color-text-muted);
+@keyframes pulse {
+  to {
+    opacity: 0.55;
+  }
 }

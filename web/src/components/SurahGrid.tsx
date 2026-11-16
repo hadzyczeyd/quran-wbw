@@ -1,141 +1,125 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
 import { JUZ_STARTS, surahsInJuz } from "@/lib/quranMeta";
-import { SURAHS } from "@/lib/surahs";
-import { RevelationIcon } from "./RevelationIcon";
+import { SURAHS, type SurahMeta } from "@/lib/surahs";
+import { Icon } from "./Icon";
 
 function normalize(text: string): string {
   return text
     .toLowerCase()
     .replace(/đ/g, "d")
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
+    .replace(/[̀-ͯ'’\-\s]/g, "");
 }
 
-interface SurahGridProps {
+function ayahLabel(n: number) {
+  const d = n % 10;
+  const dd = n % 100;
+  return d === 1 && dd !== 11 ? "ajet" : "ajeta";
+}
+
+function SurahRow({ surah, available }: { surah: SurahMeta; available: boolean }) {
+  const body = (
+    <>
+      <span className="surah-num">{surah.id}</span>
+      <span className="surah-main">
+        <span className="surah-name">{surah.nameBs}</span>
+        <span className="surah-meta">
+          {surah.revelationType === "meccan" ? "Mekkanska" : "Medinska"}, {surah.ayahCount}&nbsp;
+          {ayahLabel(surah.ayahCount)}
+        </span>
+      </span>
+      <span className="surah-ar" lang="ar" dir="rtl">
+        {surah.nameArabic}
+      </span>
+    </>
+  );
+  return (
+    <li>
+      {available ? (
+        <Link href={`/sura/${surah.id}`} className="surah-row">
+          {body}
+        </Link>
+      ) : (
+        <span className="surah-row is-unavailable" aria-disabled="true">
+          {body}
+        </span>
+      )}
+    </li>
+  );
+}
+
+export function SurahGrid({
+  availableSurahIds,
+  headingLevel = 2,
+}: {
   availableSurahIds: Set<number>;
-}
-
-export function SurahGrid({ availableSurahIds }: SurahGridProps) {
+  headingLevel?: 1 | 2;
+}) {
   const [query, setQuery] = useState("");
   const [view, setView] = useState<"sure" | "dzuz">("sure");
-  const availableCount = availableSurahIds.size;
+  const deferred = useDeferredValue(query);
 
   const filtered = useMemo(() => {
-    const q = normalize(query.trim());
+    const q = normalize(deferred.trim());
     if (q === "") return SURAHS;
     return SURAHS.filter(
-      (s) =>
-        String(s.id) === q ||
-        normalize(s.nameBs).includes(q) ||
-        s.nameArabic.includes(query.trim()),
+      (s) => String(s.id) === q || normalize(s.nameBs).includes(q) || s.nameArabic.includes(deferred.trim()),
     );
-  }, [query]);
+  }, [deferred]);
+
+  const Heading = headingLevel === 1 ? "h1" : "h2";
 
   return (
-    <section aria-labelledby="grid-heading">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-          paddingBlock: "0.5rem",
-        }}
-      >
-        <h2
-          id="grid-heading"
-          style={{ fontSize: "1rem", color: "var(--color-text-muted)" }}
-        >
-          Sve sure
-        </h2>
-        <span style={{ fontSize: "0.85rem", color: "var(--color-text-muted)" }}>
-          {availableCount} / {SURAHS.length}
-        </span>
-      </div>
-
-      <div className="surah-view-toggle" role="tablist" aria-label="Prikaz">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={view === "sure"}
-          onClick={() => setView("sure")}
-        >
+    <section className="surah-index" aria-labelledby="surah-index-heading">
+      <div className="surah-index-head">
+        <Heading id="surah-index-heading" className="section-title">
           Sure
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={view === "dzuz"}
-          onClick={() => setView("dzuz")}
-        >
-          Džuzevi
-        </button>
+        </Heading>
+        <div className="segmented" role="tablist" aria-label="Prikaz">
+          <button type="button" role="tab" aria-selected={view === "sure"} onClick={() => setView("sure")}>
+            Po surama
+          </button>
+          <button type="button" role="tab" aria-selected={view === "dzuz"} onClick={() => setView("dzuz")}>
+            Po džuzevima
+          </button>
+        </div>
       </div>
 
-      {view === "dzuz" ? (
-        <JuzList availableSurahIds={availableSurahIds} />
-      ) : (
+      {view === "sure" ? (
         <>
-          <input
-            type="search"
-            className="surah-search"
-            placeholder="Pretraži suru po imenu ili broju…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="Pretraži sure"
-          />
+          <label className="search">
+            <Icon name="search" />
+            <span className="visually-hidden">Pretraži sure</span>
+            <input
+              type="search"
+              placeholder="Ime ili broj sure, npr. Ja-Sin ili 36…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoComplete="off"
+              enterKeyHint="search"
+            />
+          </label>
 
           {filtered.length === 0 ? (
-            <p
-              style={{ color: "var(--color-text-muted)", paddingBlock: "1rem" }}
-            >
-              Nema sure koja odgovara pretrazi &quot;{query}&quot;.
-            </p>
-          ) : (
-            <div className="surah-grid">
-              {filtered.map((surah) => {
-                const available = availableSurahIds.has(surah.id);
-                const card = (
-                  <>
-                    <div className="surah-card-row">
-                      <span className="surah-card-number">{surah.id}</span>
-                      <span className="surah-card-meta">
-                        <RevelationIcon type={surah.revelationType} />
-                        {surah.ayahCount} ajeta
-                      </span>
-                    </div>
-                    <div className="surah-card-row">
-                      <span className="surah-card-name">{surah.nameBs}</span>
-                      <span className="surah-card-arabic">
-                        {surah.nameArabic}
-                      </span>
-                    </div>
-                  </>
-                );
-
-                return available ? (
-                  <Link
-                    key={surah.id}
-                    href={`/sura/${surah.id}`}
-                    className="surah-card"
-                  >
-                    {card}
-                  </Link>
-                ) : (
-                  <span
-                    key={surah.id}
-                    className="surah-card is-unavailable"
-                    aria-disabled="true"
-                  >
-                    {card}
-                  </span>
-                );
-              })}
+            <div className="empty-state">
+              <p>Nijedna sura ne odgovara pretrazi „{query}”.</p>
+              <button type="button" className="btn btn-secondary" onClick={() => setQuery("")}>
+                Očisti pretragu
+              </button>
             </div>
+          ) : (
+            <ul className="surah-list">
+              {filtered.map((surah) => (
+                <SurahRow key={surah.id} surah={surah} available={availableSurahIds.has(surah.id)} />
+              ))}
+            </ul>
           )}
         </>
+      ) : (
+        <JuzList availableSurahIds={availableSurahIds} />
       )}
     </section>
   );
@@ -143,27 +127,20 @@ export function SurahGrid({ availableSurahIds }: SurahGridProps) {
 
 function JuzList({ availableSurahIds }: { availableSurahIds: Set<number> }) {
   return (
-    <div className="juz-grid">
+    <ol className="juz-list">
       {JUZ_STARTS.map(([juz, startSurah, startAyah]) => {
         const start = SURAHS.find((s) => s.id === startSurah);
-        const startHref = `/sura/${startSurah}#ajet-${startAyah}`;
         return (
-          <section
-            key={juz}
-            className="juz-card"
-            aria-labelledby={`juz-${juz}`}
-          >
+          <li key={juz} className="juz-card">
             <div className="juz-card-head">
-              <h3 id={`juz-${juz}`} className="juz-card-title">
-                Džuz {juz}
-              </h3>
+              <h3 className="juz-card-title">Džuz {juz}</h3>
               {availableSurahIds.has(startSurah) ? (
-                <Link href={startHref} className="juz-card-start">
-                  od {start?.nameBs} {startAyah}
+                <Link href={`/sura/${startSurah}#ajet-${startAyah}`} className="juz-card-start">
+                  Počinje: {start?.nameBs} {startAyah}
                 </Link>
               ) : (
-                <span className="juz-card-start is-unavailable">
-                  od {start?.nameBs} {startAyah}
+                <span className="juz-card-start">
+                  Počinje: {start?.nameBs} {startAyah}
                 </span>
               )}
             </div>
@@ -174,13 +151,7 @@ function JuzList({ availableSurahIds }: { availableSurahIds: Set<number> }) {
                 return (
                   <li key={surahId}>
                     {availableSurahIds.has(surahId) ? (
-                      <Link
-                        href={
-                          fromAyah > 1
-                            ? `/sura/${surahId}#ajet-${fromAyah}`
-                            : `/sura/${surahId}`
-                        }
-                      >
+                      <Link href={fromAyah > 1 ? `/sura/${surahId}#ajet-${fromAyah}` : `/sura/${surahId}`}>
                         {label}
                       </Link>
                     ) : (
@@ -190,9 +161,9 @@ function JuzList({ availableSurahIds }: { availableSurahIds: Set<number> }) {
                 );
               })}
             </ul>
-          </section>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

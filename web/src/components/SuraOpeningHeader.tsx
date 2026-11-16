@@ -1,38 +1,42 @@
 import { getSurahExtraMeta } from "@/lib/quranMeta";
 import type { SurahMeta } from "@/lib/surahs";
 import { Bismillah } from "./Bismillah";
-import { RevelationIcon } from "./RevelationIcon";
-
-interface SuraOpeningHeaderProps {
-  surah: SurahMeta;
-}
 
 /**
- * Blok prije prvog ajeta — bismilla (bez prijevoda, isto kao na
- * hero sekciji početne) i meta-linija. Nije fiksiran, dio normalnog
- * toka teksta (vidi reader.css .sura-opening).
- *
- * Sura 9 (Et-Tevba) tradicionalno nema bismillu; sura 1 (El-Fatiha)
- * je već nosi kao svoj prvi ajet, pa se ovdje ne ponavlja.
+ * Otvarajući blok sure: arapski i bosanski naziv, osnovni podaci i bismilla.
+ * Sura 9 (Et-Tevba) nema bismillu; El-Fatiha je nosi kao prvi ajet.
  */
-export function SuraOpeningHeader({ surah }: SuraOpeningHeaderProps) {
+export function SuraOpeningHeader({ surah }: { surah: SurahMeta }) {
   const showBismillah = surah.id !== 1 && surah.id !== 9;
-  const juz = getSurahExtraMeta(surah.id)?.juz ?? [];
+  const extra = getSurahExtraMeta(surah.id);
+  const juz = extra?.juz ?? [];
+
+  const facts: [string, string][] = [
+    ["Objava", surah.revelationType === "meccan" ? "Mekka" : "Medina"],
+    ["Ajeta", String(surah.ayahCount)],
+  ];
+  if (juz.length > 0) facts.push(["Džuz", juz.length === 1 ? `${juz[0]}` : `${juz[0]}–${juz[juz.length - 1]}`]);
+  if (extra) facts.push(["Redoslijed objave", `${extra.order}.`]);
+  if (extra && extra.sajda.length > 0) facts.push(["Sedžda", extra.sajda.map(([a]) => `${a}. ajet`).join(", ")]);
 
   return (
-    <div className="sura-opening">
-      {showBismillah && <Bismillah />}
-      <p className="sura-opening-name-arabic">{surah.nameArabic}</p>
-      <h2 className="sura-opening-name">{surah.nameBs}</h2>
-      <p className="sura-opening-meta">
-        <RevelationIcon type={surah.revelationType} />
-        {surah.revelationType === "meccan"
-          ? "Mekkanska sura"
-          : "Medinska sura"}{" "}
-        · {surah.ayahCount} ajeta
-        {juz.length > 0 &&
-          ` · Džuz ${juz.length === 1 ? juz[0] : `${juz[0]}–${juz[juz.length - 1]}`}`}
+    <header className="sura-opening">
+      <p className="sura-opening-ar" lang="ar" dir="rtl">
+        {surah.nameArabic}
       </p>
-    </div>
+      <h1 className="sura-opening-name">
+        <span className="visually-hidden">Sura </span>
+        {surah.nameBs}
+      </h1>
+      <dl className="sura-facts">
+        {facts.map(([k, v]) => (
+          <div key={k}>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+      {showBismillah && <Bismillah plain />}
+    </header>
   );
 }

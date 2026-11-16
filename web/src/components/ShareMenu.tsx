@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "./Icon";
 
 const SITE_NAME = "Kur'an riječ po riječ";
 
@@ -31,7 +32,7 @@ function shareUrlFor(target: ShareTarget, url: string, title: string): string {
 }
 
 /** Dijeljenje trenutne stranice — dropdown sa nekoliko servisa i kopiranjem linka. */
-export function ShareMenu() {
+export function ShareMenu({ label }: { label?: string } = {}) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -81,34 +82,26 @@ export function ShareMenu() {
     <div className="share-wrapper" ref={wrapperRef}>
       <button
         type="button"
-        className="share-toggle"
-        aria-label="Podijeli"
+        className={label ? "btn btn-secondary" : "icon-btn"}
+        aria-label={label ? undefined : "Podijeli"}
         aria-expanded={open}
-        onClick={() => {
+        onClick={async () => {
           setCopied(false);
+          // Na mobitelu (i u instaliranoj aplikaciji) sistemski meni za dijeljenje je prirodniji.
+          if (typeof navigator.share === "function" && window.matchMedia("(pointer: coarse)").matches) {
+            const { url, title } = getShareData();
+            try {
+              await navigator.share({ url, title });
+              return;
+            } catch (e) {
+              if ((e as DOMException)?.name === "AbortError") return;
+            }
+          }
           setOpen((v) => !v);
         }}
       >
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-          <path d="M12 15.5V4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          <path
-            d="M7.5 8 12 3.5 16.5 8"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M5 12.5v5.7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5.7"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        Podijeli
+        <Icon name="share" size={label ? 18 : 20} />
+        {label}
       </button>
 
       {open && (
@@ -204,7 +197,7 @@ export function ShareMenu() {
           </button>
 
           <button type="button" className="share-option" role="menuitem" onClick={handleCopy}>
-            <span className="share-option-icon" style={{ background: "var(--color-gold)" }}>
+            <span className="share-option-icon" style={{ background: "#866514" }}>
               <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
                 {copied ? (
                   <path d="M5 12.5 9.5 17 19 7" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

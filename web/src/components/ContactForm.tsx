@@ -36,7 +36,7 @@ export function ContactForm() {
         </p>
       )}
 
-      <button type="submit" className="contact-submit" disabled={pending}>
+      <button type="submit" className="btn btn-primary contact-submit" disabled={pending}>
         {pending ? "Šaljem…" : "Pošalji"}
       </button>
     </form>

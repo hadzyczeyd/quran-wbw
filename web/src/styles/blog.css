@@ -1,19 +1,17 @@
 /* Blog — lista, članak i tipografija sadržaja (dijeli je i editor u adminu). */
 
 .blog-hero {
-  padding-block: 3rem 1.5rem;
-  text-align: center;
+  padding-block: var(--sp-6) var(--sp-4);
 }
 
 .blog-hero h1 {
   margin: 0;
-  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
-  color: var(--color-gold);
+  font-size: var(--fs-2xl);
 }
 
 .blog-hero p {
   max-width: 34rem;
-  margin: 0.6rem auto 0;
+  margin: var(--sp-2) 0 0;
   color: var(--color-text-muted);
   line-height: 1.6;
 }
@@ -39,8 +37,8 @@
 }
 
 .blog-card:hover {
-  border-color: var(--color-gold);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border-color: var(--line-strong);
+  background: var(--surface-2);
 }
 
 .blog-card-date {
@@ -110,30 +108,16 @@
   gap: 0.75rem;
   margin-block: 0.9rem 1.75rem;
   padding-block-end: 1rem;
-  border-bottom: 2px solid var(--color-gold);
+  border-bottom: 1px solid var(--line);
   color: var(--color-text-muted);
   font-size: 0.88rem;
-}
-
-/* Dugme "Podijeli" na članku — isti ShareMenu kao u navigaciji, kao pilula. */
-.blog-share .share-toggle {
-  padding: 0.4rem 0.95rem;
-  border: 1px solid var(--color-gold);
-  border-radius: 999px;
-  color: var(--color-text);
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.blog-share .share-toggle:hover {
-  background: var(--color-gold-soft);
 }
 
 /* Tipografija sadržaja članka (i editora). */
 
 /* Amiri Quran iza Montserrata: arapske riječi u tekstu dobiju pravi kur'anski font. */
 .blog-content {
-  font-family: var(--font-montserrat), "Montserrat", var(--font-amiri-quran), "Amiri Quran", sans-serif;
+  font-family: var(--font-atkinson), "Atkinson Hyperlegible Next", var(--font-amiri-quran), "Amiri Quran", sans-serif;
   font-size: 1.05rem;
   line-height: 1.8;
   overflow-wrap: anywhere;

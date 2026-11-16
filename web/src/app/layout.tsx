@@ -1,9 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
-import { Amiri_Quran, Montserrat, Reem_Kufi } from "next/font/google";
-import { SiteNav } from "@/components/SiteNav";
+import { Amiri_Quran, Atkinson_Hyperlegible_Next } from "next/font/google";
+import { SiteHeader, TabBar } from "@/components/SiteNav";
 import { ConsentManager, ConsentSettingsLink } from "@/components/ConsentManager";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { PREFS_SCRIPT } from "@/lib/prefs";
 import "@/styles/tokens.css";
 import "@/styles/base.css";
 
@@ -14,83 +17,86 @@ const amiriQuran = Amiri_Quran({
   display: "swap",
 });
 
-const montserrat = Montserrat({
+// Jedno latinično pismo za sučelje i prijevod — pravljeno za čitljivost (razlikuje slične znakove).
+const atkinson = Atkinson_Hyperlegible_Next({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-montserrat",
+  variable: "--font-atkinson",
   display: "swap",
-});
-
-// Dekorativni kufski font samo za arapske naslove sura na karticama
-// (SurahGrid) — tekst pojedinačnih ajeta ostaje u Amiri Quran, mushafskom
-// fontu.
-const reemKufi = Reem_Kufi({
-  subsets: ["arabic"],
-  weight: "700",
-  variable: "--font-reem-kufi",
-  display: "swap",
+  // Next nema metrike za ovaj font (upozorenje pri buildu); rezervni je sistemski sans.
+  adjustFontFallback: false,
+  fallback: ["system-ui", "sans-serif"],
 });
 
 export const metadata: Metadata = {
   title: "Kur'an riječ po riječ",
   description:
     "Učenje kur'anskog arapskog kroz bosanski jezik — riječ po riječ, obojeno prema gramatičkoj ulozi.",
+  applicationName: "Kur'an riječ po riječ",
+  appleWebApp: { capable: true, title: "Riječ po riječ", statusBarStyle: "default" },
+  icons: {
+    icon: [{ url: "/icons/any-32.png", sizes: "32x32", type: "image/png" }],
+    apple: [{ url: "/icons/apple-180.png", sizes: "180x180" }],
+  },
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f6f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#131210" },
+  ],
 };
 
 const currentYear = new Date().getFullYear();
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="bs"
-      className={`${amiriQuran.variable} ${reemKufi.variable} ${montserrat.variable}`}
-    >
+    <html lang="bs" className={`${amiriQuran.variable} ${atkinson.variable}`} suppressHydrationWarning>
       <body>
-        <header className="site-header">
-          <div className="page-shell site-header-inner">
-            <Link href="/" className="site-brand">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/favicon.ico" alt="" width={24} height={24} className="site-brand-logo" />
-              <span>
-                <span className="site-brand-accent">Kur&apos;an</span> riječ po riječ
-              </span>
-            </Link>
+        {/* Tema i veličina teksta prije prvog iscrtavanja (bez bljeska). */}
+        <Script id="postavke-prikaza" strategy="beforeInteractive">
+          {PREFS_SCRIPT}
+        </Script>
+        <a href="#sadrzaj" className="skip-link">
+          Preskoči na sadržaj
+        </a>
+        <SiteHeader />
 
-            <SiteNav />
-          </div>
-        </header>
-
-        {children}
+        <div id="sadrzaj" className="page">
+          {children}
+        </div>
 
         <footer className="site-footer">
-          <aside className="site-support">
-            <p>
-              Smatrate li ovu stranicu korisnom? Podržite naš rad pomažući projekte poput ovoga.
+          <div className="shell site-footer-inner">
+            <p className="site-footer-support">
+              Smatrate li stranicu korisnom? Podržite rad na sličnim projektima na{" "}
+              <a href="https://zagazu.ba" target="_blank" rel="noopener noreferrer">
+                zagazu.ba
+              </a>
+              .
             </p>
-            <a href="https://zagazu.ba" target="_blank" rel="noopener noreferrer" className="site-support-link">
-              Podrži na zagazu.ba
-            </a>
-          </aside>
-          <p>
-            © {currentYear}{" "}
-            <a href="https://z-one.dev" target="_blank" rel="noopener noreferrer" className="site-footer-author">
-              Zejd Hadžić
-            </a>
-            . Sva prava zadržana.
-          </p>
-          <p className="site-footer-links">
-            <Link href="/privatnost" className="site-footer-link">
-              Privatnost
-            </Link>
-            <span aria-hidden="true">·</span>
-            <ConsentSettingsLink />
-          </p>
+            <nav className="site-footer-links" aria-label="Podnožje">
+              <Link href="/o-aplikaciji">O aplikaciji</Link>
+              <Link href="/izvori">Izvori</Link>
+              <Link href="/contact">Kontakt</Link>
+              <Link href="/privatnost">Privatnost</Link>
+              <ConsentSettingsLink />
+            </nav>
+            <p className="site-footer-copy">
+              © {currentYear}{" "}
+              <a href="https://z-one.dev" target="_blank" rel="noopener noreferrer">
+                Zejd Hadžić
+              </a>
+            </p>
+          </div>
         </footer>
 
+        <TabBar />
         <ConsentManager />
+        <ServiceWorkerRegister />
 
         {/* Vercel Web Analytics postoji samo na Vercelu; na Hostingeru bi /_vercel/insights bio 404. */}
         {process.env.VERCEL === "1" && <Analytics />}
