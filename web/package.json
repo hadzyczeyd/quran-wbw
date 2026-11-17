@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@next/swc-wasm-nodejs": "16.4.3",
+    "@next/swc-wasm-nodejs": "^16.4.6",
     "@supabase/supabase-js": "^2.116.0",
     "@tiptap/extension-image": "^3.31.3",
     "@tiptap/extension-placeholder": "^3.31.3",
@@ -19,7 +19,7 @@
     "@tiptap/starter-kit": "^3.31.3",
     "@vercel/analytics": "^2.0.1",
     "geoip-country": "5.0.202611070310",
-    "next": "16.4.3",
+    "next": "^16.4.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sanitize-html": "^2.18.1"
@@ -31,7 +31,7 @@
     "@types/sanitize-html": "^2.16.2",
     "dotenv": "^17.4.2",
     "eslint": "^9",
-    "eslint-config-next": "^16.4.3",
+    "eslint-config-next": "^16.4.6",
     "supabase": "^2.117.0",
     "tsx": "^4.23.13",
     "typescript": "^5"
