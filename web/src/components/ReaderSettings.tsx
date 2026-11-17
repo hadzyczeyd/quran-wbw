@@ -71,6 +71,18 @@ export function ReaderSettings() {
               onChange={(e) => setPref("translation", e.target.checked ? "on" : "off")}
             />
           </label>
+          <label className="switch mobile-only">
+            <span>
+              Korijen riječi pri dodiru
+              <span className="switch-hint">Traka na dnu ekrana s korijenom i srodnim riječima</span>
+            </span>
+            <input
+              type="checkbox"
+              role="switch"
+              checked={prefs.roots === "on"}
+              onChange={(e) => setPref("roots", e.target.checked ? "on" : "off")}
+            />
+          </label>
           <label className="switch">
             <span>Boje gramatike</span>
             <input

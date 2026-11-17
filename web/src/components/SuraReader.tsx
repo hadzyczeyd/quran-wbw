@@ -14,6 +14,7 @@ import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
 import type { RootPanelIndex } from "@/lib/rootPanel";
 import { setLastRead } from "@/lib/lastRead";
 import { AyahRow } from "./AyahRow";
+import { ColorLegend } from "./ColorLegend";
 import { ReaderToolbar } from "./ReaderToolbar";
 import { RootPanel } from "./RootPanel";
 
@@ -192,20 +193,18 @@ export function SuraReader({
     revealAboveSheet(word, ayahNumber);
   }
 
-  // Na uskom ekranu ploča korijena prekriva donju polovinu — kliknuta
-  // riječ se pomjeri u gornju četvrtinu ekrana da ostane vidljiva.
+  // Na uskom ekranu traka korijena stoji pri dnu — ako bi prekrila
+  // kliknutu riječ, riječ se pomjeri u gornju trećinu ekrana.
   function revealAboveSheet(word: QacWord, ayahNumber: number) {
-    if (!rootPanel || !rootPanel.words[`${ayahNumber}:${word.position}`])
-      return;
+    if (!rootPanel || !rootPanel.words[`${ayahNumber}:${word.position}`]) return;
     if (!window.matchMedia("(max-width: 71.99rem)").matches) return;
+    if (document.documentElement.getAttribute("data-roots") === "off") return;
     const el = document.querySelector(`[data-word-id="${word.word_id}"]`);
     if (!el) return;
-    const top = el.getBoundingClientRect().top;
-    if (top > window.innerHeight * 0.4 || top < 70) {
-      window.scrollBy({
-        top: top - window.innerHeight * 0.22,
-        behavior: "smooth",
-      });
+    const rect = el.getBoundingClientRect();
+    const covered = rect.bottom > window.innerHeight - 150;
+    if (covered) {
+      window.scrollBy({ top: rect.top - window.innerHeight * 0.35, behavior: "smooth" });
     }
   }
 
@@ -268,6 +267,13 @@ export function SuraReader({
         onJump={jumpTo}
       />
       <div className="reader-columns">
+      {/* Široki ekran: legenda boja stalno lijevo od teksta (na mobitelu je u traci čitača). */}
+      <aside className="reader-legend" aria-labelledby="legenda-lijevo">
+        <h2 id="legenda-lijevo" className="reader-legend-title">
+          Legenda boja
+        </h2>
+        <ColorLegend />
+      </aside>
       <div className="reader-main">
         {header}
         <div className="sura-reader" onClick={clearHighlight}>

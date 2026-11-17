@@ -329,6 +329,18 @@ button {
   cursor: pointer;
 }
 
+.switch-hint {
+  display: block;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 72rem) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
 .switch input {
   appearance: none;
   flex-shrink: 0;

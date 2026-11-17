@@ -13,6 +13,8 @@ export interface Prefs {
   trSize: Size;
   colors: "on" | "off";
   translation: "on" | "off";
+  /** Ploča korijena na mobitelu pri dodiru riječi. */
+  roots: "on" | "off";
 }
 
 export const DEFAULT_PREFS: Prefs = {
@@ -21,6 +23,7 @@ export const DEFAULT_PREFS: Prefs = {
   trSize: "m",
   colors: "on",
   translation: "on",
+  roots: "on",
 };
 
 const KEY = "rpr-prefs";
@@ -32,6 +35,7 @@ const ATTR: Record<keyof Prefs, string> = {
   trSize: "data-tr-size",
   colors: "data-colors",
   translation: "data-translation",
+  roots: "data-roots",
 };
 
 /** Inline skripta za <head>: čita postavke i postavlja atribute prije iscrtavanja. */

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { RootPanelCard, RootPanelIndex, RootPanelRoot } from "@/lib/rootPanel";
 import { loadRootPanelRoots } from "@/lib/rootPanelClient";
-import { ColorLegend } from "./ColorLegend";
 import { Icon } from "./Icon";
 
 export interface RootSelection {
@@ -116,7 +115,7 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
   const dragStart = useRef<number | null>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  // Nova riječ: ploča se vraća na pola ekrana, sadržaj na vrh.
+  // Nova riječ: ploča se vraća na kompaktnu traku, sadržaj na vrh.
   const selKey = selection
     ? `${selection.ayahNumber}:${selection.position}`
     : "";
@@ -158,39 +157,49 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
       aria-label="Korijen riječi"
       onClick={(e) => e.stopPropagation()}
     >
-      <div
-        className="rp-sheet-top"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
+      {/* Mobitel: kompaktna traka (korijen + broj riječi); dodir ili povlačenje nagore otvara kartice. */}
+      <div className="rp-peek" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <button
           type="button"
-          className="rp-handle"
+          className="rp-peek-main"
           onClick={() => setExpanded((v) => !v)}
-          aria-label={expanded ? "Smanji ploču" : "Proširi ploču"}
-        />
-        <button
-          type="button"
-          className="icon-btn rp-close"
-          onClick={onClose}
-          aria-label="Zatvori"
+          aria-expanded={expanded}
+          aria-controls="rp-kartice"
         >
-          <Icon name="close" />
+          <span className="rp-peek-label">Korijen</span>
+          <bdi className="rp-peek-root" dir="rtl" lang="ar">
+            {root?.display ?? "…"}
+          </bdi>
+          <span className="rp-peek-counts">
+            {root ? (
+              <>
+                <span>
+                  {nouns.length}&nbsp;{plural(nouns.length, "imenica", "imenice", "imenica")},
+                </span>{" "}
+                <span>
+                  {verbs.length}&nbsp;{plural(verbs.length, "glagol", "glagola", "glagola")}
+                </span>
+              </>
+            ) : loadFailed
+                ? "Nije učitano"
+                : "Učitavanje…"}
+          </span>
+          <Icon name={expanded ? "chevronDown" : "chevronUp"} size={18} />
+        </button>
+        <button type="button" className="icon-btn" onClick={onClose} aria-label="Zatvori korijen">
+          <Icon name="close" size={18} />
         </button>
       </div>
 
-      <div className="rp-body" ref={bodyRef}>
+      <div className="rp-body" ref={bodyRef} id="rp-kartice">
         {!selection && (
           <div className="rp-intro">
-            <h2 className="rp-intro-title">Kako čitati</h2>
+            <h2 className="rp-intro-title">Korijen riječi</h2>
             <p className="rp-hint">
-              Dodirnite arapsku riječ da čujete izgovor i istaknete njen bosanski par.
               {panel
-                ? " Za imenice i glagole ovdje se prikazuje korijen i srodne riječi iz Kur’ana."
-                : ""}
+                ? "Dodirnite imenicu ili glagol u ajetu da ovdje vidite njen korijen i srodne riječi iz Kur’ana, svaku s primjerom."
+                : "Za ovu suru korijeni još nisu pripremljeni. Dodirom na riječ čujete izgovor i vidite njen bosanski par."}
             </p>
-            <h3 className="rp-section-title">Legenda boja</h3>
-            <ColorLegend />
           </div>
         )}
         {rootBw && !roots && (
@@ -207,11 +216,7 @@ export function RootPanel({ panel, selection, onClose }: RootPanelProps) {
         )}
         {root && (
           <>
-            <h2
-              className="rp-head"
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-            >
+            <h2 className="rp-head">
               <span dir="ltr">Korijen:</span>{" "}
               <bdi className="rp-root" dir="rtl" lang="ar">
                 {root.display}
