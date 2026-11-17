@@ -15,7 +15,12 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const mod = await import(`@/data/rootPanel/S${id.padStart(3, "0")}.json`);
   // Next ne komprimuje statično generisane odgovore route handlera, pa se
   // gzip radi ovdje (2,3 MB → ~0,3 MB za suru 2); fetch ga uvijek prihvata.
-  const body = gzipSync(JSON.stringify((mod.default as RootPanelData).roots), { level: 9 });
+  const json = JSON.stringify((mod.default as RootPanelData).roots);
+  // Dev server sam komprimuje odgovore — ručni gzip bi tamo bio dvostruk (neparsiran JSON).
+  if (process.env.NODE_ENV !== "production") {
+    return new Response(json, { headers: { "Content-Type": "application/json; charset=utf-8" } });
+  }
+  const body = gzipSync(json, { level: 9 });
   return new Response(body, {
     headers: {
       "Content-Type": "application/json; charset=utf-8",

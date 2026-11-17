@@ -526,7 +526,6 @@ button {
 }
 
 .is-highlighted-word {
-  background: var(--word-highlight);
   border-radius: 0.25em;
 }
 

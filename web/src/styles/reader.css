@@ -245,32 +245,55 @@
   color: var(--accent-ink);
 }
 
+/*
+ * Prored arapskog: Amiri Quran ima visoke hareke (iznad i ispod slova), pa
+ * je dovoljno ~2 visine; na širem ekranu (veći font, duži redovi) manje.
+ * Nigdje nema overflow: hidden, pa se znakovi ne mogu odsjeći.
+ */
 .ayah-arabic {
   margin: var(--sp-2) 0 0;
+  padding-block: 0.15em;
   font-family: var(--font-arabic);
   font-size: calc(clamp(1.85rem, 1.6rem + 1.2vw, 2.4rem) * var(--ar-scale));
-  line-height: 2.3;
+  line-height: 2.1;
   text-align: right;
   word-spacing: 0.08em;
 }
 
+@media (min-width: 48rem) {
+  .ayah-arabic {
+    line-height: 1.95;
+  }
+}
+
+@media (min-width: 72rem) {
+  .ayah-arabic {
+    line-height: 1.85;
+  }
+}
+
+/*
+ * Podloga riječi (hover/isticanje) je gradijent ograničen na 1.7em visine,
+ * ne cijela visina fonta — inače bi neprozirna podloga prekrila hareke
+ * susjednih redova pri manjem proredu.
+ */
 .arabic-word {
-  padding: 0.05em 0.12em;
+  padding: 0 0.12em;
   border-radius: 0.25em;
+  background: linear-gradient(transparent, transparent) center / 100% 1.7em no-repeat;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color var(--dur-fast) var(--ease-out);
 }
 
 @media (hover: hover) {
   .arabic-word:hover {
-    background: var(--surface-2);
+    background-image: linear-gradient(var(--surface-2), var(--surface-2));
   }
 }
 
 .arabic-word.is-highlighted-word,
 .arabic-word.is-highlighted-word:hover {
-  background: var(--word-highlight);
+  background-image: linear-gradient(var(--word-highlight), var(--word-highlight));
 }
 
 /* Ukrasni broj kraja ajeta (﴿ ﴾ oko istočnoarapske cifre, Amiri Quran ga crta kao medaljon). */
@@ -438,9 +461,11 @@
 
 .rp-peek-root {
   flex-shrink: 0;
+  /* Amiri ima nisku osnovnu liniju — donji razmak je podiže u ravan s tekstom trake. */
+  padding: 0 0 0.3em;
   font-family: var(--font-arabic);
-  font-size: 1.5rem;
-  line-height: 1.2;
+  font-size: 1.4rem;
+  line-height: 1.6;
   word-spacing: 0.12em;
 }
 
@@ -581,10 +606,11 @@
 }
 
 .rp-form-ar {
+  padding-block: 0.1em;
   font-family: var(--font-arabic);
   font-size: 1.5rem;
-  line-height: 1.8;
-  overflow-wrap: anywhere;
+  line-height: 1.9;
+  overflow-wrap: break-word;
 }
 
 .rp-meaning {
@@ -613,17 +639,19 @@
 
 .rp-ar {
   margin: 0;
+  padding-block: 0.1em;
   font-family: var(--font-arabic);
   font-size: 1.25rem;
-  line-height: 2.1;
+  line-height: 2.15;
   text-align: right;
-  overflow-wrap: anywhere;
+  /* break-word, ne anywhere: arapska riječ se ne smije prelomiti usred slova. */
+  overflow-wrap: break-word;
 }
 
 .rp-target {
   border-radius: 0.2em;
   padding: 0 0.1em;
-  background: var(--word-highlight);
+  background: linear-gradient(var(--word-highlight), var(--word-highlight)) center / 100% 1.7em no-repeat;
   color: inherit;
 }
 
@@ -634,6 +662,34 @@
   line-height: 1.5;
 }
 
+/* Mobitel: manji tekst u karticama korijena, šira kolona za primjer. */
+@media (max-width: 71.99rem) {
+  .rp-card {
+    grid-template-columns: minmax(5rem, 28%) minmax(0, 1fr);
+  }
+
+  .rp-form,
+  .rp-example {
+    padding: var(--sp-2);
+  }
+
+  .rp-form-ar {
+    font-size: 1.25rem;
+  }
+
+  .rp-ar {
+    font-size: 1.1rem;
+  }
+
+  .rp-meaning,
+  .rp-bs {
+    font-size: 0.8125rem;
+  }
+
+  .rp-section-title {
+    font-size: var(--fs-xs);
+  }
+}
 @media (min-width: 72rem) {
   .root-panel,
   .root-panel.has-root {
