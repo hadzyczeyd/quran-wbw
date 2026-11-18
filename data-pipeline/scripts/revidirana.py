@@ -119,6 +119,11 @@ def _base_len(text):
     return sum(1 for ch in text if not unicodedata.category(ch).startswith("M"))
 
 
+def _core_len(text):
+    """Broj osnovnih slova bez tatvila i malih slova-modifikatora (ۥ ۦ), koja Tanzil i QAC pišu različito."""
+    return sum(1 for ch in text if not unicodedata.category(ch).startswith("M") and ch not in "ـۥۦ")
+
+
 def _split_by_letters(word_text, parts):
     """Dijeli tekst riječi na dijelove s istim brojem osnovnih slova kao `parts` (dijakritika ide uz slovo)."""
     out, pos = [], 0
@@ -152,7 +157,15 @@ def apply_arabic(data, arabic):
         w["text"] = text
         segs = sorted(segs_by_word.get(w["word_id"], []), key=lambda s: s["segment_order"])
         old = arabic["segments"].get(w["word_id"], {})
-        if segs and all(s["segment_id"] in old for s in segs) and len(old) == len(segs):
+        # Stari tekst se preuzima samo ako mu se granice (broj slova po segmentu)
+        # slažu s QAC-om — inače bi se prenijela pomaknuta granica iz starih
+        # fajlova (npr. 108:1 إِ|نَّآ umjesto إِنَّ|آ), pa se tekst riječi dijeli iznova.
+        if (
+            segs
+            and all(s["segment_id"] in old for s in segs)
+            and len(old) == len(segs)
+            and all(_core_len(old[s["segment_id"]]) == _core_len(s["segment_text"]) for s in segs)
+        ):
             for s in segs:
                 s["segment_text"] = old[s["segment_id"]]
             continue
