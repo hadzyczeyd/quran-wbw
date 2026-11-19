@@ -25,7 +25,7 @@ export function ContinueReading() {
   }
 
   return (
-    <Link href={`/sura/${surah.id}#ajet-${last.ayah}`} className="continue-card">
+    <Link prefetch={false} href={`/sura/${surah.id}#ajet-${last.ayah}`} className="continue-card">
       <span className="continue-icon" aria-hidden="true">
         <Icon name="book" size={22} />
       </span>

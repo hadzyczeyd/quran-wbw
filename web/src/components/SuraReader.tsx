@@ -9,7 +9,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import type { BosnianToken, QacWord, SurahData } from "@/lib/types";
+import type { ClientSurah, ClientToken, ClientWord } from "@/lib/types";
 import { ayahAudioUrl, wordAudioUrl } from "@/lib/audio";
 import type { RootPanelIndex } from "@/lib/rootPanel";
 import { setLastRead } from "@/lib/lastRead";
@@ -19,7 +19,7 @@ import { ReaderToolbar } from "./ReaderToolbar";
 import { RootPanel } from "./RootPanel";
 
 interface SuraReaderProps {
-  data: SurahData;
+  data: ClientSurah;
   /** Panel korijena (desna kolona na širem ekranu); postoji samo za sure s ROOT_PANEL podacima. */
   rootPanel?: RootPanelIndex | null;
   /** Otvarajući blok sure iznad prvog ajeta (server komponenta). */
@@ -79,23 +79,11 @@ export function SuraReader({
     return () => clearTimeout(id);
   }, [renderCount, total]);
 
-  // word_id -> { ayahNumber, word } — za povratnu vezu token -> riječ i audio.
+  // word id -> { ayahNumber, word } — za povratnu vezu token -> riječ i audio.
   const wordIndex = useMemo(() => {
-    const map = new Map<string, { ayahNumber: number; word: QacWord }>();
+    const map = new Map<string, { ayahNumber: number; word: ClientWord }>();
     for (const ayah of data.ayat) {
-      for (const w of ayah.words) {
-        map.set(w.word_id, { ayahNumber: ayah.ayah_number, word: w });
-      }
-    }
-    return map;
-  }, [data.ayat]);
-
-  const segmentToWord = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const ayah of data.ayat) {
-      for (const w of ayah.words) {
-        for (const s of w.segments) map.set(s.segment_id, w.word_id);
-      }
+      for (const w of ayah.words) map.set(w.id, { ayahNumber: ayah.n, word: w });
     }
     return map;
   }, [data.ayat]);
@@ -107,15 +95,36 @@ export function SuraReader({
   useEffect(() => {
     renderCountRef.current = renderCount;
     if (pendingJump.current !== null && renderCount >= pendingJump.current) {
-      document.getElementById(`ajet-${pendingJump.current}`)?.scrollIntoView({ block: "start" });
+      scrollToAyah(pendingJump.current);
       pendingJump.current = null;
     }
   }, [renderCount]);
 
+  // Ajeti izvan ekrana imaju procijenjenu visinu (content-visibility u
+  // reader.css), pa prvi skok može promašiti — kad se ajeti oko cilja
+  // iscrtaju, položaj se provjeri i popravi (nekoliko kadrova).
+  function scrollToAyah(ayah: number) {
+    const el = document.getElementById(`ajet-${ayah}`);
+    if (!el) return;
+    el.scrollIntoView({ block: "start", behavior: "instant" });
+    let tries = 0;
+    let lastTop = Number.NaN;
+    const settle = () => {
+      const top = el.getBoundingClientRect().top;
+      const want = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+      if (Math.abs(top - want) > 2 && Math.abs(top - lastTop) > 0.5 && tries++ < 12) {
+        lastTop = top;
+        el.scrollIntoView({ block: "start", behavior: "instant" });
+        requestAnimationFrame(settle);
+      }
+    };
+    requestAnimationFrame(settle);
+  }
+
   function jumpTo(ayah: number, updateHash = true) {
     if (updateHash) history.replaceState(null, "", `#ajet-${ayah}`);
     if (renderCountRef.current >= ayah) {
-      document.getElementById(`ajet-${ayah}`)?.scrollIntoView({ block: "start" });
+      scrollToAyah(ayah);
     } else {
       pendingJump.current = ayah;
       setRenderCount(Math.min(total, ayah + CHUNK));
@@ -163,12 +172,12 @@ export function SuraReader({
     return audioRef.current;
   }
 
-  function playWord(word: QacWord, ayahNumber: number) {
+  function playWord(word: ClientWord, ayahNumber: number) {
     const audio = getAudio();
     audio.pause();
-    audio.src = wordAudioUrl(data.surah_id, ayahNumber, word.position);
+    audio.src = wordAudioUrl(data.surah_id, ayahNumber, word.pos);
     audio.play().catch(() => setPlaying(null));
-    setPlaying({ kind: "word", wordId: word.word_id });
+    setPlaying({ kind: "word", wordId: word.id });
   }
 
   function clearHighlight() {
@@ -176,30 +185,26 @@ export function SuraReader({
     setActiveTokenIds(new Set());
   }
 
-  function handleWordClick(word: QacWord, ayahNumber: number) {
-    if (activeWordId === word.word_id) {
+  function handleWordClick(word: ClientWord, ayahNumber: number) {
+    if (activeWordId === word.id) {
       // Ponovni klik na već istaknutu riječ gasi isticanje.
       clearHighlight();
       return;
     }
 
-    const tokenIds = new Set<string>();
-    for (const seg of word.segments) {
-      for (const tid of seg.linked_token_ids) tokenIds.add(tid);
-    }
-    setActiveTokenIds(tokenIds);
-    setActiveWordId(word.word_id);
+    setActiveTokenIds(new Set(word.tokens));
+    setActiveWordId(word.id);
     playWord(word, ayahNumber);
     revealAboveSheet(word, ayahNumber);
   }
 
   // Na uskom ekranu traka korijena stoji pri dnu — ako bi prekrila
   // kliknutu riječ, riječ se pomjeri u gornju trećinu ekrana.
-  function revealAboveSheet(word: QacWord, ayahNumber: number) {
-    if (!rootPanel || !rootPanel.words[`${ayahNumber}:${word.position}`]) return;
+  function revealAboveSheet(word: ClientWord, ayahNumber: number) {
+    if (!rootPanel || !rootPanel.words[`${ayahNumber}:${word.pos}`]) return;
     if (!window.matchMedia("(max-width: 71.99rem)").matches) return;
     if (document.documentElement.getAttribute("data-roots") === "off") return;
-    const el = document.querySelector(`[data-word-id="${word.word_id}"]`);
+    const el = document.querySelector(`[data-word-id="${word.id}"]`);
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const covered = rect.bottom > window.innerHeight - 150;
@@ -208,23 +213,16 @@ export function SuraReader({
     }
   }
 
-  function handleTokenClick(token: BosnianToken) {
-    if (activeTokenIds.has(token.token_id) && activeTokenIds.size === 1) {
+  function handleTokenClick(token: ClientToken) {
+    if (activeTokenIds.has(token.id) && activeTokenIds.size === 1) {
       clearHighlight();
       return;
     }
 
     // Bosanska riječ nema svoju boju niti audio — vodi na svoj arapski
     // segment i odatle na cijelu riječ (i njen izgovor).
-    let firstWordId: string | null = null;
-    for (const segId of token.linked_segment_ids) {
-      const wid = segmentToWord.get(segId);
-      if (wid) {
-        firstWordId = wid;
-        break;
-      }
-    }
-    setActiveTokenIds(new Set([token.token_id]));
+    const firstWordId = token.word;
+    setActiveTokenIds(new Set([token.id]));
     setActiveWordId(firstWordId);
 
     if (firstWordId) {
@@ -253,7 +251,7 @@ export function SuraReader({
   const rootSelection = activeEntry
     ? {
         ayahNumber: activeEntry.ayahNumber,
-        position: activeEntry.word.position,
+        position: activeEntry.word.pos,
       }
     : null;
 
@@ -279,19 +277,19 @@ export function SuraReader({
         <div className="sura-reader" onClick={clearHighlight}>
           {data.ayat.slice(0, renderCount).map((ayah) => (
             <AyahRow
-              key={ayah.ayah_number}
+              key={ayah.n}
               surahId={data.surah_id}
               ayah={ayah}
               activeWordId={activeWordId}
               activeTokenIds={activeTokenIds}
-              onWordClick={(word) => handleWordClick(word, ayah.ayah_number)}
+              onWordClick={(word) => handleWordClick(word, ayah.n)}
               onTokenClick={handleTokenClick}
               onPlayAyah={handlePlayAyah}
               isAyahPlaying={
                 playing?.kind === "ayah" &&
-                playing.ayahNumber === ayah.ayah_number
+                playing.ayahNumber === ayah.n
               }
-              juzStart={juzStarts?.[ayah.ayah_number]}
+              juzStart={juzStarts?.[ayah.n]}
             />
           ))}
         </div>

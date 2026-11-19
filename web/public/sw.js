@@ -9,7 +9,8 @@
  * - Statistika, admin i prijava nikad ne idu kroz keš.
  * Supabase i audio su na drugim domenima i ne diraju se.
  */
-const VERSION = "v1";
+// v2: briše keš kartica korijena iz v1 (dvostruko gzipovani odgovori) i velike stare stranice sura.
+const VERSION = "v2";
 const STATIC_CACHE = `static-${VERSION}`;
 const PAGE_CACHE = `pages-${VERSION}`;
 const DATA_CACHE = `data-${VERSION}`;

@@ -205,6 +205,13 @@
 .ayah {
   padding-block: var(--sp-4) var(--sp-5);
   border-bottom: 1px solid var(--line);
+  /*
+   * Ajeti izvan ekrana se ne iscrtavaju (raspored/bojenje) dok im se ne
+   * priđe — duge sure (El-Bekara ~60 000 elemenata) se otvaraju brže.
+   * "auto" pamti stvarnu visinu nakon prvog prikaza, pa skrol ne skače.
+   */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 18rem;
   scroll-margin-top: calc(var(--header-h) + var(--toolbar-h) + env(safe-area-inset-top) + var(--sp-2));
 }
 

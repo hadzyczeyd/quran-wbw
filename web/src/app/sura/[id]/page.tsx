@@ -6,6 +6,7 @@ import { SuraOpeningHeader } from "@/components/SuraOpeningHeader";
 import { SuraPager } from "@/components/SuraPager";
 import { SuraReader } from "@/components/SuraReader";
 import { getAvailableSurahIds } from "@/lib/availableSurahs";
+import { toClientSurah } from "@/lib/clientSurah";
 import { loadSurahFromSupabase } from "@/lib/loadSurah";
 import { juzStartsInSurah } from "@/lib/quranMeta";
 import { getRootPanelIndex } from "@/lib/rootPanel";
@@ -54,7 +55,7 @@ export default async function SuraPage({ params }: { params: Promise<{ id: strin
   return (
     <main className="reader">
       <SuraReader
-        data={data}
+        data={toClientSurah(data)}
         surahName={surahMeta.nameBs}
         rootPanel={rootPanel}
         juzStarts={juzStartsInSurah(surahId)}

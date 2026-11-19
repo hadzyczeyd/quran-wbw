@@ -12,7 +12,7 @@ export function SuraPager({ surahId }: { surahId: number }) {
   return (
     <nav className="sura-pager" aria-label="Susjedne sure">
       {prev ? (
-        <Link href={`/sura/${prev.id}`} className="sura-pager-link is-prev">
+        <Link prefetch={false} href={`/sura/${prev.id}`} className="sura-pager-link is-prev">
           <Icon name="chevronLeft" />
           <span>
             <span className="sura-pager-label">Prethodna sura</span>
@@ -25,7 +25,7 @@ export function SuraPager({ surahId }: { surahId: number }) {
         <span />
       )}
       {next ? (
-        <Link href={`/sura/${next.id}`} className="sura-pager-link is-next">
+        <Link prefetch={false} href={`/sura/${next.id}`} className="sura-pager-link is-next">
           <span>
             <span className="sura-pager-label">Sljedeća sura</span>
             <span className="sura-pager-name">

@@ -44,6 +44,49 @@ export interface Ayah {
   bosnian_tokens: BosnianToken[];
 }
 
+/*
+ * Kompaktni oblik za preglednik (čitač). Server unaprijed spaja segmente za
+ * prikaz i računa veze riječ↔token, pa se ne šalju opisi, leme, hex boje,
+ * ID-ovi segmenata ni drugi podaci koje čitač ne iscrtava (sura 2 je
+ * inače bila ~9 MB HTML-a).
+ */
+export interface ClientPart {
+  /** Tekst prikaznog raspona (jedan QAC segment ili لله ligatura). */
+  t: string;
+  /** QAC CSS klasa. */
+  c: string;
+}
+
+export interface ClientWord {
+  id: string;
+  pos: number;
+  gloss: string | null;
+  parts: ClientPart[];
+  /** Bosanski tokeni povezani s bilo kojim segmentom riječi. */
+  tokens: string[];
+}
+
+export interface ClientToken {
+  id: string;
+  t: string;
+  c: string;
+  /** Prva arapska riječ na koju token vodi (klik → isticanje + izgovor), null = bez arapskog para. */
+  word: string | null;
+  /** Spojeni token: boje (i oznake) svih povezanih segmenata, redom. */
+  fused: { c: string; tag: string }[];
+}
+
+export interface ClientAyah {
+  n: number;
+  words: ClientWord[];
+  tokens: ClientToken[];
+}
+
+export interface ClientSurah {
+  surah_id: number;
+  ayat: ClientAyah[];
+}
+
 export interface SurahData {
   surah_id: number;
   ayah_count: number;

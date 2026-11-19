@@ -1,26 +1,24 @@
 "use client";
 
-import { mergeSegmentsForDisplay } from "@/lib/segments";
-import type { QacWord } from "@/lib/types";
+import type { ClientWord } from "@/lib/types";
 
 interface ArabicWordProps {
-  word: QacWord;
+  word: ClientWord;
   isHighlighted: boolean;
-  onWordClick: (word: QacWord) => void;
+  onWordClick: (word: ClientWord) => void;
 }
 
 /**
  * Arapska riječ je JEDAN HTML element (OPIS zamka 5.5). Segmenti su
  * samo obojeni rasponi unutar nje, bez razmaka i bez reza, da se
- * slova normalno spajaju u fontu.
+ * slova normalno spajaju u fontu. Spajanje za prikaz (لله ligatura)
+ * radi server (lib/clientSurah.ts).
  */
 export function ArabicWord({ word, isHighlighted, onWordClick }: ArabicWordProps) {
-  const displaySegments = mergeSegmentsForDisplay(word.segments);
-
   return (
     <span
       className={`arabic-word${isHighlighted ? " is-highlighted-word" : ""}`}
-      data-word-id={word.word_id}
+      data-word-id={word.id}
       onClick={(e) => {
         e.stopPropagation();
         onWordClick(word);
@@ -32,9 +30,9 @@ export function ArabicWord({ word, isHighlighted, onWordClick }: ArabicWordProps
         if (e.key === "Enter" || e.key === " ") onWordClick(word);
       }}
     >
-      {displaySegments.map((seg) => (
-        <span key={seg.key} data-qac-class={seg.cssClass}>
-          {seg.text}
+      {word.parts.map((p, i) => (
+        <span key={i} data-qac-class={p.c}>
+          {p.t}
         </span>
       ))}
     </span>

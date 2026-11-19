@@ -39,7 +39,7 @@ function SurahRow({ surah, available }: { surah: SurahMeta; available: boolean }
   return (
     <li>
       {available ? (
-        <Link href={`/sura/${surah.id}`} className="surah-row">
+        <Link prefetch={false} href={`/sura/${surah.id}`} className="surah-row">
           {body}
         </Link>
       ) : (
@@ -135,7 +135,7 @@ function JuzList({ availableSurahIds }: { availableSurahIds: Set<number> }) {
             <div className="juz-card-head">
               <h3 className="juz-card-title">Džuz {juz}</h3>
               {availableSurahIds.has(startSurah) ? (
-                <Link href={`/sura/${startSurah}#ajet-${startAyah}`} className="juz-card-start">
+                <Link prefetch={false} href={`/sura/${startSurah}#ajet-${startAyah}`} className="juz-card-start">
                   Počinje: {start?.nameBs} {startAyah}
                 </Link>
               ) : (
@@ -151,7 +151,10 @@ function JuzList({ availableSurahIds }: { availableSurahIds: Set<number> }) {
                 return (
                   <li key={surahId}>
                     {availableSurahIds.has(surahId) ? (
-                      <Link href={fromAyah > 1 ? `/sura/${surahId}#ajet-${fromAyah}` : `/sura/${surahId}`}>
+                      <Link
+                        prefetch={false}
+                        href={fromAyah > 1 ? `/sura/${surahId}#ajet-${fromAyah}` : `/sura/${surahId}`}
+                      >
                         {label}
                       </Link>
                     ) : (
