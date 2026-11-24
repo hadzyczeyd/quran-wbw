@@ -263,16 +263,20 @@
   font-family: var(--font-arabic);
   font-size: calc(clamp(1.85rem, 1.6rem + 1.2vw, 2.4rem) * var(--ar-scale));
   line-height: 2.1;
-  /* Obostrano poravnanje; zadnji red ostaje uz desni rub (početak arapskog reda). */
-  text-align: justify;
-  text-align-last: right;
-  text-justify: inter-word;
+  text-align: right;
   word-spacing: 0.08em;
 }
 
+/*
+ * Obostrano poravnanje arapskog tek od tableta naviše: na telefonu u red stanu
+ * 3–4 duge riječi pa bi razmaci postali preveliki. Zadnji red ostaje desno.
+ */
 @media (min-width: 48rem) {
   .ayah-arabic {
     line-height: 1.95;
+    text-align: justify;
+    text-align-last: right;
+    text-justify: inter-word;
   }
 }
 
