@@ -263,7 +263,10 @@
   font-family: var(--font-arabic);
   font-size: calc(clamp(1.85rem, 1.6rem + 1.2vw, 2.4rem) * var(--ar-scale));
   line-height: 2.1;
-  text-align: right;
+  /* Obostrano poravnanje; zadnji red ostaje uz desni rub (početak arapskog reda). */
+  text-align: justify;
+  text-align-last: right;
+  text-justify: inter-word;
   word-spacing: 0.08em;
 }
 
@@ -314,6 +317,16 @@
   font-size: calc(clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem) * var(--tr-scale));
   font-weight: 500;
   line-height: 1.85;
+  /*
+   * Obostrano poravnanje; rastavljanje riječi na kraju reda (gdje preglednik ima
+   * pravila za bosanski) sprečava prevelike razmake u uskoj koloni; zadnji red lijevo.
+   */
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
 }
 
 :root[data-translation="off"] .ayah-translation {
