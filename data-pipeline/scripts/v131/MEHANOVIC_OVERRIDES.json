@@ -6,6 +6,12 @@
    "translator": "Besim Korkut",
    "reason": "U izvoru (QuranEnc bosnian_mihanovich v1.1.0, i na quranenc.com 2026-11-05) tekst 21:67 je duplikat teksta 21:66; Mehanovićev prijevod 21:67 nije dostupan. Korisnik je 2026-11-05 dostavio prijevod Besima Korkuta.",
    "approved_by": "korisnik, 2026-11-05"
+  },
+  "114:6": {
+   "text": "(svijetu) od džina i ljudi.\"",
+   "translator": "Mustafa Mehanović (dopuna korisnika)",
+   "reason": "Izvorni tekst glasi 'svijetu džina i ljudi.\"'. Korisnik je 2026-11-24 tražio da 'svijetu' (pojašnjenje, bez arapskog para) bude u zagradi i da se za مِنَ doda 'od'.",
+   "approved_by": "korisnik, 2026-11-24"
   }
  }
 }
