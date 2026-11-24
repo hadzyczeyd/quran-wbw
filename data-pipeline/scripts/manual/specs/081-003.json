@@ -1,0 +1,13 @@
+{
+  "surah": 81,
+  "ayah": 3,
+  "tokens": [
+    { "id": "S081-A003-B001", "text": "i", "segs": ["S081-A003-W001-S01"] },
+    { "id": "S081-A003-B002", "text": "kada", "segs": ["S081-A003-W001-S02"] },
+    { "id": "S081-A003-B003", "text": "planine", "segs": ["S081-A003-W002-S02"] },
+    { "id": "S081-A003-B004", "text": "budu", "segs": ["S081-A003-W003-S01"] },
+    { "id": "S081-A003-B005", "text": "pokrenute", "segs": ["S081-A003-W003-S01"] },
+    { "id": "S081-A003-B006", "text": "i", "segs": ["S081-A003-W003-S01"] },
+    { "id": "S081-A003-B007", "text": "smrvljene", "segs": ["S081-A003-W003-S01"] }
+  ]
+}
