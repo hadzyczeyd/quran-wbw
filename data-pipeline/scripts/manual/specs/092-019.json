@@ -1,0 +1,16 @@
+{
+  "surah": 92,
+  "ayah": 19,
+  "text": "ne očekujući da mu se (na dobročinstvu) zahvalnošću uzvrati,",
+  "tokens": [
+    { "id": "S092-A019-B001", "text": "ne", "segs": ["S092-A019-W001-S02"] },
+    { "id": "S092-A019-B002", "text": "očekujući", "segs": [] },
+    { "id": "S092-A019-B003", "text": "da", "segs": [] },
+    { "id": "S092-A019-B004", "text": "mu", "segs": ["S092-A019-W003-S01", "S092-A019-W003-S02"] },
+    { "id": "S092-A019-B005", "text": "se", "segs": ["S092-A019-W006-S01"] },
+    { "id": "S092-A019-B008", "text": "(na", "segs": ["S092-A019-W005-S01"] },
+    { "id": "S092-A019-B009", "text": "dobročinstvu)", "segs": ["S092-A019-W005-S01"] },
+    { "id": "S092-A019-B006", "text": "zahvalnošću", "segs": [] },
+    { "id": "S092-A019-B007", "text": "uzvrati,", "segs": ["S092-A019-W006-S01"] }
+  ]
+}
