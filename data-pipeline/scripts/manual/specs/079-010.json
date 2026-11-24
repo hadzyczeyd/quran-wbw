@@ -1,0 +1,17 @@
+{
+  "surah": 79,
+  "ayah": 10,
+  "tokens": [
+    { "id": "S079-A010-B001", "text": "Govore", "segs": ["S079-A010-W001-S01"] },
+    { "id": "S079-A010-B002", "text": "oni:", "segs": ["S079-A010-W001-S02"] },
+    { "id": "S079-A010-B003", "text": "\"Zar", "segs": ["S079-A010-W002-S01"] },
+    { "id": "S079-A010-B004", "text": "ćemo,", "segs": ["S079-A010-W002-S03"] },
+    { "id": "S079-A010-B005", "text": "zaista,", "segs": ["S079-A010-W002-S02"] },
+    { "id": "S079-A010-B006", "text": "u", "segs": [] },
+    { "id": "S079-A010-B007", "text": "kaburovima", "segs": [] },
+    { "id": "S079-A010-B008", "text": "biti", "segs": ["S079-A010-W003-S02"] },
+    { "id": "S079-A010-B009", "text": "vraćeni", "segs": ["S079-A010-W003-S02"] },
+    { "id": "S079-A010-B010", "text": "u", "segs": ["S079-A010-W004-S01"] },
+    { "id": "S079-A010-B011", "text": "život?", "segs": ["S079-A010-W005-S02"] }
+  ]
+}
