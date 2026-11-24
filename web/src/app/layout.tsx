@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="site-footer">
           <div className="shell site-footer-inner">
             <p className="site-footer-support">
-              Smatrate li stranicu korisnom? Podržite rad na sličnim projektima na{" "}
+              Smatrate li stranicu korisnom - podijeli je s drugima! Donaciju posvetite ne nama, nego:{" "}
               <a href="https://zagazu.ba" target="_blank" rel="noopener noreferrer">
                 zagazu.ba
               </a>
