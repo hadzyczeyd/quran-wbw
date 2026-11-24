@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@supabase/supabase-js";
 
 /**
@@ -34,6 +34,9 @@ export async function POST(request: Request) {
   const done: string[] = [];
   for (const p of paths) {
     if (typeof p === "string" && ALLOWED.test(p)) {
+      // Prvo keširani upiti iz baze za tu suru (lib/supabase.ts označava ih "sura-N"), pa stranica.
+      const sura = /^\/sura\/(\d+)$/.exec(p)?.[1];
+      if (sura) revalidateTag(`sura-${sura}`, { expire: 0 });
       revalidatePath(p);
       done.push(p);
     }
