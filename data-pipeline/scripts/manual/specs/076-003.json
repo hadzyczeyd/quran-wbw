@@ -1,0 +1,18 @@
+{
+  "surah": 76,
+  "ayah": 3,
+  "tokens": [
+    { "id": "S076-A003-B001", "text": "Mi", "segs": ["S076-A003-W001-S02"] },
+    { "id": "S076-A003-B002", "text": "mu", "segs": ["S076-A003-W002-S03"] },
+    { "id": "S076-A003-B003", "text": "na", "segs": [] },
+    { "id": "S076-A003-B004", "text": "Pravi", "segs": ["S076-A003-W003-S02"] },
+    { "id": "S076-A003-B005", "text": "put", "segs": ["S076-A003-W003-S02"] },
+    { "id": "S076-A003-B006", "text": "ukazujemo,", "segs": ["S076-A003-W002-S01", "S076-A003-W002-S02"] },
+    { "id": "S076-A003-B007", "text": "pa", "segs": [] },
+    { "id": "S076-A003-B008", "text": "ili", "segs": ["S076-A003-W004-S01"] },
+    { "id": "S076-A003-B009", "text": "je", "segs": [] },
+    { "id": "S076-A003-B010", "text": "zahvalan", "segs": ["S076-A003-W005-S01"] },
+    { "id": "S076-A003-B011", "text": "ili", "segs": ["S076-A003-W006-S01", "S076-A003-W006-S02"] },
+    { "id": "S076-A003-B012", "text": "nezahvalan.", "segs": ["S076-A003-W007-S01"] }
+  ]
+}
