@@ -24,7 +24,7 @@ export default async function Home() {
       </section>
 
       <p className="note home-note">
-        Aplikacija je u razvoju. Ako primijetite grešku, javite nam sa imenom sure i brojem ajeta
+        Aplikacija se unapređuje i aktualizira. Ako primijetite grešku, javite nam sa imenom sure i brojem ajeta
         putem <Link href="/contact">kontakt forme</Link>.
       </p>
 
